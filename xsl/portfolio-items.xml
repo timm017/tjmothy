@@ -1,0 +1,30 @@
+<portfolio-items>
+  <item>
+    <title>Kids Taking Action</title>
+    <image>images/portfolio_kta.png</image>
+    <description>Kids Taking Action is based on the Wordpress software. It uses a custom theme specific for charity sites. It allows to display
+      various charities and charity events, custom blog posts, pictures/images, and donations directly from the site.
+    </description>
+    <link>http://www.kidstakingaction.org</link>
+  </item>
+  <item>
+    <title>Top Ecigs Reviews</title>
+    <image>images/portfolio_ter.png</image>
+    <description>Top Ecigs Reviews is a review site of the most popular electronic cigarette brands and styles. It's based on Wordpress site using a
+      custom theme. Some Wordpress plugins it uses: Akismet, Google Analyticator, Google XML Sitemaps, Twitter Goodies, WP-Cumulus, WP Super Cache.
+    </description>
+    <link>http://www.topecigsreviews.com</link>
+  </item>
+  <item>
+    <title>
+      D.C. Mitchell
+    </title>
+    <image>images/portfolio_dcm.png</image>
+    <description>
+      A furniture hardware site to display and advertise all company products and services. I did not do the initial design of the site,
+      but I do
+      maintain it now. Updating content, inserting pages, implemented analytics, increased SEO.
+    </description>
+    <link>http://www.dcmitchell.org</link>
+  </item>
+</portfolio-items>
