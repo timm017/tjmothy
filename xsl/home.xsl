@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="css/footer.css" type="text/css" />
         <link rel="stylesheet" href="css/header.css" type="text/css" />
         <link rel="stylesheet" href="css/menu.css" type="text/css" />
-        <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-1.10.3.min.js"></script>
       </head>
       <body>
         <div id="header">
@@ -19,7 +19,17 @@
             <xsl:call-template name="header" />
           </div>
         </div>
-        <div class="main-stretch" />
+        <div class="main-stretch">
+          <div id="main-inner-stretch">
+            <div class="main-inner-stretch-left">
+              <h3 class="main-stretch-header">WEB DESIGN</h3>
+              <p>1. This is some sample text for that should be under the header text.</p>
+            </div>
+            <div class="main-inner-stretch-right">
+              <img src="images/home-service-cart.png" />
+            </div>
+          </div>
+        </div>
         <div class="wrapper">
           <div id="contact">
             <xsl:apply-templates />

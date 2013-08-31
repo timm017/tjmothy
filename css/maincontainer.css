@@ -9,7 +9,7 @@
 	min-width: 520px;
 	height: 300px;
 	position: relative;
-	margin: 30px auto;
+	margin: 5px auto;
 	overflow: hidden;
 	background: transparent url(../images/waves.gif) repeat 0% 0%;
 	border-top: 8px solid #efc34a;
@@ -22,6 +22,32 @@
 /* 	transition: background-position 1.4s ease-in-out 0.3s; */
 }
 
+div#main-inner-stretch {
+	margin: 0px auto;
+	width: 950px;
+}
+
+div.main-inner-stretch-left {
+	width: 300px;
+	float: left;
+}
+
+div.main-inner-stretch-right {
+	width: 650px;
+	float: right;
+}
+
+div#main-inner-stretch p{
+	font-size: 22px;
+	text-shadow: 0 1px 0 #FFFFFF;
+	color: #000000;
+}
+
+h3.main-stretch-header {
+	font-size: 36px;
+	text-shadow: 0 1px 0 #FFFFFF;
+	color: #198ed8;
+}
 article,aside,figure,header,hgroup,menu,nav,section {
 	display: block;
 }
