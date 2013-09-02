@@ -9,11 +9,12 @@
 	min-width: 520px;
 	height: 300px;
 	position: relative;
-	margin: 5px auto;
+	margin: 0px auto;
 	overflow: hidden;
-	background: transparent url(../images/waves.gif) repeat 0% 0%;
-	border-top: 8px solid #efc34a;
-	border-bottom: 8px solid #efc34a;
+/* 	background: transparent url(../images/waves.gif) repeat 0% 0%; */
+	background: transparent url(../images/background-main-stretch.png) repeat 0% 0%;
+	border-top: 5px solid #CCCCCC;
+	border-bottom: 5px solid #CCCCCC;
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.2), 0px -2px 1px #fff;
 /* 	-webkit-transition: background-position 1.4s ease-in-out 0.3s; */
 /* 	-moz-transition: background-position 1.4s ease-in-out 0.3s; */
@@ -38,15 +39,15 @@ div.main-inner-stretch-right {
 }
 
 div#main-inner-stretch p{
-	font-size: 22px;
-	text-shadow: 0 1px 0 #FFFFFF;
-	color: #000000;
+	font-size: 18px;
+	text-shadow: 0 1px 0 #CCCCCC;
+	color: #198ed8;
 }
 
 h3.main-stretch-header {
-	font-size: 36px;
-	text-shadow: 0 1px 0 #FFFFFF;
-	color: #198ed8;
+	font-size: 28px;
+	text-shadow: 0 1px 0 #CCCCCC;
+	color: #000000;
 }
 article,aside,figure,header,hgroup,menu,nav,section {
 	display: block;

@@ -31,6 +31,33 @@
           </div>
         </div>
         <div class="wrapper">
+          <div class="bottom_container">
+            <div id="modal">
+              <section>
+                <img src="images/icon_develope.jpg" />
+                <h1>DEVELOPE</h1>
+                <p>Expert web design and development for creating websites and web
+                  applications. Strengthen your brand and drive sales.</p>
+              </section>
+            </div>
+            <div id="modal">
+              <section>
+                <img src="images/icon_manage.jpg" />
+                <h1>MANAGE</h1>
+                <p>Have real control over your site from publishing &amp; editing
+                  of blog content, social media updates, uploading images and web
+                  analytics.</p>
+              </section>
+            </div>
+            <div id="modal">
+              <section>
+                <img src="images/icon_scale.jpg" />
+                <h1>SCALE</h1>
+                <p>Let your site hit its full potential. Our development, hosting,
+                  analytics, and SEO will allow your company to grow and expand.</p>
+              </section>
+            </div>
+          </div>
           <div id="contact">
             <xsl:apply-templates />
           </div>

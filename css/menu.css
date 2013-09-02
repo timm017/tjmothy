@@ -35,12 +35,18 @@ ul#menu li a
   color:#000000;
   text-decoration:none;
   padding:0px 20px 0 20px;
+  border-right: 1px solid #ccc;
+}
+
+div#menu li a:last-child {
+	border-right: 0px;
 }
 	
 ul#menu li a:hover
 {	
   color:#198ed8;
   height:22px;
+  border-right: 1px solid #ccc;
 }
 
 ul#menu li a.current
@@ -50,5 +56,6 @@ ul#menu li a.current
   background:transparent url('../images/nav_bg.png') 0px -30px no-repeat;	
   float:left;
   margin:0;
+  border-right: 1px solid #ccc;
 }
 
