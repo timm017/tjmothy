@@ -26,7 +26,7 @@
               <p>1. This is some sample text for that should be under the header text.</p>
             </div>
             <div class="main-inner-stretch-right">
-              <img src="images/home-service-cart.png" />
+              <img src="images/web-design-main.png" />
             </div>
           </div>
         </div>
