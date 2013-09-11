@@ -13,8 +13,8 @@
 	overflow: hidden;
 /* 	background: transparent url(../images/waves.gif) repeat 0% 0%; */
 	background: transparent url(../images/background-main-stretch.png) repeat 0% 0%;
-	border-top: 3px solid #202020;
-	border-bottom: 3px solid #202020;
+	border-top: 2px solid #666666;
+	border-bottom: 2px solid #666666;
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.2), 0px -2px 1px #fff;
 /* 	-webkit-transition: background-position 1.4s ease-in-out 0.3s; */
 /* 	-moz-transition: background-position 1.4s ease-in-out 0.3s; */
@@ -29,12 +29,12 @@ div#main-inner-stretch {
 }
 
 div.main-inner-stretch-left {
-	width: 300px;
+	width: 350px;
 	float: left;
 }
 
 div.main-inner-stretch-right {
-	width: 650px;
+	width: 600px;
 	float: right;
 }
 div.main-inner-stretch-right img{
@@ -44,14 +44,14 @@ div.main-inner-stretch-right img{
 div#main-inner-stretch p{
 	font-size: 18px;
 	text-shadow: 0 1px 0 #CCCCCC;
-	color: #198ed8;
+	color: #000000;
 }
 
 h3.main-stretch-header {
 	font-family: FreeSans;
-	font-size: 28px;
-	text-shadow: 0 1px 0 #CCCCCC;
-	color: #000000;
+	font-size: 38px;
+	text-shadow: 0 2px 0 #000000;
+	color: #198ed8;
 }
 article,aside,figure,header,hgroup,menu,nav,section {
 	display: block;

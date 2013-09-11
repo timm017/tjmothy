@@ -23,7 +23,9 @@
           <div id="main-inner-stretch">
             <div class="main-inner-stretch-left">
               <h3 class="main-stretch-header">WEB DESIGN</h3>
-              <p>1. This is some sample text for that should be under the header text.</p>
+              <p>1. Connect with the most popular social media sources.</p>
+              <p>2. Have complete control of your site's content with centralized access.</p>
+              <p>3. Make your business profitable by utilizing the latest technologies.</p>
             </div>
             <div class="main-inner-stretch-right">
               <img src="images/web-design-main.png" />
