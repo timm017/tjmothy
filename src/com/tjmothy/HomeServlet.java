@@ -16,7 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 /**
- * Servlet implementation class PPEServlet
+ * Servlet implementation class HomeServlet
  */
 @WebServlet("/HomeServlet")
 public class HomeServlet extends HttpServlet
@@ -35,15 +35,11 @@ public class HomeServlet extends HttpServlet
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{ 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
 		PrintWriter out = response.getWriter();
 		StringBuffer sb = new StringBuffer("<outertag>");
-		sb.append("<message>");
-		sb.append("Hell yeah it works!  xslSheet: " + xslSheet);
-		sb.append("</message>");
 		sb.append("</outertag>");
 		StringReader xml = new StringReader(sb.toString());
 
@@ -65,8 +61,7 @@ public class HomeServlet extends HttpServlet
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		// TODO Auto-generated method stub
 	}

@@ -50,9 +50,16 @@ div#main-inner-stretch p{
 h3.main-stretch-header {
 	font-family: FreeSans;
 	font-size: 38px;
-	text-shadow: 0 2px 0 #000000;
+	text-shadow: 0 1px 0 #000000;
 	color: #198ed8;
 }
+
+div.bottom-container {
+}
+
+div.wrapper {
+}
+
 article,aside,figure,header,hgroup,menu,nav,section {
 	display: block;
 }
@@ -67,7 +74,7 @@ article,aside,figure,header,hgroup,menu,nav,section {
 	box-shadow: 0 0 3px 1px #CCC;
 	font-family: FreeSans Bold;
 	overflow: hidden;
-	margin: 10px 0 0 20px;
+	margin: 20px 0 20px 20px;
 	background-color:#FFF;
 	min-height: 400px;
 }

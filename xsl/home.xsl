@@ -37,7 +37,7 @@
             <div id="modal">
               <section>
                 <img src="images/icon_develope.jpg" />
-                <h1>DEVELOPE</h1>
+                <h1>DEVELOP</h1>
                 <p>Expert web design and development for creating websites and web
                   applications. Strengthen your brand and drive sales.</p>
               </section>
@@ -62,6 +62,39 @@
           </div>
           <div id="contact">
             <xsl:apply-templates />
+          </div>
+          <div class="long-container">
+            <div id="long-container-content">
+              <ul>
+                <li>
+                  <img src="images/icon_apache.jpg" />
+                </li>
+                <li>
+                  <img src="images/icon_mysql.jpg" />
+                </li>
+                <li>
+                  <img src="images/icon_php.jpg" />
+                </li>
+                <li>
+                  <img src="images/icon_linux.jpg" />
+                </li>
+                <li>
+                  <img src="images/icon_wordpress.jpg" />
+                </li>
+                <li>
+                  <img src="images/icon_w3.png" />
+                </li>
+                <li>
+                  <img src="images/icon_css.png" />
+                </li>
+                <li>
+                  <img src="images/icon_js.png" />
+                </li>
+                <li>
+                  <img src="images/icon_ajax.jpg" />
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <xsl:call-template name="footer" />

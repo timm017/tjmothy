@@ -29,9 +29,10 @@
                 <hr />
                 <ul>
                   <li>PHP</li>
-                  <li>Javascript and AJAX</li>
+                  <li>Javascript (jQuery) and AJAX</li>
                   <li>MySQL and Database Design</li>
                   <li>Web Hosting Setup</li>
+                  <li>Domain name registration</li>
                   <li>Apache Server and Administration</li>
                 </ul>
               </p>
@@ -42,7 +43,7 @@
                 </h3>
                 <hr />
                 <ul>
-                  <li>HTML</li>
+                  <li>HTML, XHTML</li>
                   <li>CSS</li>
                   <li>Wordpress customization</li>
                   <li>User Interface Design</li>
