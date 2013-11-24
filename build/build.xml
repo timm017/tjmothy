@@ -1,7 +1,7 @@
-<project name="simpleCompile" default="deploy" basedir=".">
+<project name="simpleCompile" default="deploy" basedir="../">
 	<target name="init">
 		<property name="sourceDir" value="src" />
-		<property name="outputDir" value="classes" />
+		<property name="outputDir" value="WEB-INF/classes" />
 		<property name="deployJSP" value="/web/deploy/jsp" />
 		<property name="deployProperties" value="/web/deploy/conf" />
 	</target>
