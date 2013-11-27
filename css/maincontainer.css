@@ -12,7 +12,7 @@
 	margin: 0px auto;
 	overflow: hidden;
 /* 	background: transparent url(../images/waves.gif) repeat 0% 0%; */
-	background: transparent url(../images/background-main-stretch.png) repeat 0% 0%;
+	background: transparent url(../images/main-bg.jpg) repeat 0% 0%;
 	border-top: 2px solid #666666;
 	border-bottom: 2px solid #666666;
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.2), 0px -2px 1px #fff;
@@ -44,14 +44,14 @@ div.main-inner-stretch-right img{
 div#main-inner-stretch p{
 	font-size: 18px;
 	text-shadow: 0 1px 0 #CCCCCC;
-	color: #000000;
+	color: #EEEEEE;
 }
 
 h3.main-stretch-header {
 	font-family: FreeSans;
 	font-size: 38px;
 	text-shadow: 0 1px 0 #000000;
-	color: #198ed8;
+	color: #CCCCCC;
 }
 
 div.bottom-container {

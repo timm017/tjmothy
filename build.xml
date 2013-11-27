@@ -1,0 +1,35 @@
+<project name="simpleCompile" default="deploy" basedir=".">
+        <target name="init">
+                <property name="sourceDir" value="src" />
+                <property name="outputDir" value="build" />
+                <property name="classpath" value="libs/servlet-api.jar" />
+                <property name="deployJSP" value="/web/deploy/jsp" />
+                <property name="deployProperties" value="/web/deploy/conf" />
+                <property name="web.dir" value="WEB-INF" />
+        </target>
+        <target name="clean" depends="init">
+                <deltree dir="${outputDir}" />
+        </target>
+        <target name="prepare" depends="clean">
+                <mkdir dir="${outputDir}" />
+        </target>
+        <target name="compile" depends="prepare">
+                <javac srcdir="${sourceDir}" classpath="${classpath}" destdir="${outputDir}" />
+        </target>
+        <target name="deploy" depends="compile,init">
+<!--                <copydir src="${jsp}" dest="${deployJSP}" />-->
+                <copyfile src="server.properties" dest="${deployProperties}" />
+        </target>
+
+<target name="build-war" depends="init">
+   <war destfile="tjmothy.war" webxml="${web.dir}/web.xml">
+   <fileset dir="${outputDir}">
+      <include name="**/*.*"/>
+   </fileset>
+<!--   <lib dir="thirdpartyjars">
+      <exclude name="portlet.jar"/>
+   </lib>-->
+   <classes dir="${outputDir}"/>
+</war>
+</target>
+</project>
