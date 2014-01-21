@@ -4,7 +4,7 @@
 
   <xsl:template name="header">
     <a href="./home">
-      <img src="images/logo2.png" />
+      <img src="images/logo.png" />
     </a>
     <ul id="menu">
       <li class="button">
@@ -36,12 +36,5 @@
         </a>
       </li>
     </ul>
-
-    <!-- About" => new MenuItem("ABOUT", "htdocs/view/about.php", "htdocs/images/menu_about.png"), -->
-    <!-- Portfolio" => new MenuItem("PORTFOLIO", "htdocs/view/portfolio.php", 
-      "htdocs/images/menu_portfolio.png"), -->
-    <!-- Services" => new MenuItem("SERVICES", "htdocs/view/services.php", 
-      "htdocs/images/menu_services.png"), -->
-    <!-- Contact" => new MenuItem("CONTACT", "htdocs/view/contact.php", "htdocs/images/menu_contact.png")); -->
   </xsl:template>
 </xsl:stylesheet>
