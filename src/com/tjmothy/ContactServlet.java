@@ -31,7 +31,7 @@ public class ContactServlet extends HttpServlet
 //	private static final String SMTP_HOST_NAME = "smtp.sendgrid.net";
 	private static final String SMTP_HOST_NAME = "malt";
 	private static final String SMTP_AUTH_USER = "mckeown.timothy@gmail.com";
-	private static final String SMTP_AUTH_PWD = "********";
+	private static final String SMTP_AUTH_PWD = "**********";
 	private static final int SMTP_PORT = 2525;
 
 	/**
