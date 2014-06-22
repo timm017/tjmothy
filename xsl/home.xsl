@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:import href="header.xsl" />
   <xsl:import href="footer.xsl" />
@@ -11,6 +12,8 @@
         <link rel="stylesheet" href="css/footer.css" type="text/css" />
         <link rel="stylesheet" href="css/header.css" type="text/css" />
         <link rel="stylesheet" href="css/menu.css" type="text/css" />
+        <link href='http://fonts.googleapis.com/css?family=Droid+Sans:700'
+          rel='stylesheet' />
         <script type="text/javascript" src="js/jquery-1.10.3.min.js"></script>
       </head>
       <body>
@@ -23,12 +26,41 @@
           <div id="main-inner-stretch">
             <div class="main-inner-stretch-left">
               <h3 class="main-stretch-header">WEB DESIGN</h3>
-              <p>1. Connect with the most popular social media sources.</p>
-              <p>2. Have complete control of your site's content with centralized access.</p>
-              <p>3. Make your business profitable by utilizing the latest technologies.</p>
+              <p>
+                <xsl:text>Connect with the most popular social media sources.  </xsl:text>
+                <xsl:text>Have complete control of your site's content with centralized access.  </xsl:text>
+                <xsl:text>Make your business profitable by utilizing the latest technologies.  </xsl:text>
+              </p>
             </div>
             <div class="main-inner-stretch-right">
-              <img src="images/web-design-main.png" />
+              <img width="150px" height="150px" src="images/web-design-main.png" />
+            </div>
+          </div>
+          <div id="main-inner-stretch">
+            <div class="main-inner-stretch-left">
+              <h3 class="main-stretch-header">ANDROID DEVELOPMENT</h3>
+              <p>
+                <xsl:text>Native android development.  </xsl:text>
+                <xsl:text>Support for 100s of different devices, including tablets and phones.  </xsl:text>
+                <xsl:text>100% customizable to suit you and your business needs.  </xsl:text>
+              </p>
+            </div>
+            <div class="main-inner-stretch-right">
+              <img width="150px" height="150px"
+                src="images/android_development_icon.png" />
+            </div>
+          </div>
+          <div id="main-inner-stretch">
+            <div class="main-inner-stretch-left">
+              <h3 class="main-stretch-header">CONSULTATION</h3>
+              <p>
+                <xsl:text>Need help or advice on a current or new project?  </xsl:text>
+                <xsl:text>We can help with with just about anything.  </xsl:text>
+                <a href="./contact" class="blue-link">Shoot us an email!  </a>
+              </p>
+            </div>
+            <div class="main-inner-stretch-right">
+              <img width="150px" height="150px" src="images/consultation.png" />
             </div>
           </div>
         </div>
@@ -37,26 +69,31 @@
             <div id="modal">
               <section>
                 <img src="images/icon_develope.jpg" />
-                <h1>DEVELOP</h1>
-                <p>Expert web design and development for creating websites and web
-                  applications. Strengthen your brand and drive sales.</p>
+                <h1>DEVELOPE</h1>
+                <p>
+                  <xsl:text>Expert web design and development for creating websites and web applications. </xsl:text>
+                  <xsl:text>Strengthen your brand and drive sales.  </xsl:text>
+                </p>
               </section>
             </div>
             <div id="modal">
               <section>
                 <img src="images/icon_manage.jpg" />
                 <h1>MANAGE</h1>
-                <p>Have real control over your site from publishing &amp; editing
-                  of blog content, social media updates, uploading images and web
-                  analytics.</p>
+                <p>
+                  <xsl:text>Have real control over your site from publishing
+                  &amp; editing of blog content, social media updates, uploading images and web analytics.</xsl:text>
+                </p>
               </section>
             </div>
             <div id="modal">
               <section>
                 <img src="images/icon_scale.jpg" />
                 <h1>SCALE</h1>
-                <p>Let your site hit its full potential. Our development, hosting,
-                  analytics, and SEO will allow your company to grow and expand.</p>
+                <p>
+                  <xsl:text>Let your site hit its full potential.  </xsl:text>
+                  <xsl:text>Our development, hosting, analytics, and SEO will allow your company to grow and expand.</xsl:text>
+                </p>
               </section>
             </div>
           </div>

@@ -36,7 +36,7 @@
       <servlet-class>com.tjmothy.HomeServlet</servlet-class>
       <init-param>
         <param-name>xslSheet</param-name>
-        <param-value>/home/tmckeown/workspace-tjmothy/tjmothy/xsl/home.xsl</param-value>
+        <param-value>home.xsl</param-value>
       </init-param>
     </servlet>
     <servlet-mapping>
@@ -50,7 +50,7 @@
       <servlet-class>com.tjmothy.ContactServlet</servlet-class>
       <init-param>
         <param-name>xslSheet</param-name>
-        <param-value>/home/tmckeown/workspace-tjmothy/tjmothy/xsl/contact.xsl</param-value>
+        <param-value>contact.xsl</param-value>
       </init-param>
     </servlet>
     <servlet-mapping>
@@ -64,7 +64,7 @@
       <servlet-class>com.tjmothy.ServicesServlet</servlet-class>
       <init-param>
         <param-name>xslSheet</param-name>
-        <param-value>/home/tmckeown/workspace-tjmothy/tjmothy/xsl/services.xsl</param-value>
+        <param-value>services.xsl</param-value>
       </init-param>
     </servlet>
     <servlet-mapping>
@@ -78,12 +78,26 @@
       <servlet-class>com.tjmothy.PortfolioServlet</servlet-class>
       <init-param>
         <param-name>xslSheet</param-name>
-        <param-value>/home/tmckeown/workspace-tjmothy/tjmothy/xsl/portfolio.xsl</param-value>
+        <param-value>portfolio.xsl</param-value>
       </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>PortfolioServlet</servlet-name>
         <url-pattern>/portfolio</url-pattern>
+    </servlet-mapping>  
+    
+    <!-- About servlet -->
+    <servlet>
+      <servlet-name>AboutServlet</servlet-name>
+      <servlet-class>com.tjmothy.AboutServlet</servlet-class>
+      <init-param>
+        <param-name>xslSheet</param-name>
+        <param-value>about.xsl</param-value>
+      </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AboutServlet</servlet-name>
+        <url-pattern>/about</url-pattern>
     </servlet-mapping>  
 
     <error-page> <error-code>404</error-code> 

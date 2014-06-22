@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:template name="footer">
     <div id="footer-outer">
@@ -38,7 +39,8 @@
           </li>
           <li>
             <img src="images/footer_googleplus.png" />
-            <a href="https://plus.google.com/u/0/117569793584660579939/posts/p/pub">GOOGLE+</a>
+            <a
+              href="https://plus.google.com/u/0/117569793584660579939/posts/p/pub">GOOGLE+</a>
           </li>
           <li>
             <img src="images/footer_twitter.png" />
@@ -49,6 +51,16 @@
             <xsl:text>RSS</xsl:text>
           </li>
         </ul>
+        <div id="footer-title">
+          <a href="./home">
+            <span class="title-first">
+              <xsl:text>tjmothy</xsl:text>
+            </span>
+            <span class="title-second">
+              <xsl:text>.com</xsl:text>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   </xsl:template>

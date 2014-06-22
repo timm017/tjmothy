@@ -1,10 +1,12 @@
 package com.tjmothy;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.HashMap;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import com.tjmothy.email.Email;
+import com.tjmothy.utils.PathHelper;
 
 /**
  * Servlet implementation class PPEServlet
@@ -50,10 +53,13 @@ public class ServicesServlet extends HttpServlet
 		sb.append("</outertag>");
 		StringReader xml = new StringReader(sb.toString());
 
+		ServletContext servletContext = getServletContext();
+		String contextPath = servletContext.getRealPath(File.separator);
+
 		try
 		{
 			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Source xslDoc = new StreamSource(xslSheet);
+			Source xslDoc = new StreamSource(contextPath + PathHelper.XSL_PATH + xslSheet);
 			Source xmlDoc = new StreamSource(xml);
 			Transformer transformer = tFactory.newTransformer(xslDoc);
 			transformer.transform(xmlDoc, new StreamResult(out));

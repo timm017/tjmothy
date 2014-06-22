@@ -57,3 +57,26 @@ div#footer li a:hover {
 	color: #198ed8;
 	height: 22px;
 }
+
+div#footer-title {
+	font-family: FreeSans;
+	font-size: 20px;
+	font-weight: bold;
+	font-family: 'Droid Sans';
+	text-shadow: 1px 1px 1px #000;
+	margin-left: 40%;
+}
+
+div#footer-title a {
+	text-decoration: inherit;
+	color: inherit;
+	cursor: auto;
+}
+
+span.title-first {
+	font-weight: bold;
+}
+
+span.title-second { /* 	color: #808185; */
+	color: #198ed8;
+}

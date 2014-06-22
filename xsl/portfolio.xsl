@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:import href="header.xsl" />
   <xsl:import href="footer.xsl" />
@@ -21,11 +22,22 @@
           </div>
         </div>
         <div class="wrapper">
-          <xsl:apply-templates select="$pi/portfolio-items" />
+          <xsl:call-template name="android-items" />
+          <xsl:call-template name="web-items" />
         </div>
         <xsl:call-template name="footer" />
       </body>
     </html>
+  </xsl:template>
+
+  <xsl:template name="web-items">
+    <h1>Web</h1>
+    <xsl:apply-templates select="$pi/portfolio-items/web-items" />
+  </xsl:template>
+
+  <xsl:template name="android-items">
+    <h1>Android</h1>
+    <xsl:apply-templates select="$pi/portfolio-items/android-items" />
   </xsl:template>
 
   <xsl:template match="item">

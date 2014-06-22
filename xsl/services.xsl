@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:import href="header.xsl" />
   <xsl:import href="footer.xsl" />
@@ -28,6 +29,7 @@
                 </h3>
                 <hr />
                 <ul>
+                  <li>Java (including Android development)</li>
                   <li>PHP</li>
                   <li>Javascript (jQuery) and AJAX</li>
                   <li>MySQL and Database Design</li>

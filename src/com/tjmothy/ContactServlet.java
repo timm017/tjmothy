@@ -1,10 +1,12 @@
 package com.tjmothy;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.HashMap;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import com.tjmothy.email.Email;
+import com.tjmothy.utils.PathHelper;
 
 /**
  * Servlet implementation class PPEServlet
@@ -25,6 +28,11 @@ import com.tjmothy.email.Email;
 public class ContactServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
+//	private static final String SMTP_HOST_NAME = "smtp.sendgrid.net";
+	private static final String SMTP_HOST_NAME = "malt";
+	private static final String SMTP_AUTH_USER = "mckeown.timothy@gmail.com";
+	private static final String SMTP_AUTH_PWD = "17_$tjm$+_17";
+	private static final int SMTP_PORT = 2525;
 
 	/**
 	 * Default constructor.
@@ -38,8 +46,7 @@ public class ContactServlet extends HttpServlet
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
 		PrintWriter out = response.getWriter();
@@ -50,10 +57,13 @@ public class ContactServlet extends HttpServlet
 		sb.append("</outertag>");
 		StringReader xml = new StringReader(sb.toString());
 
+		ServletContext servletContext = getServletContext();
+		String contextPath = servletContext.getRealPath(File.separator);
+
 		try
 		{
 			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Source xslDoc = new StreamSource(xslSheet);
+			Source xslDoc = new StreamSource(contextPath + PathHelper.XSL_PATH + xslSheet);
 			Source xmlDoc = new StreamSource(xml);
 			Transformer transformer = tFactory.newTransformer(xslDoc);
 			transformer.transform(xmlDoc, new StreamResult(out));
@@ -68,10 +78,11 @@ public class ContactServlet extends HttpServlet
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
+		ServletContext servletContext = getServletContext();
+		String contextPath = servletContext.getRealPath(File.separator);
 		// String subcmd = getRequestParam("subcmd", "");
 		String subcmd = request.getParameter("subcmd");
 
@@ -87,17 +98,17 @@ public class ContactServlet extends HttpServlet
 			hm.put("name", request.getParameter("name"));
 			hm.put("company", request.getParameter("company"));
 			hm.put("phone", request.getParameter("phone"));
-		    hm.put("comments", request.getParameter("comments"));
-		    Email e = new Email(hm);
+			hm.put("comments", request.getParameter("comments"));
+			Email e = new Email(hm);
 		}
-		
+
 		sb.append("</outertag>");
 		StringReader xml = new StringReader(sb.toString());
 
 		try
 		{
 			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Source xslDoc = new StreamSource(xslSheet);
+			Source xslDoc = new StreamSource(contextPath + PathHelper.XSL_PATH + xslSheet);
 			Source xmlDoc = new StreamSource(xml);
 			Transformer transformer = tFactory.newTransformer(xslDoc);
 			transformer.transform(xmlDoc, new StreamResult(out));

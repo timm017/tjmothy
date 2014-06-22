@@ -4,61 +4,71 @@
 	width: 950px;
 }
 
-.main-stretch{
+.main-stretch {
 	width: 100%;
 	min-width: 520px;
-	height: 375px;
 	position: relative;
 	margin: 0px auto;
 	overflow: hidden;
-/* 	background: transparent url(../images/waves.gif) repeat 0% 0%; */
+	/* 	background: transparent url(../images/waves.gif) repeat 0% 0%; */
 	background: transparent url(../images/main-bg.jpg) repeat 0% 0%;
 	border-top: 2px solid #666666;
 	border-bottom: 2px solid #666666;
-	box-shadow: 0px 1px 1px rgba(0,0,0,0.2), 0px -2px 1px #fff;
-/* 	-webkit-transition: background-position 1.4s ease-in-out 0.3s; */
-/* 	-moz-transition: background-position 1.4s ease-in-out 0.3s; */
-/* 	-o-transition: background-position 1.4s ease-in-out 0.3s; */
-/* 	-ms-transition: background-position 1.4s ease-in-out 0.3s; */
-/* 	transition: background-position 1.4s ease-in-out 0.3s; */
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2), 0px -2px 1px #fff;
+	/* 	-webkit-transition: background-position 1.4s ease-in-out 0.3s; */
+	/* 	-moz-transition: background-position 1.4s ease-in-out 0.3s; */
+	/* 	-o-transition: background-position 1.4s ease-in-out 0.3s; */
+	/* 	-ms-transition: background-position 1.4s ease-in-out 0.3s; */
+	/* 	transition: background-position 1.4s ease-in-out 0.3s; */
 }
 
 div#main-inner-stretch {
-	margin: 0px auto;
+	margin: 25px auto;
 	width: 950px;
 }
 
 div.main-inner-stretch-left {
-	width: 350px;
+	width: 60%;
 	float: left;
 }
 
 div.main-inner-stretch-right {
-	width: 600px;
-	float: right;
-}
-div.main-inner-stretch-right img{
+	width: 25%;
 	float: right;
 }
 
-div#main-inner-stretch p{
+div.main-inner-stretch-right img {
+	float: right;
+}
+
+div#main-inner-stretch p {
 	font-family: sans-serif;
 	font-size: 18px;
 	text-shadow: 0 1px 0 #CCCCCC;
-	color: #EEEEEE;
+	color: #FEFEFE;
+	margin-bottom: 50px;
 }
 
 h3.main-stretch-header {
 	font-family: fantasy;
 	font-size: 28px;
 	text-shadow: 0 1px 0 #000000;
-	color: #CCCCCC;
+	color: #FFFFFF;
+	font-weight: 100;
 }
 
 div.bottom-container {
+	
 }
 
 div.wrapper {
+	
+}
+
+div.wrapper h1 {
+	font-size: 30px;
+	color: #707070;
+	font-weight: 200;
 }
 
 article,aside,figure,header,hgroup,menu,nav,section {
@@ -67,7 +77,7 @@ article,aside,figure,header,hgroup,menu,nav,section {
 
 #modal {
 	float: left;
-	width: 290px;
+	width: 31%;
 	border: 1px solid #CCC;
 	border-radius: 3px;
 	-moz-box-shadow: 0 0 3px 1px #CCC;
@@ -76,7 +86,7 @@ article,aside,figure,header,hgroup,menu,nav,section {
 	font-family: FreeSans Bold;
 	overflow: hidden;
 	margin: 20px 0 20px 20px;
-	background-color:#FFF;
+	background-color: #FFF;
 	min-height: 400px;
 }
 
@@ -124,7 +134,7 @@ article,aside,figure,header,hgroup,menu,nav,section {
 	font-family: FreeSans Bold;
 	overflow: hidden;
 	margin: 0 0 0 15px;
-	background-color:#FFF;
+	background-color: #FFF;
 }
 
 #long-container-content ul li {
@@ -270,26 +280,27 @@ article,aside,figure,header,hgroup,menu,nav,section {
 	-moz-box-shadow: 0 0 3px 1px #CCC;
 	-webkit-box-shadow: 0 0 3px 1px;
 	box-shadow: 0 0 3px 1px #CCC;
-	font-family: FreeSa<h2>Portfolio</h2>ns;
+	font-family: FreeSa < h2 > Portfolio </ h2 > ns;
 	overflow: hidden;
 	margin: 25px 0 35px 15px;
-	background-color:#FFF;
+	background-color: #FFF;
 }
 
-#portfolio td.title{
+#portfolio td.title {
 	font-size: 25px;
 }
 
-#portfolio td.description{
+#portfolio td.description {
 	color: #645d5d;
 	padding: 10px 0px 0px 20px;
 	width: 450px;
 }
 
-#portfolio td.link{
+#portfolio td.link {
+	
 }
 
-#portfolio td.image{
+#portfolio td.image {
 	padding: 0px 10px 0px 0px;
 }
 
@@ -306,7 +317,7 @@ article,aside,figure,header,hgroup,menu,nav,section {
 	overflow: hidden;
 	margin: 25px 0 15px 25px;
 	padding: 15px 15px 15px 15px;
-	background-color:#FFF;
+	background-color: #FFF;
 }
 
 #services ul {
@@ -319,7 +330,7 @@ article,aside,figure,header,hgroup,menu,nav,section {
 	margin: 0px 0px 0px 3px;
 }
 
-#services span{
+#services span {
 	margin-bottom: 205px;
 	vertical-align: middle;
 }
@@ -337,9 +348,29 @@ article,aside,figure,header,hgroup,menu,nav,section {
 	-moz-box-shadow: 0 0 3px 1px #CCC;
 	-webkit-box-shadow: 0 0 3px 1px;
 	box-shadow: 0 0 3px 1px #CCC;
-	font-family: FreeSans;
+	font-family: FreeSa < h2 > about </ h2 > ns;
 	overflow: hidden;
-	margin: 25px 0 15px 25px;
-	padding: 15px 15px 15px 15px;
-	background-color:#FFF;
+	margin: 25px 0 35px 15px;
+	background-color: #FFF;
+}
+
+#about p {
+	padding: 15px;
+}
+
+#about td.title {
+	font-size: 25px;
+}
+
+#about td.description {
+	color: #645d5d;
+	padding: 10px 0px 0px 20px;
+	width: 450px;
+}
+
+
+/* HELPER styles */
+a.blue-link {
+	color: #198ed8;
+	text-shadow: 0 0px 0 #CCCCCC;
 }

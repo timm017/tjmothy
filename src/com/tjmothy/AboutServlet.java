@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,20 +18,21 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import com.tjmothy.email.Email;
 import com.tjmothy.utils.PathHelper;
 
 /**
  * Servlet implementation class PPEServlet
  */
-@WebServlet("/ContactServlet")
-public class PortfolioServlet extends HttpServlet
+@WebServlet("/AboutServlet")
+public class AboutServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Default constructor.
 	 */
-	public PortfolioServlet()
+	public AboutServlet()
 	{
 		// TODO Auto-generated constructor stub
 	}
@@ -58,40 +60,6 @@ public class PortfolioServlet extends HttpServlet
 		{
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			Source xslDoc = new StreamSource(contextPath + PathHelper.XSL_PATH + xslSheet);
-			Source xmlDoc = new StreamSource(xml);
-			Transformer transformer = tFactory.newTransformer(xslDoc);
-			transformer.transform(xmlDoc, new StreamResult(out));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
-		String xslSheet = getServletConfig().getInitParameter("xslSheet");
-		// String subcmd = getRequestParam("subcmd", "");
-		String subcmd = request.getParameter("subcmd");
-
-		PrintWriter out = response.getWriter();
-		StringBuffer sb = new StringBuffer("<outertag subcmd='" + subcmd + "'>");
-		sb.append("<message>");
-		sb.append("Hell yeah it works!  xslSheet: " + xslSheet);
-		sb.append("</message>");
-		
-		sb.append("</outertag>");
-		StringReader xml = new StringReader(sb.toString());
-
-		try
-		{
-			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Source xslDoc = new StreamSource(xslSheet);
 			Source xmlDoc = new StreamSource(xml);
 			Transformer transformer = tFactory.newTransformer(xslDoc);
 			transformer.transform(xmlDoc, new StreamResult(out));
