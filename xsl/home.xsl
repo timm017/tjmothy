@@ -41,7 +41,7 @@
               <h3 class="main-stretch-header">ANDROID DEVELOPMENT</h3>
               <p>
                 <xsl:text>Native android development.  </xsl:text>
-                <xsl:text>Support for 100s of different devices, including tablets and phones.  </xsl:text>
+                <xsl:text>Support for hundreds of different devices, including tablets and phones.  </xsl:text>
                 <xsl:text>100% customizable to suit you and your business needs.  </xsl:text>
               </p>
             </div>
@@ -69,7 +69,7 @@
             <div id="modal">
               <section>
                 <img src="images/icon_develope.jpg" />
-                <h1>DEVELOPE</h1>
+                <h1>DEVELOP</h1>
                 <p>
                   <xsl:text>Expert web design and development for creating websites and web applications. </xsl:text>
                   <xsl:text>Strengthen your brand and drive sales.  </xsl:text>
