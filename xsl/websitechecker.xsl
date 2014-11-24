@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:import href="header.xsl" />
   <xsl:import href="footer.xsl" />
@@ -22,32 +23,18 @@
           <div id="contact">
             <br />
             <br />
-            <iframe width="800" height="275" frameborder="10" scrolling="no" marginheight="0" marginwidth="0"
-              src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=media,+pa&amp;aq=&amp;sll=41.117935,-77.604698&amp;sspn=4.658945,9.876709&amp;t=m&amp;ie=UTF8&amp;hq=&amp;hnear=Media,+Delaware,+Pennsylvania&amp;z=14&amp;ll=39.916778,-75.387693&amp;output=embed"></iframe>
-            <form action="./contact?subcmd=email" method="POST">
+            <form action="./websitechecker?subcmd=check" method="POST">
               <table border="0">
                 <tr>
-                  <td>Name:</td>
+                  <td>Website:</td>
                   <td>
-                    <input type="field" name="name" />
+                    <input type="field" name="website" />
                   </td>
                 </tr>
                 <tr>
-                  <td>Company:</td>
+                  <td>Search:</td>
                   <td>
-                    <input type="field" name="company" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Phone:</td>
-                  <td>
-                    <input type="field" name="phone" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Comment &amp; Questions:</td>
-                  <td>
-                    <textarea name="comments" rows="5" cols="40"></textarea>
+                    <input type="field" name="search" />
                   </td>
                 </tr>
                 <tr>
@@ -55,16 +42,35 @@
                     <xsl:text> </xsl:text>
                   </td>
                   <td>
-                    <input style="width: 100px;" type="submit" name="submit" value="Send" />
+                    <input style="width: 100px;" type="submit"
+                      name="submit" value="Check" />
                   </td>
                 </tr>
               </table>
             </form>
           </div>
+          <xsl:apply-templates />
         </div>
         <xsl:call-template name="footer" />
       </body>
     </html>
+  </xsl:template>
+
+  <xsl:template match="websitechecker_tool">
+    <xsl:choose>
+      <xsl:when test="result = 'found'">
+        <font face="verdana" color="green">Found!</font>
+      </xsl:when>
+      <xsl:when test="result='not_found'">
+        <font face="verdana" color="red">Not found!</font>
+      </xsl:when>
+      <xsl:when test="result='malformed_url'">
+        <font face="verdana" color="yellow">Invalid URL!</font>
+      </xsl:when>
+      <xsl:otherwise>
+        <font face="verdana" color="yellow">Something went wrong...</font>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="message">

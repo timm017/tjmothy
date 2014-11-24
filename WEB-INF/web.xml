@@ -1,107 +1,120 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-  version="3.0"
-  metadata-complete="true">
+  version="3.0" metadata-complete="true">
 
-    <description>tjmothy Servlet and JSP Examples.</description>
-    <display-name>tjmothy Servlet and JSP Examples</display-name>
+  <description>tjmothy Servlet and JSP Examples.</description>
+  <display-name>tjmothy Servlet and JSP Examples</display-name>
 
-   <servlet>
-        <servlet-name>default</servlet-name>
-        <servlet-class>
-          org.apache.catalina.servlets.DefaultServlet
-        </servlet-class>
-        <init-param>
-            <param-name>debug</param-name>
-            <param-value>0</param-value>
-        </init-param>
-        <init-param>
-            <param-name>listings</param-name>
-            <param-value>true</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+  <servlet>
+    <servlet-name>default</servlet-name>
+    <servlet-class>
+      org.apache.catalina.servlets.DefaultServlet
+    </servlet-class>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>0</param-value>
+    </init-param>
+    <init-param>
+      <param-name>listings</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
 
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
 
-    <!-- Home servlet -->
-    <servlet>
-      <servlet-name>HomeServlet</servlet-name>
-      <servlet-class>com.tjmothy.HomeServlet</servlet-class>
-      <init-param>
-        <param-name>xslSheet</param-name>
-        <param-value>home.xsl</param-value>
-      </init-param>
-    </servlet>
-    <servlet-mapping>
-      <servlet-name>HomeServlet</servlet-name>
-      <url-pattern>/home</url-pattern>
-    </servlet-mapping>
-    
-    <!-- Contact servlet -->
-    <servlet>
-      <servlet-name>ContactServlet</servlet-name>
-      <servlet-class>com.tjmothy.ContactServlet</servlet-class>
-      <init-param>
-        <param-name>xslSheet</param-name>
-        <param-value>contact.xsl</param-value>
-      </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ContactServlet</servlet-name>
-        <url-pattern>/contact</url-pattern>
-    </servlet-mapping>
-    
-    <!-- Services servlet -->
-    <servlet>
-      <servlet-name>ServicesServlet</servlet-name>
-      <servlet-class>com.tjmothy.ServicesServlet</servlet-class>
-      <init-param>
-        <param-name>xslSheet</param-name>
-        <param-value>services.xsl</param-value>
-      </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ServicesServlet</servlet-name>
-        <url-pattern>/services</url-pattern>
-    </servlet-mapping>
-    
-    <!-- Portfolio servlet -->
-    <servlet>
-      <servlet-name>PortfolioServlet</servlet-name>
-      <servlet-class>com.tjmothy.PortfolioServlet</servlet-class>
-      <init-param>
-        <param-name>xslSheet</param-name>
-        <param-value>portfolio.xsl</param-value>
-      </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PortfolioServlet</servlet-name>
-        <url-pattern>/portfolio</url-pattern>
-    </servlet-mapping>  
-    
-    <!-- About servlet -->
-    <servlet>
-      <servlet-name>AboutServlet</servlet-name>
-      <servlet-class>com.tjmothy.AboutServlet</servlet-class>
-      <init-param>
-        <param-name>xslSheet</param-name>
-        <param-value>about.xsl</param-value>
-      </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AboutServlet</servlet-name>
-        <url-pattern>/about</url-pattern>
-    </servlet-mapping>  
+  <!-- Home servlet -->
+  <servlet>
+    <servlet-name>HomeServlet</servlet-name>
+    <servlet-class>com.tjmothy.HomeServlet</servlet-class>
+    <init-param>
+      <param-name>xslSheet</param-name>
+      <param-value>home.xsl</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HomeServlet</servlet-name>
+    <url-pattern>/home</url-pattern>
+  </servlet-mapping>
 
-    <error-page> <error-code>404</error-code> 
-        <location>/404.html</location>
-    </error-page>
+  <!-- Contact servlet -->
+  <servlet>
+    <servlet-name>ContactServlet</servlet-name>
+    <servlet-class>com.tjmothy.ContactServlet</servlet-class>
+    <init-param>
+      <param-name>xslSheet</param-name>
+      <param-value>contact.xsl</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ContactServlet</servlet-name>
+    <url-pattern>/contact</url-pattern>
+  </servlet-mapping>
+
+  <!-- Services servlet -->
+  <servlet>
+    <servlet-name>ServicesServlet</servlet-name>
+    <servlet-class>com.tjmothy.ServicesServlet</servlet-class>
+    <init-param>
+      <param-name>xslSheet</param-name>
+      <param-value>services.xsl</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServicesServlet</servlet-name>
+    <url-pattern>/services</url-pattern>
+  </servlet-mapping>
+
+  <!-- Portfolio servlet -->
+  <servlet>
+    <servlet-name>PortfolioServlet</servlet-name>
+    <servlet-class>com.tjmothy.PortfolioServlet</servlet-class>
+    <init-param>
+      <param-name>xslSheet</param-name>
+      <param-value>portfolio.xsl</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PortfolioServlet</servlet-name>
+    <url-pattern>/portfolio</url-pattern>
+  </servlet-mapping>
+
+  <!-- About servlet -->
+  <servlet>
+    <servlet-name>AboutServlet</servlet-name>
+    <servlet-class>com.tjmothy.AboutServlet</servlet-class>
+    <init-param>
+      <param-name>xslSheet</param-name>
+      <param-value>about.xsl</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AboutServlet</servlet-name>
+    <url-pattern>/about</url-pattern>
+  </servlet-mapping>
+
+  <!-- About servlet -->
+  <servlet>
+    <servlet-name>WebsiteCheckerServlet</servlet-name>
+    <servlet-class>com.tjmothy.WebsiteCheckerServlet</servlet-class>
+    <init-param>
+      <param-name>xslSheet</param-name>
+      <param-value>websitechecker.xsl</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WebsiteCheckerServlet</servlet-name>
+    <url-pattern>/websitechecker</url-pattern>
+  </servlet-mapping>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/404.html</location>
+  </error-page>
 
 </web-app>

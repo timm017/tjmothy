@@ -17,21 +17,29 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import com.tjmothy.utils.PageParser;
 import com.tjmothy.utils.PathHelper;
+import com.tjmothy.utils.SearchParameters;
 
 /**
- * Servlet implementation class HomeServlet
+ * Servlet implementation class PPEServlet
  */
-@WebServlet("/HomeServlet")
-public class HomeServlet extends HttpServlet
+@WebServlet("/WebsiteCheckerServlet")
+public class WebsiteCheckerServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
+
+	public enum Result
+	{
+		found, not_found, malformed_url
+	}
 
 	/**
 	 * Default constructor.
 	 */
-	public HomeServlet()
+	public WebsiteCheckerServlet()
 	{
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -45,7 +53,7 @@ public class HomeServlet extends HttpServlet
 		StringBuffer sb = new StringBuffer("<outertag>");
 		sb.append("</outertag>");
 		StringReader xml = new StringReader(sb.toString());
-		
+
 		ServletContext servletContext = getServletContext();
 		String contextPath = servletContext.getRealPath(File.separator);
 
@@ -69,7 +77,53 @@ public class HomeServlet extends HttpServlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		// TODO Auto-generated method stub
-	}
+		String xslSheet = getServletConfig().getInitParameter("xslSheet");
+		ServletContext servletContext = getServletContext();
+		String contextPath = servletContext.getRealPath(File.separator);
+		// String subcmd = getRequestParam("subcmd", "");
+		String subcmd = request.getParameter("subcmd");
 
+		PrintWriter out = response.getWriter();
+		StringBuffer sb = new StringBuffer("<outertag>");
+		if (subcmd.equals("check"))
+		{
+			String website = request.getParameter("website");
+			String search = request.getParameter("search");
+			SearchParameters sp = new SearchParameters(search, website);
+			sb.append("<websitechecker_tool><result>");
+			if (website.equals(""))
+			{
+				sb.append(Result.malformed_url.name());
+			}
+			else
+			{
+				PageParser pp = new PageParser(sp);
+				if (pp.foundIt())
+				{
+					sb.append(Result.found.name());
+				}
+				else
+				{
+					sb.append(Result.not_found.name());
+				}
+			}
+			sb.append("</result></websitechecker_tool>");
+		}
+
+		sb.append("</outertag>");
+		StringReader xml = new StringReader(sb.toString());
+
+		try
+		{
+			TransformerFactory tFactory = TransformerFactory.newInstance();
+			Source xslDoc = new StreamSource(contextPath + PathHelper.XSL_PATH + xslSheet);
+			Source xmlDoc = new StreamSource(xml);
+			Transformer transformer = tFactory.newTransformer(xslDoc);
+			transformer.transform(xmlDoc, new StreamResult(out));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

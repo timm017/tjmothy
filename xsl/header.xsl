@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:template name="header">
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+      Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-34846059-1', 'auto');
-  ga('send', 'pageview');
+      ga('create', 'UA-34846059-1', 'auto');
+      ga('send', 'pageview');
 
-</script>
+    </script>
     <!-- <a href="./home"> -->
     <!-- <img src="images/logo.png" /> -->
     <!-- </a> -->
@@ -27,6 +28,13 @@
       </a>
     </div>
     <ul id="menu">
+      <li class="button">
+        <a href="./websitechecker">
+          <img src="images/13-target.png" />
+          <br />
+          <xsl:text>Checker</xsl:text>
+        </a>
+      </li>
       <li class="button">
         <a href="./about">
           <img src="images/menu_about.png" />
