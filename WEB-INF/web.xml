@@ -98,7 +98,7 @@
     <url-pattern>/about</url-pattern>
   </servlet-mapping>
 
-  <!-- About servlet -->
+  <!-- WebsiteChecker servlet -->
   <servlet>
     <servlet-name>WebsiteCheckerServlet</servlet-name>
     <servlet-class>com.tjmothy.WebsiteCheckerServlet</servlet-class>
@@ -110,6 +110,20 @@
   <servlet-mapping>
     <servlet-name>WebsiteCheckerServlet</servlet-name>
     <url-pattern>/websitechecker</url-pattern>
+  </servlet-mapping>
+
+  <!-- Registration servlet -->
+  <servlet>
+    <servlet-name>RegistrationHandler</servlet-name>
+    <servlet-class>com.tjmothy.users.RegistrationHandler</servlet-class>
+    <init-param>
+      <param-name>xslSheet</param-name>
+      <param-value>registration.xsl</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegistrationHandler</servlet-name>
+    <url-pattern>/registration</url-pattern>
   </servlet-mapping>
 
   <error-page>

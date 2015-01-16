@@ -23,7 +23,7 @@
         <input type="text"></input>
         <input type="submit" value="Signin"></input>
         <br />
-        <a href="#">Register</a>
+        <a href="./registration">Register</a>
       </form>
     </div>
     <div id="header-title">
