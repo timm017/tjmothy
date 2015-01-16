@@ -17,6 +17,15 @@
     <!-- <a href="./home"> -->
     <!-- <img src="images/logo.png" /> -->
     <!-- </a> -->
+    <div id="signin" style="margin-top:10px">
+      <form>
+        <input type="text"></input>
+        <input type="text"></input>
+        <input type="submit" value="Signin"></input>
+        <br />
+        <a href="#">Register</a>
+      </form>
+    </div>
     <div id="header-title">
       <a href="./home">
         <span class="title-first">
