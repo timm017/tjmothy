@@ -53,6 +53,7 @@ public class RegistrationHandler extends HttpServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		request.getParameter("");
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
 		PrintWriter out = response.getWriter();
 		StringBuffer sb = new StringBuffer("<outertag>");
