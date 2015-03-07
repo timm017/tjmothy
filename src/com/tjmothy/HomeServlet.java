@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -18,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import com.tjmothy.utils.PathHelper;
+import com.tjmothy.utils.TProperties;
 
 /**
  * Servlet implementation class HomeServlet
@@ -40,9 +42,16 @@ public class HomeServlet extends HttpServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		TProperties props = new TProperties();
+		System.out.println("drivers: " + props.getProperty("drivers"));
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
 		PrintWriter out = response.getWriter();
 		StringBuffer sb = new StringBuffer("<outertag>");
+		HttpSession session = request.getSession();
+		String userName = (String) session.getAttribute("username");
+		if(userName == null)
+			userName = "";
+		sb.append("<username>" + userName + "</username>");
 		sb.append("</outertag>");
 		StringReader xml = new StringReader(sb.toString());
 		
@@ -61,6 +70,7 @@ public class HomeServlet extends HttpServlet
 		{
 			e.printStackTrace();
 		}
+		System.out.println(sb.toString());
 	}
 
 	/**

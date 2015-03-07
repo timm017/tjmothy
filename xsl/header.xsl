@@ -14,18 +14,14 @@
       ga('send', 'pageview');
 
     </script>
-    <!-- <a href="./home"> -->
-    <!-- <img src="images/logo.png" /> -->
-    <!-- </a> -->
-    <div id="signin" style="margin-top:10px">
-      <form>
-        <input type="text"></input>
-        <input type="text"></input>
-        <input type="submit" value="Signin"></input>
-        <br />
-        <a href="./registration">Register</a>
-      </form>
-    </div>
+<!--     <xsl:choose> -->
+<!--       <xsl:when test="string-length(username) &gt; 0"> -->
+<!--         <xsl:call-template name="logout" /> -->
+<!--       </xsl:when> -->
+<!--       <xsl:otherwise> -->
+<!--         <xsl:call-template name="login" /> -->
+<!--       </xsl:otherwise> -->
+<!--     </xsl:choose> -->
     <div id="header-title">
       <a href="./home">
         <span class="title-first">
@@ -74,4 +70,24 @@
       </li>
     </ul>
   </xsl:template>
+
+  <xsl:template name="login">
+    <div id="login" style="margin-top:10px">
+      <form action="./login" method="POST">
+        <input type="text" name="username" />
+        <input type="password" name="password" />
+        <input type="hidden" name="subcmd" value="login" />
+        <input type="submit" value="Login"></input>
+        <br />
+        <a href="./registration">Register</a>
+      </form>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="logout">
+    <div id="logout" style="margin-top:10px">
+      <a href="./logout?subcmd=logout">Logout</a>
+    </div>
+  </xsl:template>
+
 </xsl:stylesheet>

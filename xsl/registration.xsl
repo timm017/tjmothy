@@ -28,37 +28,37 @@
                 <tr>
                   <td>First Name:</td>
                   <td>
-                    <input type="field" name="name" />
+                    <input type="field" name="firstName" />
                   </td>
                 </tr>
                 <tr>
                   <td>Last Name:</td>
                   <td>
-                    <input type="field" name="company" />
+                    <input type="field" name="lastName" />
                   </td>
                 </tr>
                 <tr>
                   <td>Username:</td>
                   <td>
-                    <input type="field" name="phone" />
+                    <input type="field" name="userName" />
                   </td>
                 </tr>
                 <tr>
                   <td>Email:</td>
                   <td>
-                    <input type="field" name="phone" />
+                    <input type="field" name="email" />
                   </td>
                 </tr>
                 <tr>
                   <td>Password:</td>
                   <td>
-                    <input type="field" name="phone" />
+                    <input type="password" name="password" />
                   </td>
                 </tr>
                 <tr>
                   <td>Repeat password:</td>
                   <td>
-                    <input type="field" name="phone" />
+                    <input type="password" name="passwordRepeat" />
                   </td>
                 </tr>
                 <tr>
