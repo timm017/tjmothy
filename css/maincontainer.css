@@ -42,19 +42,35 @@ div.main-inner-stretch-right img {
 }
 
 div#main-inner-stretch p {
-	font-family: sans-serif;
+/*	font-family: sans-serif;
 	font-size: 18px;
 	text-shadow: 0 1px 0 #CCCCCC;
 	color: #FEFEFE;
-	margin-bottom: 50px;
+	margin-bottom: 50px; */
+
+  font-family: Montserrat,sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+  margin-bottom: 20px;
+  color: #f1f1f1;
 }
 
 h3.main-stretch-header {
-	font-family: fantasy;
-	font-size: 28px;
-	text-shadow: 0 1px 0 #000000;
-	color: #FFFFFF;
-	font-weight: 100;
+/*	font-family: fantasy;*/
+/*	font-size: 28px;*/
+/*	text-shadow: 0 1px 0 #000000;*/
+/*	color: #FFFFFF;*/
+/*	font-weight: 100;*/
+	
+	text-transform: uppercase;
+	font-family: Montserrat,sans-serif;
+	font-size: 30px;
+	font-weight: 400;
+	line-height: 30px;
+	margin-bottom: 20px;
+	color: #f1f1f1;
+	
 }
 
 div.bottom-container {
