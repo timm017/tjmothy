@@ -23,6 +23,11 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
 
+  <!-- The default file to use (instead of index.html) -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>/</url-pattern>
