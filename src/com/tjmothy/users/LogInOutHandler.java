@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -19,7 +18,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import com.tjmothy.email.Email;
+import com.tjmothy.bcrypt.BCrypt;
 import com.tjmothy.utils.PathHelper;
 
 @WebServlet("/RegistrationHandler")
@@ -35,8 +34,7 @@ public class LogInOutHandler extends HttpServlet
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
@@ -72,8 +70,7 @@ public class LogInOutHandler extends HttpServlet
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
@@ -86,11 +83,12 @@ public class LogInOutHandler extends HttpServlet
 		PrintWriter out = response.getWriter();
 		StringBuffer sb = new StringBuffer("<outertag>");
 		LogInOutBean liob = new LogInOutBean();
-		
+
 		if (subcmd.equalsIgnoreCase("login"))
 		{
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
+			bcryptTest(password);
 			sb.append("<username>");
 			if (liob.logIn(username, password))
 			{
@@ -120,5 +118,24 @@ public class LogInOutHandler extends HttpServlet
 		{
 			e.printStackTrace();
 		}
+	}
+
+	private void bcryptTest(String password)
+	{
+		// Hash a password for the first time
+		String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+		System.out.println("BEFORE: " + password);
+		System.out.println("AFTER: " + hashed);
+
+		// gensalt's log_rounds parameter determines the complexity
+		// the work factor is 2**log_rounds, and the default is 10
+		//String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
+
+		// Check that an unencrypted password matches one that has
+		// previously been hashed
+		if (BCrypt.checkpw(password + "d", hashed))
+			System.out.println("It matches");
+		else
+			System.out.println("It does not match");
 	}
 }

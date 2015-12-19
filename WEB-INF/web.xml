@@ -159,6 +159,20 @@
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
 
+  <!-- Tools servlet -->
+  <servlet>
+    <servlet-name>ToolsHandler</servlet-name>
+    <servlet-class>com.tjmothy.users.ToolsHandler</servlet-class>
+    <init-param>
+      <param-name>xslSheet</param-name>
+      <param-value>tools.xsl</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ToolsHandler</servlet-name>
+    <url-pattern>/tools</url-pattern>
+  </servlet-mapping>
+
   <error-page>
     <error-code>404</error-code>
     <location>/404.html</location>

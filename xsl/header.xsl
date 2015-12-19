@@ -14,14 +14,14 @@
       ga('send', 'pageview');
 
     </script>
-<!--     <xsl:choose> -->
-<!--       <xsl:when test="string-length(username) &gt; 0"> -->
-<!--         <xsl:call-template name="logout" /> -->
-<!--       </xsl:when> -->
-<!--       <xsl:otherwise> -->
-<!--         <xsl:call-template name="login" /> -->
-<!--       </xsl:otherwise> -->
-<!--     </xsl:choose> -->
+    <xsl:choose>
+      <xsl:when test="string-length(username) &gt; 0">
+        <xsl:call-template name="logout" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="login" />
+      </xsl:otherwise>
+    </xsl:choose>
     <div id="header-title">
       <a href="./home">
         <span class="title-first">
@@ -72,14 +72,14 @@
   </xsl:template>
 
   <xsl:template name="login">
-    <div id="login" style="margin-top:10px">
+    <div id="login-container">
       <form action="./login" method="POST">
-        <input type="text" name="username" />
-        <input type="password" name="password" />
+        <input type="text" placeholder="username" name="username" />
+        <input type="password" placeholder="password" name="password" />
         <input type="hidden" name="subcmd" value="login" />
         <input type="submit" value="Login"></input>
         <br />
-        <a href="./registration">Register</a>
+<!--         <a href="./registration">Register</a> -->
       </form>
     </div>
   </xsl:template>

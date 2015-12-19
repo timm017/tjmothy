@@ -56,3 +56,12 @@ div#header img {
 #content-area {
 	background: none repeat scroll 0 0 #ECECEC;
 }
+
+/* Login  */
+#login-container {
+	margin-top: 10px;
+}
+
+#login-container input {
+	margin: 5px;
+}

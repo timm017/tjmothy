@@ -1,6 +1,7 @@
 package com.tjmothy.email;
 
 import java.util.HashMap;
+import java.util.Properties;
 
 public class Email
 {
@@ -8,9 +9,13 @@ public class Email
 	private String company = "";
 	private String phone = "";
 	private String comments = "";
+	private String host = "localhost";
+	Properties properties = System.getProperties();
 
 	public Email()
 	{
+		properties.setProperty("mail.smtp.host", host);
+		//Session session = Session.getDefaultInstance(properties);
 	}
 
 	public Email(HashMap<String, String> hm)
@@ -66,5 +71,15 @@ public class Email
 	public String getComments()
 	{
 		return this.comments;
+	}
+	
+	public void setHost(String host)
+	{
+		this.host = host;
+	}
+	
+	public String getHost()
+	{
+		return this.host;
 	}
 }
