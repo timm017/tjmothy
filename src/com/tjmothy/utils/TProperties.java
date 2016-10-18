@@ -18,7 +18,7 @@ public class TProperties extends Properties
 	private final static String PROP_FILE_NAME = "tjmdb.properties";
 
 	// Database variables
-	public final static String URL = "jdbc:mysql://localhost:3306/tjmothy";
+	public final static String URL = "jdbc:mysql://localhost:3306/stats";
 	public final static String USER = "root";
 	public final static String PASSWORD = "";
 	public final static String DRIVERS = "com.mysql.jdbc.Driver";

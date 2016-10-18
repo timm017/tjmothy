@@ -9,9 +9,7 @@
 
   <servlet>
     <servlet-name>default</servlet-name>
-    <servlet-class>
-      org.apache.catalina.servlets.DefaultServlet
-    </servlet-class>
+    <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
     <init-param>
       <param-name>debug</param-name>
       <param-value>0</param-value>
@@ -171,6 +169,20 @@
   <servlet-mapping>
     <servlet-name>ToolsHandler</servlet-name>
     <url-pattern>/tools</url-pattern>
+  </servlet-mapping>
+
+  <!-- Stats servlet -->
+  <servlet>
+    <servlet-name>StatsHandler</servlet-name>
+    <servlet-class>com.tjmothy.stats.StatsHandler</servlet-class>
+    <init-param>
+      <param-name>xslSheet</param-name>
+      <param-value>stats.xsl</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StatsHandler</servlet-name>
+    <url-pattern>/stats</url-pattern>
   </servlet-mapping>
 
   <error-page>
