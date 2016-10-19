@@ -40,7 +40,7 @@ public class StatsHandler extends HttpServlet
 	{
 		String subcmd = request.getParameter("subcmd");
 		if(subcmd == null)
-			subcmd = "default";
+			subcmd = "login";
 		
 		StringBuffer sb = new StringBuffer("<outertag>");
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
@@ -50,6 +50,10 @@ public class StatsHandler extends HttpServlet
 		{
 			StatsBean statsBean = new StatsBean();
 			sb.append(statsBean.getPlayersForTeam(1));
+		}
+		else if(subcmd.equals("login"))
+		{
+			
 		}
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append("</outertag>");
@@ -76,18 +80,26 @@ public class StatsHandler extends HttpServlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		StringBuffer sb = new StringBuffer("<outertag>");
+		String subcmd = request.getParameter("subcmd");
+		if(subcmd == null)
+			subcmd = "login";
+		sb.append("<subcmd>" + subcmd + "</subcmd>");
+		if(subcmd.equals("login"))
+		{
+			String phoneNumber = request.getParameter("phonenumber");
+			String password = request.getParameter("password");
+			sb.append("<login>");
+			sb.append("<username>" + phoneNumber + "</username>");
+			sb.append("<password>" + password + "</password>");
+			sb.append("</login>");
+		}
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
 		ServletContext servletContext = getServletContext();
 		String contextPath = servletContext.getRealPath(File.separator);
-		// String subcmd = getRequestParam("subcmd", "");
-		String subcmd = (request.getParameter("subcmd") == null) ? "" : request.getParameter("subcmd");
 
 		PrintWriter out = response.getWriter();
-		StringBuffer sb = new StringBuffer("<outertag>");
-		sb.append("<stats-handler>");
 		sb.append("<message>Get stats from DB.</message>");
-		sb.append("<stats-handler>");
-
 		sb.append("</outertag>");
 		StringReader xml = new StringReader(sb.toString());
 

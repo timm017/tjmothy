@@ -5,6 +5,8 @@
   <xsl:import href="header.xsl" />
   <xsl:import href="footer.xsl" />
 
+  <xsl:variable name="subcmd" select="/outertag/subcmd" />
+
   <xsl:template match="/outertag">
     <html>
       <head>
@@ -14,22 +16,52 @@
         <link rel="stylesheet" href="css/menu.css" type="text/css" />
       </head>
       <body>
-        <div id="header">
-          <div class="wrapper">
-            <xsl:call-template name="header" />
-          </div>
-        </div>
         <div class="wrapper">
           <div id="services">
             <p>
               <strong>STATS!</strong>
             </p>
-            <xsl:apply-templates />
+            <xsl:choose>
+              <xsl:when test="$subcmd = 'login'">
+                <xsl:call-template name="login" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates />
+              </xsl:otherwise>
+            </xsl:choose>
           </div>
         </div>
-        <xsl:call-template name="footer" />
       </body>
     </html>
+  </xsl:template>
+
+  <xsl:template name="login">
+    <form action="./stats" method="POST">
+      <label>
+        <b>Username</b>
+      </label>
+      <br />
+      <input type="text" placeholder="Enter Phone Number" name="phonenumber" />
+      <p />
+      <label>
+        <b>Password</b>
+      </label>
+      <br />
+      <input type="password" placeholder="Enter Password" name="password" />
+      <p />
+      <button type="submit">Login</button>
+      <!-- <div class="container" style="background-color:#f1f1f1"> <button 
+        type="button" class="cancelbtn">Cancel</button> <span class="psw"> Forgot 
+        <a href="#">password?</a> </span> </div> -->
+      <input type="hidden" name="subcmd" value="login" />
+    </form>
+    <p>
+      <xsl:text>u: </xsl:text>
+      <xsl:value-of select="login/username" />
+      <br />
+      <xsl:text>p: </xsl:text>
+      <xsl:value-of select="login/password" />
+    </p>
   </xsl:template>
 
   <xsl:template match="team">
