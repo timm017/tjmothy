@@ -39,6 +39,7 @@ public class StatsHandler extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String subcmd = request.getParameter("subcmd");
+		System.out.println("GET: subcmd: " + subcmd);
 		if(subcmd == null)
 			subcmd = "login";
 		
@@ -53,7 +54,6 @@ public class StatsHandler extends HttpServlet
 		}
 		else if(subcmd.equals("login"))
 		{
-			
 		}
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append("</outertag>");
@@ -80,26 +80,41 @@ public class StatsHandler extends HttpServlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		StringBuffer sb = new StringBuffer("<outertag>");
 		String subcmd = request.getParameter("subcmd");
+		System.out.println("POST: subcmd: " + subcmd);
+		StatsBean statsBean = new StatsBean(); 
+		StringBuilder innerSB = new StringBuilder();
+		User user = null;
 		if(subcmd == null)
 			subcmd = "login";
-		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		if(subcmd.equals("login"))
 		{
 			String phoneNumber = request.getParameter("phonenumber");
 			String password = request.getParameter("password");
-			sb.append("<login>");
-			sb.append("<username>" + phoneNumber + "</username>");
-			sb.append("<password>" + password + "</password>");
-			sb.append("</login>");
+			if(statsBean.login(phoneNumber, password))
+			{
+				user = statsBean.userInfo(phoneNumber);
+				innerSB.append(statsBean.getPlayersForTeam(user.getTeamId()));
+				subcmd = "stats-view";
+			}
+			else
+			{
+				// Show login screen again
+				innerSB.append("<login success='false'>");
+				innerSB.append("<username>" + phoneNumber + "</username>");
+				innerSB.append("<password>" + password + "</password>");
+				innerSB.append("</login>");	
+			}
 		}
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
 		ServletContext servletContext = getServletContext();
 		String contextPath = servletContext.getRealPath(File.separator);
 
 		PrintWriter out = response.getWriter();
-		sb.append("<message>Get stats from DB.</message>");
+		
+		StringBuffer sb = new StringBuffer("<outertag>");
+		sb.append("<subcmd>" + subcmd + "</subcmd>");
+		sb.append(innerSB.toString());
 		sb.append("</outertag>");
 		StringReader xml = new StringReader(sb.toString());
 

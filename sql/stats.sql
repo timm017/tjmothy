@@ -26,7 +26,18 @@ CREATE TABLE players
 	team_id INT(10),
 	PRIMARY KEY(id) );
 	
+CREATE TABLE player_points
+( id int(10) NOT NULL auto_increment, 
+	schedule_id INT(10),
+	player_id INT(10),
+	free_throws INT(2),
+	free_throws_attempted INT(2),
+	two_points INT(2),
+	three_points INT(2),
+	PRIMARY KEY(id) );
+	
 INSERT INTO users (phone_number, first_name, last_name, password, team_id) VALUES ("6104573819", "Timothy", "McKeown", "tmckeown1", 1);
+INSERT INTO users (phone_number, first_name, last_name, password, team_id) VALUES ("6108121272", "Bobb", "Higgins", "bobhiggins", 1);
 	
 INSERT INTO leagues (league_name) VALUE ("Central");
 

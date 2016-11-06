@@ -85,12 +85,63 @@ public class StatsBean
 	 * @param password
 	 * @return
 	 */
-	public String login(String phoneNumber, String password)
+	public User userInfo(String phoneNumber)
 	{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuilder userString = new StringBuilder();
+		User user = null;
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.phone_number.name() + "=?");
+			pstmt.setString(1, phoneNumber);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				int userId = rs.getInt(Column.id.name());
+				String firstName = rs.getString(Column.first_name.name());
+				String lastName = rs.getString(Column.last_name.name());
+				int teamId = rs.getInt(Column.team_id.name());
+				user = new User(userId, firstName, lastName, teamId, phoneNumber);
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.userInfo(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return user;
+	}
+	
+	/**
+	 * 
+	 * @param phoneNumber
+	 * @param password
+	 * @return
+	 */
+	public boolean login(String phoneNumber, String password)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		boolean success = false;
 
 		try
@@ -104,17 +155,6 @@ public class StatsBean
 			while (rs.next())
 			{
 				success = true;
-				int userId = rs.getInt(Column.id.name());
-				String firstName = rs.getString(Column.first_name.name());
-				String lastName = rs.getString(Column.last_name.name());
-				String teamId = rs.getString(Column.team_id.name());
-				userString.append("<user>");
-				userString.append("<id>" + userId + "</id>");
-				userString.append("<phone_number>" + firstName + "</phone_number>");
-				userString.append("<first_name>" + firstName + "</first_name>");
-				userString.append("<last_name>" + lastName + "</last_name>");
-				userString.append("<team_id>" + teamId + "</team_id>");
-				userString.append("</user>");
 			}
 		}
 		catch (Exception e)
@@ -137,9 +177,6 @@ public class StatsBean
 				;
 			}
 		}
-		StringBuilder sb = new StringBuilder("<login success='" + success + "'");
-		sb.append(userString.toString());
-		sb.append("</login>");
-		return sb.toString();
+		return success;
 	}
 }

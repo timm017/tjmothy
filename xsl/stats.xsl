@@ -19,11 +19,18 @@
         <div class="wrapper">
           <div id="services">
             <p>
-              <strong>STATS!</strong>
+              <strong>Basketball stats.</strong>
             </p>
+            <xsl:message>
+              subcmd:
+              <xsl:value-of select="$subcmd" />
+            </xsl:message>
             <xsl:choose>
               <xsl:when test="$subcmd = 'login'">
                 <xsl:call-template name="login" />
+              </xsl:when>
+              <xsl:when test="$subcmd = 'stats-view'">
+                <xsl:call-template name="stats-view" />
               </xsl:when>
               <xsl:otherwise>
                 <xsl:apply-templates />
@@ -55,13 +62,15 @@
         <a href="#">password?</a> </span> </div> -->
       <input type="hidden" name="subcmd" value="login" />
     </form>
-    <p>
-      <xsl:text>u: </xsl:text>
-      <xsl:value-of select="login/username" />
-      <br />
-      <xsl:text>p: </xsl:text>
-      <xsl:value-of select="login/password" />
-    </p>
+    <xsl:if test="login/@success = 'false'">
+      <p style="color:red;">
+        <xsl:text>Incorrect username or password for.</xsl:text>
+      </p>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="stats-view">
+    <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="team">
