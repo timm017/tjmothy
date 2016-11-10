@@ -198,6 +198,13 @@ public class StatsBean
 		try
 		{
 			Class.forName(TProperties.DRIVERS);
+		}
+		catch (Exception e)
+		{
+			System.out.println("1 Error loading drivers: " + e.getMessage());
+		}
+		try
+		{
 			conn = DriverManager.getConnection(TProperties.getConnection());
 			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.phone_number.name() + "=? AND " + Column.password.name() + "=?");
 			pstmt.setString(1, phoneNumber);
@@ -210,7 +217,8 @@ public class StatsBean
 		}
 		catch (Exception e)
 		{
-			System.out.println("StatsBean.login(): " + e.getMessage());
+			System.out.println("2 StatsBean.login(): " + e.getMessage());
+			e.getStackTrace();
 		}
 		finally
 		{
@@ -312,7 +320,7 @@ public class StatsBean
 		}
 		return scheduleId;
 	}
-	
+
 	public String getCurrentPlayerScores(int playerId, int scheduleId)
 	{
 		Connection conn = null;
