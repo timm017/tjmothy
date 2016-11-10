@@ -14,17 +14,20 @@
         <link rel="stylesheet" href="css/footer.css" type="text/css" />
         <link rel="stylesheet" href="css/header.css" type="text/css" />
         <link rel="stylesheet" href="css/menu.css" type="text/css" />
+        <link rel="stylesheet" href="css/stats.css" type="text/css" />
+        <script language="JavaScript" src="js/jquery-1.10.2.min.js"
+          type="text/javascript" />
+        <script language="JavaScript" src="js/stats.js" type="text/javascript" />
       </head>
       <body>
         <div class="wrapper">
           <div id="services">
             <p>
-              <strong>Basketball stats.</strong>
+              <strong>
+                <xsl:value-of select="team/team_name" />
+                Basketball stats.
+              </strong>
             </p>
-            <xsl:message>
-              subcmd:
-              <xsl:value-of select="$subcmd" />
-            </xsl:message>
             <xsl:choose>
               <xsl:when test="$subcmd = 'login'">
                 <xsl:call-template name="login" />
@@ -38,6 +41,9 @@
             </xsl:choose>
           </div>
         </div>
+        <script type="text/javascript">
+          <xsl:text>statsBindings();</xsl:text>
+        </script>
       </body>
     </html>
   </xsl:template>
@@ -57,9 +63,6 @@
       <input type="password" placeholder="Enter Password" name="password" />
       <p />
       <button type="submit">Login</button>
-      <!-- <div class="container" style="background-color:#f1f1f1"> <button 
-        type="button" class="cancelbtn">Cancel</button> <span class="psw"> Forgot 
-        <a href="#">password?</a> </span> </div> -->
       <input type="hidden" name="subcmd" value="login" />
     </form>
     <xsl:if test="login/@success = 'false'">
@@ -74,32 +77,63 @@
   </xsl:template>
 
   <xsl:template match="team">
-    <strong>
-      <xsl:value-of select="@id" />
-      <xsl:text> </xsl:text>
-    </strong>
-    <ul>
+    <ul style="list-style-type: none;">
       <xsl:apply-templates />
     </ul>
   </xsl:template>
 
+  <!-- pos-id-value -->
+  <!-- neg-id-value -->
   <xsl:template match="player">
-    <li>
-      <xsl:apply-templates />
-    </li>
-    <input type="text" name="score" />
-    <input type="button" value="+1" />
-    <input type="button" value="+2" />
-    <input type="button" value="+3" />
+    <div id="player-container">
+      <li>
+        <xsl:apply-templates />
+      </li>
+      <div id="current-points">
+        <xsl:text>1s: </xsl:text>
+        <span id="current-1-{id}">
+          <xsl:value-of select="current_scores/one_points" />
+        </span>
+        <xsl:text>2s: </xsl:text>
+        <span id="current-2-{id}">
+          <xsl:value-of select="current_scores/two_points" />
+        </span>
+        <xsl:text>3s: </xsl:text>
+        <span id="current-3-{id}">
+          <xsl:value-of select="current_scores/three_points" />
+        </span>
+      </div>
+      <div id="point-buttons">
+        <div id="point-buttons-positive">
+          <input data-player-id="{id}" data-score="1" type="button"
+            value="+1" />
+          <input data-player-id="{id}" data-score="2" type="button"
+            value="+2" />
+          <input data-player-id="{id}" data-score="3" type="button"
+            value="+3" />
+        </div>
+        <div id="point-buttons-negative">
+          <input data-player-id="{id}" data-score="1" type="button"
+            value="-1" />
+          <input data-player-id="{id}" data-score="2" type="button"
+            value="-2" />
+          <input data-player-id="{id}" data-score="3" type="button"
+            value="-3" />
+        </div>
+      </div>
+    </div>
   </xsl:template>
 
   <xsl:template match="first_name">
     <xsl:apply-templates />
+    <xsl:text> </xsl:text>
   </xsl:template>
 
   <xsl:template match="last_name">
     <xsl:apply-templates />
   </xsl:template>
+
+  <xsl:template match="id|subcmd|school_name|team_name|team_id|current_scores|league_id" />
 
   <xsl:template match="message">
     <p>

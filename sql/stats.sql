@@ -36,6 +36,21 @@ CREATE TABLE player_points
 	three_points INT(2),
 	PRIMARY KEY(id) );
 	
+CREATE TABLE player_points
+(  schedule_id INT(10),
+	player_id INT(10),
+	one_points INT(2) NOT NULL DEFAULT 0,
+	one_points_attempted INT(2) NOT NULL DEFAULT 0,
+	two_points INT(2) NOT NULL DEFAULT 0,
+	three_points INT(2) NOT NULL DEFAULT 0,
+	rebounds INT(2) NOT NULL DEFAULT 0,
+	PRIMARY KEY(schedule_id, player_id));
+
+REPLACE INTO player_points (schedule_id, player_id, one_points) VALUES (0, 1, one_points + 1);
+REPLACE INTO player_points SET one_points=one_points + 1 WHERE schedule_id=0 AND player_id=1;
+
+INSERT INTO player_points (schedule_id, player_id) VALUES (0, 1) ON DUPLICATE KEY UPDATE one_points = one_points + 1;
+	
 INSERT INTO users (phone_number, first_name, last_name, password, team_id) VALUES ("6104573819", "Timothy", "McKeown", "tmckeown1", 1);
 INSERT INTO users (phone_number, first_name, last_name, password, team_id) VALUES ("6108121272", "Bobb", "Higgins", "bobhiggins", 1);
 	
