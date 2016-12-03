@@ -33,7 +33,7 @@ public class StatsBean
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuilder sb = new StringBuilder("<team id='" + teamId + "'>");
+		StringBuilder sb = new StringBuilder("<team_players id='" + teamId + "'>");
 
 		try
 		{
@@ -51,6 +51,7 @@ public class StatsBean
 				sb.append("<id>" + playerId + "</id>");
 				sb.append("<first_name>" + firstName + "</first_name>");
 				sb.append("<last_name>" + lastName + "</last_name>");
+				System.out.println("scheduleID: " + getScheduleIdByDate(getTodayDate()));
 				sb.append(getCurrentPlayerScores(playerId, getScheduleIdByDate(getTodayDate())));
 				sb.append("</player>");
 			}
@@ -75,7 +76,7 @@ public class StatsBean
 				;
 			}
 		}
-		sb.append("</team>");
+		sb.append("</team_players>");
 		return sb.toString();
 	}
 

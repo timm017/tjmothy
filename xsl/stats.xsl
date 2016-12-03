@@ -24,7 +24,7 @@
           <div id="services">
             <p>
               <strong>
-                <xsl:value-of select="team/team_name" />
+                <xsl:value-of select="team/school_name" />
                 Basketball stats.
               </strong>
             </p>
@@ -76,10 +76,49 @@
     <xsl:apply-templates />
   </xsl:template>
 
+  <xsl:template match="team_players">
+    <xsl:apply-templates />
+  </xsl:template>
+
   <xsl:template match="team">
-    <ul style="list-style-type: none;">
-      <xsl:apply-templates />
-    </ul>
+    <table id="player-container">
+      <th>
+        <xsl:value-of select="school_name" />
+      </th>
+      <tr>
+        <td>
+          1st:
+          <input data-player-id="{id}" data-score="1" type="text"
+            placeholder="0" />
+        </td>
+        <td>
+          2nd:
+          <input data-player-id="{id}" data-score="1" type="text"
+            placeholder="0" />
+        </td>
+        <td>
+          3rd:
+          <input data-player-id="{id}" data-score="1" type="text"
+            placeholder="0" />
+        </td>
+        <td>
+          4th:
+          <input data-player-id="{id}" data-score="1" type="text"
+            placeholder="0" />
+        </td>
+        <td>
+          OT:
+          <input data-player-id="{id}" data-score="1" type="text"
+            placeholder="0" />
+        </td>
+        <td>
+          Total:
+          <input data-player-id="{id}" data-score="1" type="text"
+            placeholder="0" />
+        </td>
+        <xsl:apply-templates />
+      </tr>
+    </table>
   </xsl:template>
 
   <!-- pos-id-value -->
@@ -133,7 +172,8 @@
     <xsl:apply-templates />
   </xsl:template>
 
-  <xsl:template match="id|subcmd|school_name|team_name|team_id|current_scores|league_id" />
+  <xsl:template
+    match="id|subcmd|school_name|team_name|team_id|current_scores|league_id" />
 
   <xsl:template match="message">
     <p>

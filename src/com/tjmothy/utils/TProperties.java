@@ -140,7 +140,8 @@ public class TProperties extends Properties
 	 */
 	public static String getConnection()
 	{
-		return getProperty(PropertyName.url) + "?" + "user=" + getProperty(PropertyName.user) + "&password=" + getProperty(PropertyName.password);
+		return "jdbc:mysql://localhost:3306/stats?user=root&password";
+//		return getProperty(PropertyName.url) + "?" + "user=" + getProperty(PropertyName.user) + "&password=" + getProperty(PropertyName.password);
 	}
 
 }
