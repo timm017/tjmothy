@@ -42,7 +42,7 @@ public class RegistrationBean
 		try
 		{
 			Class.forName(TProperties.DRIVERS);
-			conn = DriverManager.getConnection(TProperties.URL + "?" + "user=" + TProperties.USER + "&password=" + TProperties.PASSWORD);
+			conn = DriverManager.getConnection(TProperties.getConnection());
 			pstmt = conn.prepareStatement("INSERT INTO users (" + Column.first_name.name() + ", " + Column.last_name.name() + ", " + Column.user_name.name() + ", " + Column.email.name() + ", " + Column.password.name() + ") VALUES (?, ?, ?, ?, ?)");
 			pstmt.setString(1, this.user.getFirstName());
 			pstmt.setString(2, this.user.getLastName());

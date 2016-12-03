@@ -1,0 +1,40 @@
+
+
+#point-buttons-positive {
+	
+}
+
+#point-buttons-negative {
+	
+}
+
+#current-points span {
+	margin-right: 10px;
+}
+
+#player-container {
+	background-color: #EEEEEE;
+	margin: 10px;
+	padding: 5px;
+}
+
+#point-buttons-positive input {
+	margin: 10px;
+	height: 50px;
+	width: 100px;
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+	color: #fff;
+	font-size: 30px;
+}
+
+#point-buttons-negative input {
+	margin: 10px;
+	height: 50px;
+	width: 100px;
+	color: #fff;
+	background-color: #d9534f;
+	border-color: #d43f3a;
+	font-size: 30px;
+}

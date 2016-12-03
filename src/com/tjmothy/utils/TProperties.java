@@ -16,11 +16,7 @@ public class TProperties extends Properties
 	private static Properties instance = null;
 
 	private final static String PROP_FILE_NAME = "tjmdb.properties";
-
-	// Database variables
-	public final static String URL = "jdbc:mysql://localhost:3306/stats";
-	public final static String USER = "root";
-	public final static String PASSWORD = "";
+	
 	public final static String DRIVERS = "com.mysql.jdbc.Driver";
 
 	public enum PropertyName
@@ -45,7 +41,7 @@ public class TProperties extends Properties
 		{
 			// inputStream = new FileInputStream("/" + PROP_FILE_NAME);
 			// inputStream = getClass().getClassLoader().getResourceAsStream(PROP_FILE_NAME);
-			inputStream = getClass().getResourceAsStream("tjmdb.properties");
+			inputStream = getClass().getResourceAsStream(PROP_FILE_NAME);
 			//System.out.println("IS: " + getStringFromInputStream(inputStream));
 			if (inputStream != null)
 			{
@@ -89,6 +85,13 @@ public class TProperties extends Properties
 		{
 			System.err.println("inputStream == null");
 		}
+	}
+	
+	public static String getProperty(PropertyName propertyName)
+	{
+		String propertyValue = "";
+		propertyValue = getInstance().getProperty(propertyName.name());
+		return propertyValue;
 	}
 
 	// convert InputStream to String
@@ -137,7 +140,8 @@ public class TProperties extends Properties
 	 */
 	public static String getConnection()
 	{
-		return URL + "?" + "user=" + USER + "&password=" + PASSWORD;
+		return "jdbc:mysql://localhost:3306/stats?user=root&password";
+//		return getProperty(PropertyName.url) + "?" + "user=" + getProperty(PropertyName.user) + "&password=" + getProperty(PropertyName.password);
 	}
 
 }
