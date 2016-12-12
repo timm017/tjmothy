@@ -1,85 +1,44 @@
 package com.tjmothy.email;
 
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.ArrayList;
 
 public class Email
 {
-	private String name = "";
-	private String company = "";
-	private String phone = "";
-	private String comments = "";
-	private String host = "localhost";
-	Properties properties = System.getProperties();
+	private String subject = "Penncrest stats";
+	
+	private String body = "<body><p>Tim McKeown</p><p>7 points</p><p>Bob Higgins</p><p>100 points</p></body>";
+	
+	private ArrayList<String> recipients = new ArrayList<>(); 
 
 	public Email()
 	{
-		properties.setProperty("mail.smtp.host", host);
-		//Session session = Session.getDefaultInstance(properties);
-	}
-
-	public Email(HashMap<String, String> hm)
-	{
-		init(hm);
-	}
-
-	private void init(HashMap<String, String> hm)
-	{
-		setName(hm.get("name"));
-		setCompany(hm.get("name"));
-		setPhone(hm.get("name"));
-		setComments(hm.get("name"));
+		recipients.add("mckeown.timothy@gmail.com");
+		recipients.add("tmckeown@unboundmedicine.com");
 	}
 
 	// Setter methods = comments
-	public void setName(String name)
+	public void setSubject(String subject)
 	{
-		this.name = name;
+		this.subject = subject;
 	}
 
-	public void setCompany(String company)
+	public String getSubject()
 	{
-		this.company = company;
-	}
-
-	public void setPhone(String phone)
-	{
-		this.phone = phone;
-	}
-
-	public void setComments(String comments)
-	{
-		this.comments = comments;
-	}
-
-	// Getter methods
-	public String getName()
-	{
-		return this.name;
-	}
-
-	public String getCompany()
-	{
-		return this.company;
-	}
-
-	public String getPhone()
-	{
-		return this.phone;
-	}
-
-	public String getComments()
-	{
-		return this.comments;
+		return this.subject;
 	}
 	
-	public void setHost(String host)
+	public void setBody(String body)
 	{
-		this.host = host;
+		this.body = body;
 	}
 	
-	public String getHost()
+	public String getBody()
 	{
-		return this.host;
+		return this.body;
+	}
+	
+	public ArrayList<String> getRecipients()
+	{
+		return this.recipients;
 	}
 }
