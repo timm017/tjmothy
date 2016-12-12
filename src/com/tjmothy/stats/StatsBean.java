@@ -15,12 +15,12 @@ public class StatsBean
 {
 	public enum Table
 	{
-		leagues, teams, players, users, player_points, schedule
+		leagues, teams, players, users, player_points, schedule, team_stats
 	}
-
+	
 	public enum Column
 	{
-		id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds;
+		submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls;
 	}
 
 	public StatsBean()
@@ -134,6 +134,65 @@ public class StatsBean
 	}
 
 	/**
+	 * Gets the info for a specific game.
+	 * @param teamId
+	 * @param date
+	 * @return
+	 */
+	public Game gameInfo(int teamId, String date)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Game game = null;
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.game_day.name() + "=? AND " + Column.home_id.name() + "=?");
+			pstmt.setString(1, date);
+			pstmt.setInt(2, teamId);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				int scheduleId = rs.getInt(Column.id.name());
+				int homeId = rs.getInt(Column.home_id.name());
+				String homeSchool= rs.getString(Column.home_team.name());
+				int roadId = rs.getInt(Column.road_id.name());
+				String roadSchool= rs.getString(Column.road_team.name());
+				game = new Game(scheduleId, homeId, roadId, homeSchool, roadSchool, date);
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.userInfo(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		// If game is NULL then we couldn't find a game
+		if(game == null)
+		{
+			game = new Game();
+			game.setNoGameToday(true);
+		}
+		return game;
+	}
+
+	/**
 	 * 
 	 * @param teamId
 	 * @return
@@ -240,7 +299,7 @@ public class StatsBean
 		return success;
 	}
 
-	public void updatePlayerScore(int playerId, int score, String change)
+	public void updatePlayerScore(int playerId, String score, String change)
 	{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -251,7 +310,7 @@ public class StatsBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(TProperties.getConnection());
-			query = "INSERT INTO " + Table.player_points.name() + " (" + Column.schedule_id.name() + ", " + Column.player_id.name() + ", " + getColumn(score) + ") VALUES (?, ?, 1) ON DUPLICATE KEY UPDATE " + getColumn(score) + "=" + getColumn(score) + " " + getOperator(change) + " 1";
+			query = "INSERT INTO " + Table.player_points.name() + " (" + Column.schedule_id.name() + ", " + Column.player_id.name() + ", " + getPlayerColumn(score) + ") VALUES (?, ?, 1) ON DUPLICATE KEY UPDATE " + getPlayerColumn(score) + "=" + getPlayerColumn(score) + " " + getOperator(change) + " 1";
 			// query = "REPLACE INTO " + Table.player_points.name() + " SET " + getColumn(score) + "=" + getColumn(score) + " " + getOperator(change) + " 1" + " WHERE " + Column.schedule_id.name() + "=?" + " AND " + Column.player_id.name() + "=?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, scheduleId);
@@ -261,6 +320,112 @@ public class StatsBean
 		catch (Exception e)
 		{
 			System.out.println("StatsBean.updatePlayerScore(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	public void updateHighlights(String highlights, int teamId, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query;
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			query = "INSERT INTO " + Table.team_stats.name() + " (" + Column.schedule_id.name() + ", " + Column.team_id.name() + ", " + Column.highlights.name() + ") VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE " + Column.highlights.name() + "=?";
+			// query = "REPLACE INTO " + Table.player_points.name() + " SET " + getColumn(score) + "=" + getColumn(score) + " " + getOperator(change) + " 1" + " WHERE " + Column.schedule_id.name() + "=?" + " AND " + Column.player_id.name() + "=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, scheduleId);
+			pstmt.setInt(2, teamId);
+			pstmt.setString(3, highlights);
+			pstmt.setString(4, highlights);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updateHighlights(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	/**
+	 * 
+mysql> describe team_stats;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| schedule_id    | int(10)      | NO   | PRI | 0       |       |
+| team_id        | int(10)      | NO   | PRI | 0       |       |
+| first_quarter  | int(2)       | NO   |     | 0       |       |
+| second_quarter | int(2)       | NO   |     | 0       |       |
+| third_quarter  | int(2)       | NO   |     | 0       |       |
+| fourth_quarter | int(2)       | NO   |     | 0       |       |
+| overtime       | int(2)       | NO   |     | 0       |       |
+| highlights     | varchar(255) | NO   |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+	 * @param quarter
+	 * @param score
+	 * @param teamId
+	 * @param scheduleId
+	 */
+	public void updateBoxScore(String quarter, int score, int teamId, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query;
+		System.out.println("q: " + quarter);
+		System.out.println("sco: " + score);
+		System.out.println("t: " + teamId);
+		System.out.println("sch: " + scheduleId);
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			query = "INSERT INTO " + Table.team_stats.name() + " (" + Column.schedule_id.name() + ", " + Column.team_id.name() + ", " + getTeamColumn(quarter) + ") VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE " + getTeamColumn(quarter) + "=?";
+			// query = "REPLACE INTO " + Table.player_points.name() + " SET " + getColumn(score) + "=" + getColumn(score) + " " + getOperator(change) + " 1" + " WHERE " + Column.schedule_id.name() + "=?" + " AND " + Column.player_id.name() + "=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, scheduleId);
+			pstmt.setInt(2, teamId);
+			pstmt.setInt(3, score);
+			pstmt.setInt(4, score);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updateBoxScore(): " + e.getMessage());
 		}
 		finally
 		{
@@ -340,12 +505,16 @@ public class StatsBean
 			while (rs.next())
 			{
 				int ones = rs.getInt(Column.one_points.name());
+				int onesAttempted = rs.getInt(Column.one_points_attempted.name());
 				int twos = rs.getInt(Column.two_points.name());
 				int threes = rs.getInt(Column.three_points.name());
+				int fouls = rs.getInt(Column.fouls.name());
 				int rebounds = rs.getInt(Column.rebounds.name());
 				sb.append("<one_points>" + ones + "</one_points>");
+				sb.append("<one_points_attempted>" + onesAttempted + "</one_points_attempted>");
 				sb.append("<two_points>" + twos + "</two_points>");
 				sb.append("<three_points>" + threes + "</three_points>");
+				sb.append("<fouls>" + fouls + "</fouls>");
 				sb.append("<rebounds>" + rebounds + "</rebounds>");
 			}
 		}
@@ -372,6 +541,193 @@ public class StatsBean
 		sb.append("</current_scores>");
 		return sb.toString();
 	}
+	
+	public String getCurrentTeamScores(int teamId, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder("<current_team_scores>");
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.team_stats.name() + " WHERE " + Column.team_id.name() + "=? AND " + Column.schedule_id.name() + "=?");
+			pstmt.setInt(1, teamId);
+			pstmt.setInt(2, scheduleId);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				int firstQuarter = rs.getInt(Column.first_quarter.name());
+				int secondQuarter = rs.getInt(Column.second_quarter.name());
+				int thirdQuarter = rs.getInt(Column.third_quarter.name());
+				int fourthQuarter = rs.getInt(Column.fourth_quarter.name());
+				int overtime = rs.getInt(Column.overtime.name());
+				String highlights = rs.getString(Column.highlights.name());
+				sb.append("<first_quarter>" + firstQuarter + "</first_quarter>");
+				sb.append("<second_quarter>" + secondQuarter + "</second_quarter>");
+				sb.append("<third_quarter>" + thirdQuarter + "</third_quarter>");
+				sb.append("<fourth_quarter>" + fourthQuarter + "</fourth_quarter>");
+				sb.append("<overtime>" + overtime + "</overtime>");
+				sb.append("<highlights>" + highlights + "</highlights>");
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.getCurrentTeamScores(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		sb.append("</current_team_scores>");
+		return sb.toString();
+	}
+	
+	public void updateTeamScore(int teamId, String score, String quarter)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query;
+		int scheduleId = getScheduleIdByDate(getTodayDate());
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			query = "UPDATE " + Table.team_stats.name() + " SET(" + Column.schedule_id.name() + ", " + Column.player_id.name();
+			// query = "REPLACE INTO " + Table.player_points.name() + " SET " + getColumn(score) + "=" + getColumn(score) + " " + getOperator(change) + " 1" + " WHERE " + Column.schedule_id.name() + "=?" + " AND " + Column.player_id.name() + "=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, scheduleId);
+			pstmt.setInt(2, teamId);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updatePlayerScore(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param teamId
+	 * @param scheduleId
+	 */
+	public void submitTeamStats(int teamId, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query;
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			query = "UPDATE " + Table.team_stats.name() + " SET " + Column.submitted.name() + "=1 WHERE " + Column.team_id.name() + "=? AND + " + Column.schedule_id.name() + "=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, teamId);
+			pstmt.setInt(2, scheduleId);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updatePlayerScore(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param teamId
+	 * @param scheduleId
+	 * @return
+	 */
+	public boolean isGameSubmitted(int teamId, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		boolean submitted = false;
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.team_stats.name() + " WHERE " + Column.team_id.name() + "=? AND " + Column.schedule_id.name() + "=? AND " + Column.submitted.name() + "=1");
+			pstmt.setInt(1, teamId);
+			pstmt.setInt(2, scheduleId);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				submitted = true;
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.getCurrentTeamScores(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return submitted;
+	}
 
 	private String getOperator(String change)
 	{
@@ -386,22 +742,47 @@ public class StatsBean
 		}
 	}
 
-	private String getColumn(int score)
+	private String getPlayerColumn(String score)
 	{
 		switch (score)
 		{
-		case 1:
+		case "1":
 			return Column.one_points.name();
-		case 2:
+		case "1a":
+			return Column.one_points_attempted.name();
+		case "2":
 			return Column.two_points.name();
-		case 3:
+		case "3":
 			return Column.three_points.name();
+		case "f":
+			return Column.fouls.name();
+		case "r":
+			return Column.rebounds.name();
 		default:
 			return Column.one_points.name();
 		}
 	}
+	
+	private String getTeamColumn(String quarter)
+	{
+		switch (quarter)
+		{
+		case "q1":
+			return Column.first_quarter.name();
+		case "q2":
+			return Column.second_quarter.name();
+		case "q3":
+			return Column.third_quarter.name();
+		case "q4":
+			return Column.fourth_quarter.name();
+		case "ot":
+			return Column.overtime.name();
+		default:
+			return Column.first_quarter.name();
+		}
+	}
 
-	private String getTodayDate()
+	public static String getTodayDate()
 	{
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		Calendar cal = Calendar.getInstance();

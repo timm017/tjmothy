@@ -27,26 +27,16 @@ CREATE TABLE players
 	PRIMARY KEY(id) );
 	
 CREATE TABLE player_points
-( id int(10) NOT NULL auto_increment, 
-	schedule_id INT(10),
-	player_id INT(10),
-	one_points INT(2),
-	one_points_attempted INT(2),
-	two_points INT(2),
-	three_points INT(2),
-	fouls INT(2),
-	PRIMARY KEY(id) );
-	
-CREATE TABLE player_points
 (  schedule_id INT(10),
 	player_id INT(10),
 	one_points INT(2) NOT NULL DEFAULT 0,
 	one_points_attempted INT(2) NOT NULL DEFAULT 0,
 	two_points INT(2) NOT NULL DEFAULT 0,
 	three_points INT(2) NOT NULL DEFAULT 0,
+	fouls INT(2) NOT NULL DEFAULT 0,
 	rebounds INT(2) NOT NULL DEFAULT 0,
 	PRIMARY KEY(schedule_id, player_id));
-	
+
 CREATE TABLE team_stats
 (  schedule_id INT(10),
 	team_id INT(10),
@@ -55,8 +45,13 @@ CREATE TABLE team_stats
 	third_quarter INT(2) NOT NULL DEFAULT 0,
 	fourth_quarter INT(2) NOT NULL DEFAULT 0,
 	overtime INT(2) NOT NULL DEFAULT 0,
-	highlights VARCHAR(255) NOT NULL,
+	highlights VARCHAR(255) NOT NULL DEFAULT '',
+	submitted BOOLEAN DEFAULT 0,
 	PRIMARY KEY(schedule_id, team_id));
+
+ALTER TABLE ALLITEMS CHANGE itemid itemid INT(10)AUTO_INCREMENT PRIMARY KEY;
+
+INSERT INTO schedule (id,game_day, home_team, home_id, home_score, road_team, road_id, road_score) VALUE (146, '2016-12-11', 'Penncrest', 1, 0, 'Marple Newtown', 7, 0);	
 
 REPLACE INTO player_points (schedule_id, player_id, one_points) VALUES (0, 1, one_points + 1);
 REPLACE INTO player_points SET one_points=one_points + 1 WHERE schedule_id=0 AND player_id=1;
