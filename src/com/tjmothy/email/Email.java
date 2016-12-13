@@ -13,7 +13,8 @@ public class Email
 	public Email()
 	{
 		recipients.add("mckeown.timothy@gmail.com");
-		recipients.add("tmckeown@unboundmedicine.com");
+//		recipients.add("rwhiggins2@gmail.com");
+//		recipients.add("kevindank@gmail.com");
 	}
 
 	// Setter methods = comments

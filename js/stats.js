@@ -23,8 +23,11 @@
 	 var ones = $('span#current-1-' + playerId).text();
 	 var twos = $('span#current-2-' + playerId).text() * 2;
 	 var threes = $('span#current-3-' + playerId).text() * 3;
-	 var total = parseInt(ones) + parseInt(twos) + parseInt(threes);
-	 console.log(playerId + " updating " + total);
+	 var total = (isNaN(parseInt(ones)) ? 0 : parseInt(ones)) + parseInt(twos) + parseInt(threes);
+	 console.log(playerId + "ones " + ones);
+	 console.log(playerId + "twos " + twos);
+	 console.log(playerId + "threes " + threes);
+	 console.log(playerId + "total " + total);
 	 $('span#player-total-' + playerId).html(" (Total: " + total + ")");
  }
  
@@ -45,8 +48,8 @@
   */
 function getHighlights(that) {
 	var highlights = $("textarea#highlights-text").val();
+	var teamId = $(that).data("team-id");
 	var teamTable = $("table#team-container");
-	var teamId = $(teamTable).data("team-id");
 	var scheduleId = $(teamTable).data("schedule-id");
 	console.log("highlights: " + highlights);
 	console.log("tid: " + teamId);
@@ -86,10 +89,10 @@ function decreasePlayerScore(that) {
  */
 function getBoxScoreDatat(that) {
 	var quarter = $(that).data("quarter");
+	var teamId = $(that).data("team-id");
 	var teamTable = $("table#team-container");
-	var teamId = $(teamTable).data("team-id");
 	var scheduleId = $(teamTable).data("schedule-id");
-	var score = $("input#" + quarter).val();
+	var score = $("input#" + quarter + '-' + teamId).val();
 	console.log("quarter: " + quarter);
 	console.log("team id: " + teamId);
 	console.log("schedule id: " + scheduleId);

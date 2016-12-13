@@ -20,7 +20,7 @@ public class StatsBean
 	
 	public enum Column
 	{
-		submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls;
+		home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls;
 	}
 
 	public StatsBean()
@@ -149,9 +149,11 @@ public class StatsBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(TProperties.getConnection());
-			pstmt = conn.prepareStatement("SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.game_day.name() + "=? AND " + Column.home_id.name() + "=?");
+			String query = "SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.game_day.name() + "=? AND (" + Column.home_id.name() + "=? OR " + Column.road_id.name() + "=?)";
+			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, date);
 			pstmt.setInt(2, teamId);
+			pstmt.setInt(3, teamId);
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
@@ -216,7 +218,7 @@ public class StatsBean
 				String schoolName = rs.getString(Column.school_name.name());
 				String teamName = rs.getString(Column.team_name.name());
 				int leagueId = rs.getInt(Column.league_id.name());
-				team = new Team(teamId, schoolName, teamName, leagueId);
+				team = new Team(teamId, schoolName, teamName, leagueId, isHomeTeam(teamId, getTodayDate()));
 			}
 		}
 		catch (Exception e)
@@ -637,6 +639,53 @@ mysql> describe team_stats;
 		}
 	}
 	
+	public int getTeamTotalScore(int teamId, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int total = 0;
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.team_stats.name() + " WHERE " + Column.team_id.name() + "=? AND " + Column.schedule_id.name() + "=?");
+			pstmt.setInt(1, teamId);
+			pstmt.setInt(2, scheduleId);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				total += rs.getInt(Column.first_quarter.name());
+				total += rs.getInt(Column.second_quarter.name());
+				total += rs.getInt(Column.third_quarter.name());
+				total += rs.getInt(Column.fourth_quarter.name());
+				total += rs.getInt(Column.overtime.name());
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.getCurrentTeamScores(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return total;
+	}
+	
 	/**
 	 * 
 	 * @param teamId
@@ -727,6 +776,101 @@ mysql> describe team_stats;
 			}
 		}
 		return submitted;
+	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
+	private boolean isHomeTeam(int teamId, String gameDay)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		boolean isHomeTeam = false;
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.game_day.name() + "=? AND " + Column.home_id.name() + "=?");
+			pstmt.setString(1, gameDay);
+			pstmt.setInt(2, teamId);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				isHomeTeam = true;
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.isHomeTeam(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return isHomeTeam;
+	}
+	
+	/**
+	 * 
+	 * @param total
+	 * @param scheduleId
+	 * @param team
+	 */
+	public void submitTeamTotal(int total, int scheduleId, Team team)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query;
+			
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(TProperties.getConnection());
+			query = "UPDATE " + Table.schedule.name() + " SET " + (team.getIsHomeTeam() ? Column.home_score.name() : Column.road_score.name()) + "=? WHERE " + Column.id.name() + "=?";
+			System.out.println("query: " + query);
+			pstmt = conn.prepareStatement(query);
+			System.out.println(total + " " + scheduleId);
+			pstmt.setInt(1, total);
+			pstmt.setInt(2, scheduleId);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.submitTeamTotal(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
 	}
 
 	private String getOperator(String change)

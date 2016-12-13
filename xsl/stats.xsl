@@ -18,7 +18,7 @@
             <p>
               <h2>
                 <strong>
-                  <xsl:value-of select="team/school_name" />
+                  <xsl:value-of select="my_team/team/school_name" />
                   Basketball stats.
                 </strong>
               </h2>
@@ -35,6 +35,7 @@
               </xsl:when>
               <xsl:when test="$subcmd = 'stats-view'">
                 <xsl:call-template name="stats-view" />
+                <xsl:call-template name="finalSubmit" />
               </xsl:when>
               <xsl:when test="$subcmd = 'stats-recap'">
                 <xsl:call-template name="stats-view" />
@@ -84,9 +85,17 @@
     <xsl:apply-templates />
   </xsl:template>
 
-  <xsl:template match="team">
-    <table id="team-container" data-team-id="{id}" data-schedule-id="{//game/schedule_id}">
-      <caption>Box Scores</caption>
+  <xsl:template match="enemy_team_players">
+    <xsl:apply-templates />
+  </xsl:template>
+
+  <xsl:template match="enemy_team">
+    <xsl:variable name="teamId" select="team/id" />
+    <table id="team-container" data-schedule-id="{//game/schedule_id}">
+      <caption>
+        <xsl:value-of select="team/school_name" />
+        <xsl:text> Box Scores</xsl:text>
+      </caption>
       <th>
         <xsl:text>Quarter</xsl:text>
       </th>
@@ -101,10 +110,10 @@
           <xsl:text>1st:</xsl:text>
         </td>
         <td>
-          <input id="q1" type="text" value="{//current_team_scores/first_quarter}" />
+          <input id="q1-{$teamId}" type="text" value="{current_team_scores/first_quarter}" />
         </td>
         <td>
-          <input class="button-box-score" data-quarter="q1" type="button" value="Update" />
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="q1" type="button" value="Update" />
         </td>
       </tr>
       <tr>
@@ -112,10 +121,10 @@
           <xsl:text>2nd:</xsl:text>
         </td>
         <td>
-          <input id="q2" type="text" value="{//current_team_scores/second_quarter}" />
+          <input id="q2-{$teamId}" type="text" value="{current_team_scores/second_quarter}" />
         </td>
         <td>
-          <input class="button-box-score" data-quarter="q2" type="button" value="Update" />
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="q2" type="button" value="Update" />
         </td>
       </tr>
       <tr>
@@ -123,10 +132,10 @@
           <xsl:text>3rd:</xsl:text>
         </td>
         <td>
-          <input id="q3" type="text" value="{//current_team_scores/third_quarter}" />
+          <input id="q3-{$teamId}" type="text" value="{current_team_scores/third_quarter}" />
         </td>
         <td>
-          <input class="button-box-score" data-quarter="q3" type="button" value="Update" />
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="q3" type="button" value="Update" />
         </td>
       </tr>
       <tr>
@@ -134,10 +143,10 @@
           <xsl:text>4th:</xsl:text>
         </td>
         <td>
-          <input id="q4" type="text" value="{//current_team_scores/fourth_quarter}" />
+          <input id="q4-{$teamId}" type="text" value="{current_team_scores/fourth_quarter}" />
         </td>
         <td>
-          <input class="button-box-score" data-quarter="q4" type="button" value="Update" />
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="q4" type="button" value="Update" />
         </td>
       </tr>
       <tr>
@@ -145,10 +154,10 @@
           <xsl:text>OT:</xsl:text>
         </td>
         <td>
-          <input id="ot" type="text" value="{//current_team_scores/overtime}" />
+          <input id="ot-{$teamId}" type="text" value="{current_team_scores/overtime}" />
         </td>
         <td>
-          <input class="button-box-score" data-quarter="ot" type="button" value="Update" />
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="ot" type="button" value="Update" />
         </td>
       </tr>
       <tr>
@@ -157,26 +166,118 @@
         </td>
         <td>
           <input readonly="true" id="home-total" type="text"
-            value="{//current_team_scores/first_quarter + //current_team_scores/second_quarter + //current_team_scores/third_quarter + //current_team_scores/fourth_quarter + //current_team_scores/overtime}" />
+            value="{current_team_scores/first_quarter + current_team_scores/second_quarter + current_team_scores/third_quarter + current_team_scores/fourth_quarter + current_team_scores/overtime}" />
         </td>
         <td />
       </tr>
     </table>
+  </xsl:template>
+
+  <xsl:template match="my_team">
+    <xsl:variable name="teamId" select="team/id" />
+    <table id="team-container" data-schedule-id="{//game/schedule_id}">
+      <caption>
+        <xsl:value-of select="team/school_name" />
+        <xsl:text> Box Scores</xsl:text>
+      </caption>
+      <th>
+        <xsl:text>Quarter</xsl:text>
+      </th>
+      <th>
+        <xsl:text>Score</xsl:text>
+      </th>
+      <th>
+        <xsl:text>Update</xsl:text>
+      </th>
+      <tr>
+        <td>
+          <xsl:text>1st:</xsl:text>
+        </td>
+        <td>
+          <input id="q1-{$teamId}" type="text" value="{current_team_scores/first_quarter}" />
+        </td>
+        <td>
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="q1" type="button" value="Update" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <xsl:text>2nd:</xsl:text>
+        </td>
+        <td>
+          <input id="q2-{$teamId}" type="text" value="{current_team_scores/second_quarter}" />
+        </td>
+        <td>
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="q2" type="button" value="Update" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <xsl:text>3rd:</xsl:text>
+        </td>
+        <td>
+          <input id="q3-{$teamId}" type="text" value="{current_team_scores/third_quarter}" />
+        </td>
+        <td>
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="q3" type="button" value="Update" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <xsl:text>4th:</xsl:text>
+        </td>
+        <td>
+          <input id="q4-{$teamId}" type="text" value="{current_team_scores/fourth_quarter}" />
+        </td>
+        <td>
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="q4" type="button" value="Update" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <xsl:text>OT:</xsl:text>
+        </td>
+        <td>
+          <input id="ot-{$teamId}" type="text" value="{current_team_scores/overtime}" />
+        </td>
+        <td>
+          <input class="button-box-score" data-team-id="{$teamId}" data-quarter="ot" type="button" value="Update" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <xsl:text>TOTAL:</xsl:text>
+        </td>
+        <td>
+          <input readonly="true" id="home-total" type="text"
+            value="{current_team_scores/first_quarter + current_team_scores/second_quarter + current_team_scores/third_quarter + current_team_scores/fourth_quarter + current_team_scores/overtime}" />
+        </td>
+        <td />
+      </tr>
+    </table>
+  </xsl:template>
+
+  <xsl:template name="finalSubmit">
+    <br />
+    <strong>
+      <xsl:value-of select="//my_team/team/school_name" />
+      <xsl:text> Highlights</xsl:text>
+    </strong>
     <p>
       <textarea id="highlights-text" rows="4" cols="50">
-        <xsl:value-of select="//current_team_scores/highlights" />
+        <xsl:value-of select="//my_team/current_team_scores/highlights" />
       </textarea>
-      <input class="button-highlights" type="button" value="Update" />
+      <input class="button-highlights" data-team-id="{//my_team/team/id}" type="button" value="Update" />
     </p>
     <p>
       <form action="./stats" method="POST" id="stats-form">
         <input class="button-final-submit" type="submit" value="Final Submit!" />
         <input type="hidden" name="subcmd" value="final-submit" />
-        <input type="hidden" name="teamId" value="{/outertag/team/id}" />
+        <input type="hidden" name="teamId" value="{/outertag/my_team/team/id}" />
+        <input type="hidden" name="enemyTeamId" value="{/outertag/enemy_team/team/id}" />
         <input type="hidden" name="scheduleId" value="{/outertag/game/schedule_id}" />
       </form>
     </p>
-    <xsl:apply-templates />
   </xsl:template>
 
   <!-- pos-id-value -->
@@ -186,9 +287,6 @@
     <xsl:variable name="playerTotal">
       <xsl:value-of select="current_scores/one_points + (current_scores/two_points * 2) + (current_scores/three_points * 3)" />
     </xsl:variable>
-    <xsl:message>
-      <xsl:value-of select="$playerTotal" />
-    </xsl:message>
     <div id="player-container">
       <table>
         <caption>
@@ -292,7 +390,7 @@
     <xsl:apply-templates />
   </xsl:template>
 
-  <xsl:template match="current_team_scores|game|id|subcmd|school_name|team_name|team_id|current_scores|league_id" />
+  <xsl:template match="is_home_team|current_team_scores|game|id|subcmd|school_name|team_name|team_id|current_scores|league_id" />
 
   <xsl:template match="message">
     <p>

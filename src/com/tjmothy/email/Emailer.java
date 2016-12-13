@@ -10,12 +10,15 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.tjmothy.utils.TProperties;
+
 public class Emailer
 {
 	static Properties mailServerProperties;
 	static Session getMailSession;
 	static MimeMessage generateMailMessage;
 	private Email email;
+	private static TProperties tprops = (TProperties) new TProperties().getInstance();
 
 	public static void main(String args[]) throws AddressException, MessagingException
 	{
@@ -44,11 +47,13 @@ public class Emailer
 		System.out.println("\n 2nd ===> get Mail Session..");
 		getMailSession = Session.getDefaultInstance(mailServerProperties, null);
 		generateMailMessage = new MimeMessage(getMailSession);
+		int i = 1;
 		// Loop through all the email addresses you would like to send the stats to
 		for (String emailAddress : email.getRecipients())
 		{
 			generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
-			System.out.println("\n 2nd ===> Adding \"" + emailAddress + "\" to list...");
+			System.out.println("\n (" + i + ") 2nd ===> Adding \"" + emailAddress + "\" to list...");
+			i++;
 		}
 		// generateMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress("test2@crunchify.com"));
 		generateMailMessage.setSubject(email.getSubject());
@@ -60,9 +65,11 @@ public class Emailer
 		System.out.println("\n\n 3rd ===> Get Session and Send mail");
 		Transport transport = getMailSession.getTransport("smtp");
 
+		System.out.println("gmail_password: " + tprops.getProperty(TProperties.PropertyName.gmail_password));
+		System.out.println("password: " + tprops.getProperty(TProperties.PropertyName.password));
 		// Enter your correct gmail UserID and Password
 		// if you have 2FA enabled then provide App Specific Password
-		transport.connect("smtp.gmail.com", "sportsstatstracker@gmail.com", "*******");
+		transport.connect("smtp.gmail.com", "sportsstatstracker@gmail.com", tprops.getProperty(TProperties.PropertyName.gmail_password));
 		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 		transport.close();
 	}

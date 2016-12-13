@@ -21,7 +21,7 @@ public class TProperties extends Properties
 
 	public enum PropertyName
 	{
-		url, password, user, drivers
+		url, password, user, drivers, gmail_password
 	}
 
 	public static Properties getInstance()
@@ -140,9 +140,7 @@ public class TProperties extends Properties
 	 */
 	public static String getConnection()
 	{
-		
-		return "jdbc:mysql://localhost:3306/stats?user=root";
-		// return getProperty(PropertyName.url) + "?" + "user=" + getProperty(PropertyName.user) + "&password=" + getProperty(PropertyName.password);
+		 return getProperty(PropertyName.url) + "?" + "user=" + getProperty(PropertyName.user) + "&password=" + getProperty(PropertyName.password);
 	}
 
 }

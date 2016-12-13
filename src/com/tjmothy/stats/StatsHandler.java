@@ -90,6 +90,7 @@ public class StatsHandler extends HttpServlet
 		StringBuilder innerSB = new StringBuilder();
 		User user = null;
 		Team team = null;
+		Team enemyTeam = null;
 		Game game = null;
 		if (subcmd == null)
 			subcmd = "login";
@@ -102,12 +103,13 @@ public class StatsHandler extends HttpServlet
 				user = statsBean.userInfo(phoneNumber);
 				game = statsBean.gameInfo(user.getTeamId(), StatsBean.getTodayDate());
 				team = statsBean.teamInfo(user.getTeamId());
+				enemyTeam = statsBean.teamInfo((team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
 				innerSB.append(statsBean.getPlayersForTeam(user.getTeamId()));
-				innerSB.append(team.toXML());
-				innerSB.append(statsBean.getCurrentTeamScores(user.getTeamId(), game.getScheduleId()));
+				innerSB.append("<my_team>" + team.toXML() + statsBean.getCurrentTeamScores(team.getId(), game.getScheduleId()) + "</my_team>");
+				innerSB.append("<enemy_team>" + enemyTeam.toXML() + statsBean.getCurrentTeamScores(enemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
 				innerSB.append(game.toXML());
 				subcmd = "stats-view";
-				if(statsBean.isGameSubmitted(user.getTeamId(), game.getScheduleId()))
+				if (statsBean.isGameSubmitted(user.getTeamId(), game.getScheduleId()))
 				{
 					xslSheet = "stats-recap.xsl";
 				}
@@ -199,12 +201,15 @@ public class StatsHandler extends HttpServlet
 		else if (subcmd.equals("final-submit"))
 		{
 			String teamId = request.getParameter("teamId");
+			String enemyTeamId = request.getParameter("enemyTeamId");
 			String scheduleId = request.getParameter("scheduleId");
 			int realTeamId = -1;
+			int realEnemyTeamId = -1;
 			int realScheduleId = -1;
 			try
 			{
 				realTeamId = Integer.parseInt(teamId);
+				realEnemyTeamId = Integer.parseInt(enemyTeamId);
 				realScheduleId = Integer.parseInt(scheduleId);
 			}
 			catch (NumberFormatException nfe)
@@ -212,13 +217,22 @@ public class StatsHandler extends HttpServlet
 				System.out.println("Error converting score OR playerId to integer: " + nfe.getMessage());
 				;
 			}
+			// Only mark as submitted for YOUR team (realTeamId)
 			statsBean.submitTeamStats(realTeamId, realScheduleId);
 			xslSheet = "stats-recap.xsl";
+			Team submitMyTeam = statsBean.teamInfo(realTeamId);
+			Team submitEnemyTeam = statsBean.teamInfo(realEnemyTeamId);
 			innerSB.append(statsBean.getPlayersForTeam(realTeamId));
-			innerSB.append(statsBean.teamInfo(realTeamId).toXML());
+			innerSB.append(submitMyTeam.toXML());
 			innerSB.append(statsBean.getCurrentTeamScores(realTeamId, realScheduleId));
-//			innerSB.append(statsBean.gameInfo(realScheduleId));
-			
+			// Set the total for MY & ENEMY teams in the "schedule" table
+			int totalMy = statsBean.getTeamTotalScore(realTeamId, realScheduleId);
+			statsBean.submitTeamTotal(totalMy, realScheduleId, submitMyTeam);
+			int totalEnemy = statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId);
+			statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
+			// TODO: Send emails
+			// innerSB.append(statsBean.gameInfo(realScheduleId));
+
 		}
 		ServletContext servletContext = getServletContext();
 		String contextPath = servletContext.getRealPath(File.separator);
