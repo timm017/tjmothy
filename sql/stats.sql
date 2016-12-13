@@ -58,9 +58,6 @@ REPLACE INTO player_points SET one_points=one_points + 1 WHERE schedule_id=0 AND
 
 INSERT INTO player_points (schedule_id, player_id) VALUES (0, 1) ON DUPLICATE KEY UPDATE one_points = one_points + 1;
 	
-INSERT INTO users (phone_number, first_name, last_name, password, team_id) VALUES ("6104573819", "Timothy", "McKeown", "tmckeown1", 1);
-INSERT INTO users (phone_number, first_name, last_name, password, team_id) VALUES ("6108121272", "Bobb", "Higgins", "bobhiggins", 1);
-	
 INSERT INTO leagues (league_name) VALUE ("Central");
 
 INSERT INTO teams (school_name, team_name, league_id) VALUE ("Penncrest", "Lions", 1);
