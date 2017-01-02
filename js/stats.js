@@ -7,8 +7,11 @@
 	$(document).on('click', 'input.button-negative', function(event) {
 		decreasePlayerScore(this);
 	});
-	$(document).on('click', 'input.button-box-score', function(event) {
-		getBoxScoreDatat(this);
+	$(document).on('click', '#home-team-container input.button-box-score', function(event) {
+		getBoxScoreData(this, 'home');
+	});
+	$(document).on('click', '#enemy-team-container input.button-box-score', function(event) {
+		getBoxScoreData(this, 'enemy');
 	});
 	$(document).on('click', 'input.button-highlights', function(event) {
 		getHighlights(this);
@@ -31,15 +34,17 @@
 	 $('span#player-total-' + playerId).html(" (Total: " + total + ")");
  }
  
- function updateTeamTotal() {
-	 var firstQuarterScore = $('input#q1').val();
-	 var secondQuarterScore = $('input#q2').val();
-	 var thirdQuarterScore = $('input#q3').val();
-	 var fourthQuarterScore = $('input#q4').val();
-	 var overtimeScore = $('input#ot').val();
-	 var total = parseInt(firstQuarterScore) + parseInt(secondQuarterScore) + parseInt(thirdQuarterScore) + parseInt(fourthQuarterScore) + parseInt(overtimeScore);
+ function updateTeamTotal(team) {
+	 var teamTable = $("table#" + team + "-team-container");
+	 var teamId = $(teamTable).data("team-id");
+	 var firstQuarterScore = parseInt($('input#q1-' + teamId).val());
+	 var secondQuarterScore = parseInt($('input#q2-' + teamId).val());
+	 var thirdQuarterScore = parseInt($('input#q3-' + teamId).val());
+	 var fourthQuarterScore = parseInt($('input#q4-' + teamId).val());
+	 var overtimeScore = parseInt($('input#ot-' + teamId).val());
+	 var total = (firstQuarterScore + secondQuarterScore + thirdQuarterScore + fourthQuarterScore + overtimeScore);
 	 console.log("total: " + total);
-	 $('input#home-total').val(total);
+	 $('input#' + team + '-total').val(total);
  }
 
  /**
@@ -49,7 +54,7 @@
 function getHighlights(that) {
 	var highlights = $("textarea#highlights-text").val();
 	var teamId = $(that).data("team-id");
-	var teamTable = $("table#team-container");
+	var teamTable = $("table#my-team-container");
 	var scheduleId = $(teamTable).data("schedule-id");
 	console.log("highlights: " + highlights);
 	console.log("tid: " + teamId);
@@ -87,17 +92,17 @@ function decreasePlayerScore(that) {
  * 
  * @param that
  */
-function getBoxScoreDatat(that) {
+function getBoxScoreData(that, team) {
 	var quarter = $(that).data("quarter");
 	var teamId = $(that).data("team-id");
-	var teamTable = $("table#team-container");
+	var teamTable = $("table#" + team + "-team-container");
 	var scheduleId = $(teamTable).data("schedule-id");
 	var score = $("input#" + quarter + '-' + teamId).val();
 	console.log("quarter: " + quarter);
 	console.log("team id: " + teamId);
 	console.log("schedule id: " + scheduleId);
 	console.log("score: " + score);
-	updateBoxScore(quarter, score, teamId, scheduleId);
+	updateBoxScore(quarter, score, teamId, scheduleId, team);
 }
 
 function updateHighlights(highlights, teamId, scheduleId) {
@@ -118,7 +123,7 @@ function updateHighlights(highlights, teamId, scheduleId) {
 	});
 }
 
-function updateBoxScore(quarter, score, teamId, scheduleId) {
+function updateBoxScore(quarter, score, teamId, scheduleId, team) {
 	var url = './stats?subcmd=update-box-score&quarter=' + quarter + '&score='
 			+ score + '&teamId=' + teamId + '&scheduleId=' + scheduleId;
 	console.log("URL: " + url);
@@ -127,7 +132,7 @@ function updateBoxScore(quarter, score, teamId, scheduleId) {
 		url : url,
 		async : false,
 		success : function(data) {
-			updateTeamTotal();
+			updateTeamTotal(team);
 		}
 	});
 }

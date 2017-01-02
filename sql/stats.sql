@@ -5,6 +5,14 @@ CREATE TABLE users
 	last_name VARCHAR(255) NOT NULL,
 	password VARCHAR(255) NOT NULL,
 	team_id INT(10) NOT NULL,
+	email VARCHAR(255) NOT NULL DEFAULT '',
+	type INT(10) NOT NULL DEFAULT 1,
+	PRIMARY KEY(id) );
+	
+CREATE TABLE user_types
+( id int(10) NOT NULL auto_increment,
+	name VARCHAR(255) NOT NULL DEFAULT '',
+	description VARCHAR(255) NOT NULL DEFAULT '',
 	PRIMARY KEY(id) );
 
 CREATE TABLE leagues
@@ -50,8 +58,13 @@ CREATE TABLE team_stats
 	PRIMARY KEY(schedule_id, team_id));
 
 ALTER TABLE ALLITEMS CHANGE itemid itemid INT(10)AUTO_INCREMENT PRIMARY KEY;
+ALTER TABLE users ADD type int(10) NOT NULL DEFAULT 1;
+ALTER TABLE users ADD email VARCHAR(255) NOT NULL DEFAULT '';
 
-INSERT INTO schedule (id,game_day, home_team, home_id, home_score, road_team, road_id, road_score) VALUE (146, '2016-12-11', 'Penncrest', 1, 0, 'Marple Newtown', 7, 0);	
+INSERT INTO user_types (name, description) VALUES ('regular', 'regular coach');
+INSERT INTO user_types (name, description) VALUES ('admin', 'admin super user. tim, bob, kevin');
+
+INSERT INTO schedule (id,game_day, home_team, home_id, home_score, road_team, road_id, road_score) VALUE (146, '2016-12-19', 'Penncrest', 1, 0, 'Conestoga', 2, 0);	
 
 REPLACE INTO player_points (schedule_id, player_id, one_points) VALUES (0, 1, one_points + 1);
 REPLACE INTO player_points SET one_points=one_points + 1 WHERE schedule_id=0 AND player_id=1;

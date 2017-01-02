@@ -1,13 +1,14 @@
 package com.tjmothy.stats;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,16 +18,27 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import com.tjmothy.email.Email;
+import com.tjmothy.email.Emailer;
 import com.tjmothy.utils.PathHelper;
 
 @WebServlet("/StatsHandler")
 public class StatsHandler extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
+
+	private final String EMAIL_XSL = "stats-recap.xsl";
+
+	private enum SessionAttributes
+	{
+		logged_in, phonenumber
+	}
 
 	/**
 	 * Default constructor.
@@ -40,41 +52,7 @@ public class StatsHandler extends HttpServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		String subcmd = request.getParameter("subcmd");
-		System.out.println("GET: subcmd: " + subcmd);
-		if (subcmd == null)
-			subcmd = "login";
-
-		StringBuffer sb = new StringBuffer("<outertag>");
-		String xslSheet = getServletConfig().getInitParameter("xslSheet");
-		PrintWriter out = response.getWriter();
-
-		if (subcmd.equals("default"))
-		{
-			StatsBean statsBean = new StatsBean();
-			sb.append(statsBean.getPlayersForTeam(1));
-		}
-		else if (subcmd.equals("login"))
-		{
-		}
-		sb.append("<subcmd>" + subcmd + "</subcmd>");
-		sb.append("</outertag>");
-		StringReader xml = new StringReader(sb.toString());
-		ServletContext servletContext = getServletContext();
-		String contextPath = servletContext.getRealPath(File.separator);
-
-		try
-		{
-			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Source xslDoc = new StreamSource(contextPath + PathHelper.XSL_PATH + xslSheet);
-			Source xmlDoc = new StreamSource(xml);
-			Transformer transformer = tFactory.newTransformer(xslDoc);
-			transformer.transform(xmlDoc, new StreamResult(out));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		doPost(request, response);
 	}
 
 	/**
@@ -83,6 +61,7 @@ public class StatsHandler extends HttpServlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		HttpSession session = request.getSession(true);
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
 		String subcmd = request.getParameter("subcmd");
 		System.out.println("POST: subcmd: " + subcmd);
@@ -93,7 +72,14 @@ public class StatsHandler extends HttpServlet
 		Team enemyTeam = null;
 		Game game = null;
 		if (subcmd == null)
+		{
 			subcmd = "login";
+			if (session.getAttribute(SessionAttributes.logged_in.name()) != null && session.getAttribute(SessionAttributes.logged_in.name()).equals("true"))
+			{
+				System.out.println("we are logged in -> go to stats-view");
+				subcmd = "stats-view";
+			}
+		}
 		if (subcmd.equals("login"))
 		{
 			String phoneNumber = request.getParameter("phonenumber");
@@ -104,9 +90,17 @@ public class StatsHandler extends HttpServlet
 				game = statsBean.gameInfo(user.getTeamId(), StatsBean.getTodayDate());
 				team = statsBean.teamInfo(user.getTeamId());
 				enemyTeam = statsBean.teamInfo((team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
-				innerSB.append(statsBean.getPlayersForTeam(user.getTeamId()));
-				innerSB.append("<my_team>" + team.toXML() + statsBean.getCurrentTeamScores(team.getId(), game.getScheduleId()) + "</my_team>");
-				innerSB.append("<enemy_team>" + enemyTeam.toXML() + statsBean.getCurrentTeamScores(enemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
+				System.out.println("enemy team home-> " + team.getIsHomeTeam() + " enemy teamId: " + (team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
+				// Create session variables, logged_in for webapp and phonenumber for authentication? 
+				session.setAttribute(SessionAttributes.logged_in.name(), "true");
+				session.setAttribute(SessionAttributes.phonenumber.name(), phoneNumber);
+				if (!game.getNoGameToday())
+				{
+					innerSB.append(user.toXML());
+					innerSB.append(statsBean.getPlayersForTeam(user.getTeamId()));
+					innerSB.append("<my_team>" + team.toXML() + statsBean.getCurrentTeamScores(team.getId(), game.getScheduleId()) + "</my_team>");
+					innerSB.append("<enemy_team>" + enemyTeam.toXML() + statsBean.getCurrentTeamScores(enemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
+				}
 				innerSB.append(game.toXML());
 				subcmd = "stats-view";
 				if (statsBean.isGameSubmitted(user.getTeamId(), game.getScheduleId()))
@@ -122,6 +116,39 @@ public class StatsHandler extends HttpServlet
 				innerSB.append("<password>" + password + "</password>");
 				innerSB.append("</login>");
 			}
+		}
+		
+		// If phonenumber is invalid then user is not authenticated to execute anything below, log them out
+		String phoneNumber = (String) session.getAttribute(SessionAttributes.phonenumber.name());
+		if(!statsBean.isValidPhoneNumber(phoneNumber))
+		{
+			System.out.println("Phone number invalid, logging user out");
+			subcmd = "logout";
+		}
+			
+		if(subcmd.equals("logout"))
+		{
+			System.out.println("logging user out");
+			session.invalidate();
+			innerSB.append("<login success='false'>");
+			innerSB.append("<username></username>");
+			innerSB.append("<password></password>");
+			innerSB.append("</login>");
+		}
+		else if (subcmd.equals("stats-view"))
+		{
+			user = statsBean.userInfo(phoneNumber);
+			game = statsBean.gameInfo(user.getTeamId(), StatsBean.getTodayDate());
+			team = statsBean.teamInfo(user.getTeamId());
+			enemyTeam = statsBean.teamInfo((team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
+			if (!game.getNoGameToday())
+			{
+				innerSB.append(user.toXML());
+				innerSB.append(statsBean.getPlayersForTeam(user.getTeamId()));
+				innerSB.append("<my_team>" + team.toXML() + statsBean.getCurrentTeamScores(team.getId(), game.getScheduleId()) + "</my_team>");
+				innerSB.append("<enemy_team>" + enemyTeam.toXML() + statsBean.getCurrentTeamScores(enemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
+			}
+			innerSB.append(game.toXML());
 		}
 		else if (subcmd.equals("update-player-score"))
 		{
@@ -158,7 +185,6 @@ public class StatsHandler extends HttpServlet
 			catch (NumberFormatException nfe)
 			{
 				System.out.println("Error converting score OR playerId to integer: " + nfe.getMessage());
-				;
 			}
 			statsBean.updateBoxScore(quarter, realScore, realTeamId, realScheduleId);
 		}
@@ -194,7 +220,6 @@ public class StatsHandler extends HttpServlet
 			catch (NumberFormatException nfe)
 			{
 				System.out.println("Error converting score OR playerId to integer: " + nfe.getMessage());
-				;
 			}
 			statsBean.updateHighlights(highlights, realTeamId, realScheduleId);
 		}
@@ -215,23 +240,28 @@ public class StatsHandler extends HttpServlet
 			catch (NumberFormatException nfe)
 			{
 				System.out.println("Error converting score OR playerId to integer: " + nfe.getMessage());
-				;
 			}
+			game = statsBean.gameInfo(realTeamId, StatsBean.getTodayDate());
 			// Only mark as submitted for YOUR team (realTeamId)
 			statsBean.submitTeamStats(realTeamId, realScheduleId);
 			xslSheet = "stats-recap.xsl";
 			Team submitMyTeam = statsBean.teamInfo(realTeamId);
 			Team submitEnemyTeam = statsBean.teamInfo(realEnemyTeamId);
-			innerSB.append(statsBean.getPlayersForTeam(realTeamId));
-			innerSB.append(submitMyTeam.toXML());
-			innerSB.append(statsBean.getCurrentTeamScores(realTeamId, realScheduleId));
+			innerSB.append("<my_team>" + submitMyTeam.toXML() + statsBean.getCurrentTeamScores(submitMyTeam.getId(), game.getScheduleId()) + "</my_team>");
+			innerSB.append("<enemy_team>" + submitEnemyTeam.toXML() + statsBean.getCurrentTeamScores(submitEnemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
 			// Set the total for MY & ENEMY teams in the "schedule" table
 			int totalMy = statsBean.getTeamTotalScore(realTeamId, realScheduleId);
-			statsBean.submitTeamTotal(totalMy, realScheduleId, submitMyTeam);
 			int totalEnemy = statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId);
+			statsBean.submitTeamTotal(totalMy, realScheduleId, submitMyTeam);
 			statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
-			// TODO: Send emails
-			// innerSB.append(statsBean.gameInfo(realScheduleId));
+			innerSB.append(statsBean.getPlayersForTeam(realTeamId));
+			innerSB.append(submitMyTeam.toXML());
+			innerSB.append(submitEnemyTeam.toXML());
+			innerSB.append(statsBean.getCurrentTeamScores(realTeamId, realScheduleId));
+			final String subjectLine = submitMyTeam.getSchoolName() + " stats";
+			final String emailXml = "<outertag><subcmd>" + subcmd + "</subcmd>" + innerSB.toString() + "</outertag>";
+			// Send email
+			sendEmail(emailXml, subjectLine);
 
 		}
 		ServletContext servletContext = getServletContext();
@@ -243,7 +273,7 @@ public class StatsHandler extends HttpServlet
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append(innerSB.toString());
 		sb.append("</outertag>");
-		System.out.println(sb.toString());
+//		System.out.println(sb.toString());
 		StringReader xml = new StringReader(sb.toString());
 
 		try
@@ -257,6 +287,50 @@ public class StatsHandler extends HttpServlet
 		catch (Exception e)
 		{
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Send email using HTML created by stats-recap XSL sheet
+	 * 
+	 * @param xml - The XML to transform with stats-recap
+	 * @param subjectLine - Subjectline for the email
+	 */
+	private void sendEmail(String xml, String subjectLine)
+	{
+		try
+		{
+			ServletContext servletContext = getServletContext();
+			String contextPath = servletContext.getRealPath(File.separator);
+			TransformerFactory tFactory = TransformerFactory.newInstance();
+			Source xslDoc = new StreamSource(contextPath + PathHelper.XSL_PATH + EMAIL_XSL);
+			Source xmlDoc = new StreamSource(new ByteArrayInputStream(xml.getBytes("utf-8")));
+			Transformer transformer = tFactory.newTransformer(xslDoc);
+			StringWriter out = new StringWriter();
+			transformer.transform(xmlDoc, new StreamResult(out));
+			Email email = new Email();
+			email.setSubject(subjectLine);
+			email.setBody(out.toString());
+			try
+			{
+				Emailer emailer = new Emailer(email);
+			}
+			catch (MessagingException me)
+			{
+				me.printStackTrace();
+			}
+		}
+		catch (TransformerConfigurationException tce)
+		{
+			tce.printStackTrace();
+		}
+		catch (TransformerException te)
+		{
+			te.printStackTrace();
+		}
+		catch (UnsupportedEncodingException uee)
+		{
+			uee.printStackTrace();
 		}
 	}
 }

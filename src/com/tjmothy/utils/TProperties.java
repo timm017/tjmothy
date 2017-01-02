@@ -1,19 +1,13 @@
 package com.tjmothy.utils;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.DriverManager;
 import java.util.Properties;
 
 public class TProperties extends Properties
 {
 	private static final long serialVersionUID = 1L;
-
-	private static Properties instance = null;
 
 	private final static String PROP_FILE_NAME = "tjmdb.properties";
 
@@ -23,29 +17,18 @@ public class TProperties extends Properties
 	{
 		url, password, user, drivers, gmail_password
 	}
-
-	public static Properties getInstance()
-	{
-		if (instance == null)
-		{
-			instance = new TProperties();
-			init();
-		}
-		return instance;
-	}
-
+	
 	public TProperties()
 	{
 		InputStream inputStream = null;
 		try
 		{
-			// inputStream = new FileInputStream("/" + PROP_FILE_NAME);
-			// inputStream = getClass().getClassLoader().getResourceAsStream(PROP_FILE_NAME);
-			inputStream = getClass().getResourceAsStream(PROP_FILE_NAME);
-			// System.out.println("IS: " + getStringFromInputStream(inputStream));
+			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+			inputStream = classLoader.getResourceAsStream(PROP_FILE_NAME);
 			if (inputStream != null)
 			{
-				instance.load(inputStream);
+				load(inputStream);
+				inputStream.close();
 			}
 		}
 		catch (FileNotFoundException fnfe)
@@ -58,89 +41,25 @@ public class TProperties extends Properties
 		}
 		if (inputStream == null)
 		{
-			System.err.println("inputStream == null");
+			System.out.println("inputStream == null");
 		}
 	}
 
-	private static void init()
-	{
-		InputStream inputStream = null;
-		try
-		{
-			inputStream = new FileInputStream(PROP_FILE_NAME);
-			if (inputStream != null)
-			{
-				instance.load(inputStream);
-			}
-		}
-		catch (FileNotFoundException fnfe)
-		{
-			fnfe.printStackTrace();
-		}
-		catch (IOException ioe)
-		{
-			ioe.printStackTrace();
-		}
-		if (inputStream == null)
-		{
-			System.err.println("inputStream == null");
-		}
-	}
-
-	public static String getProperty(PropertyName propertyName)
+	public String getProperty(PropertyName propertyName)
 	{
 		String propertyValue = "";
-		propertyValue = getInstance().getProperty(propertyName.name());
+		propertyValue = this.getProperty(propertyName.name());
 		return propertyValue;
 	}
 
-	// convert InputStream to String
-	private static String getStringFromInputStream(InputStream is)
-	{
-
-		BufferedReader br = null;
-		StringBuilder sb = new StringBuilder();
-
-		String line;
-		try
-		{
-
-			br = new BufferedReader(new InputStreamReader(is));
-			while ((line = br.readLine()) != null)
-			{
-				sb.append(line);
-			}
-
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			if (br != null)
-			{
-				try
-				{
-					br.close();
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		return sb.toString();
-	}
-
 	/**
-	 * Gets the connection URL for the MySQL database.
+	 * Gets the connection URL for the MySQL database
 	 * 
 	 * @return
 	 */
-	public static String getConnection()
+	public String getConnection()
 	{
-		 return getProperty(PropertyName.url) + "?" + "user=" + getProperty(PropertyName.user) + "&password=" + getProperty(PropertyName.password);
+		return getProperty(PropertyName.url) + "?" + "user=" + getProperty(PropertyName.user) + "&password=" + getProperty(PropertyName.password);
 	}
 
 }

@@ -10,6 +10,8 @@ import com.tjmothy.utils.TProperties;
 public class RegistrationBean
 {
 	private User user;
+	
+	private TProperties tprops = new TProperties();
 
 	public enum Column
 	{
@@ -26,7 +28,6 @@ public class RegistrationBean
 		boolean success = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		TProperties props = (TProperties) TProperties.getInstance();
 
 		// TODO: Get this fucking properties file shit to work!
 		// It can find the file but it every property seems to be NULL
@@ -38,11 +39,11 @@ public class RegistrationBean
 		// props.getProperty(TProperties.PropertyName.password.name());
 		// String drivers = TProperties.PropertyName.drivers.name();
 		
-		System.out.println("drivers: " + props.getProperty("drivers"));
+		System.out.println("drivers: " + tprops.getProperty("drivers"));
 		try
 		{
 			Class.forName(TProperties.DRIVERS);
-			conn = DriverManager.getConnection(TProperties.getConnection());
+			conn = DriverManager.getConnection(tprops.getConnection());
 			pstmt = conn.prepareStatement("INSERT INTO users (" + Column.first_name.name() + ", " + Column.last_name.name() + ", " + Column.user_name.name() + ", " + Column.email.name() + ", " + Column.password.name() + ") VALUES (?, ?, ?, ?, ?)");
 			pstmt.setString(1, this.user.getFirstName());
 			pstmt.setString(2, this.user.getLastName());

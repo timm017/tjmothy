@@ -22,12 +22,18 @@
                   Basketball Recap.
                 </strong>
                 <p>
-                 Total Score:
-                <xsl:value-of select="//current_team_scores/first_quarter + //current_team_scores/second_quarter + //current_team_scores/third_quarter + //current_team_scores/fourth_quarter + //current_team_scores/overtime" />
+                  Total Score:
+                  <xsl:call-template name="totalTable" />
+                </p>
+                <p>
+                  <xsl:call-template name="playerTable" />
                 </p>
               </h2>
             </p>
-            <xsl:apply-templates />
+            <h2><xsl:value-of select="my_team/team/school_name"/> Highlights:</h2>
+            <p>
+              <xsl:value-of select="my_team/current_team_scores/highlights" />
+            </p>
           </div>
         </div>
         <script type="text/javascript">
@@ -37,41 +43,120 @@
     </html>
   </xsl:template>
 
-  <xsl:template match="team_players">
-    <table>
-      <th>Players</th>
-      <th>Score</th>
-      <xsl:apply-templates />
+  <xsl:template name="totalTable">
+    <table border="1">
+      <th>Team</th>
+      <th>1st</th>
+      <th>2nd</th>
+      <th>3rd</th>
+      <th>4th</th>
+      <th>OT</th>
+      <th>Total</th>
+      <xsl:apply-templates select="my_team" />
+      <xsl:apply-templates select="enemy_team" />
     </table>
   </xsl:template>
 
-  <xsl:template match="player">
-    <p>
-      <xsl:value-of select="current_scores/one_points + (current_scores/two_points * 2) + (current_scores/three_points * 3)" />
-      <xsl:text> --- </xsl:text>
-      <xsl:apply-templates />
-    </p>
-  </xsl:template>
-
-  <xsl:template match="first_name">
-    <xsl:apply-templates />
-    <xsl:text> </xsl:text>
-  </xsl:template>
-
-  <xsl:template match="last_name">
-    <xsl:apply-templates />
-  </xsl:template>
-
-  <xsl:template match="current_scores">
+  <xsl:template match="my_team">
     <tr>
       <td>
-        asdf
-        <xsl:apply-templates />
+        <xsl:value-of select="team/school_name" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/first_quarter" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/second_quarter" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/third_quarter" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/fourth_quarter" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/overtime" />
+      </td>
+      <td>
+        <xsl:value-of
+          select="current_team_scores/first_quarter + current_team_scores/second_quarter + current_team_scores/third_quarter + current_team_scores/fourth_quarter + current_team_scores/overtime" />
       </td>
     </tr>
   </xsl:template>
 
-  <xsl:template match="current_team_scores|game|id|subcmd|school_name|team_name|team_id|current_scores|league_id" />
+  <xsl:template match="enemy_team">
+    <tr>
+      <td>
+        <xsl:value-of select="team/school_name" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/first_quarter" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/second_quarter" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/third_quarter" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/fourth_quarter" />
+      </td>
+      <td>
+        <xsl:value-of select="current_team_scores/overtime" />
+      </td>
+      <td>
+        <xsl:value-of
+          select="current_team_scores/first_quarter + current_team_scores/second_quarter + current_team_scores/third_quarter + current_team_scores/fourth_quarter + current_team_scores/overtime" />
+      </td>
+    </tr>
+  </xsl:template>
+
+  <xsl:template name="playerTable">
+    <table border="1">
+      <th>Player</th>
+      <th>Fouls</th>
+      <th>FTM</th>
+      <th>FTA</th>
+      <th>FG2</th>
+      <th>FG3</th>
+      <th>Total</th>
+      <xsl:apply-templates select="team_players" />
+    </table>
+  </xsl:template>
+
+  <xsl:template match="team_players">
+    <xsl:for-each select="player">
+      <tr>
+        <xsl:apply-templates select="." />
+      </tr>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="player">
+    <td>
+      <xsl:value-of select="first_name" />
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="last_name" />
+    </td>
+    <td>
+      <xsl:value-of select="current_scores/fouls" />
+    </td>
+    <td>
+      <xsl:value-of select="current_scores/one_points" />
+    </td>
+    <td>
+      <xsl:value-of select="current_scores/one_points_attempted" />
+    </td>
+    <td>
+      <xsl:value-of select="current_scores/two_points" />
+    </td>
+    <td>
+      <xsl:value-of select="current_scores/three_points" />
+    </td>
+    <td>
+      <xsl:value-of select="current_scores/one_points + (current_scores/two_points * 2) + (current_scores/three_points * 3)" />
+    </td>
+  </xsl:template>
 
   <xsl:template match="message">
     <p>

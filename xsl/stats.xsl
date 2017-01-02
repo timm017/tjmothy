@@ -14,6 +14,7 @@
       </head>
       <body>
         <div class="wrapper-stats">
+          <a href="./stats?subcmd=logout">Logout</a>
           <div id="stats">
             <p>
               <h2>
@@ -31,6 +32,9 @@
                 <xsl:text>No game for today.</xsl:text>
               </xsl:when>
               <xsl:when test="$subcmd = 'login'">
+                <xsl:call-template name="login" />
+              </xsl:when>
+              <xsl:when test="$subcmd = 'logout'">
                 <xsl:call-template name="login" />
               </xsl:when>
               <xsl:when test="$subcmd = 'stats-view'">
@@ -91,7 +95,7 @@
 
   <xsl:template match="enemy_team">
     <xsl:variable name="teamId" select="team/id" />
-    <table id="team-container" data-schedule-id="{//game/schedule_id}">
+    <table id="enemy-team-container" data-schedule-id="{//game/schedule_id}" data-team-id="{$teamId}">
       <caption>
         <xsl:value-of select="team/school_name" />
         <xsl:text> Box Scores</xsl:text>
@@ -165,7 +169,7 @@
           <xsl:text>TOTAL:</xsl:text>
         </td>
         <td>
-          <input readonly="true" id="home-total" type="text"
+          <input readonly="true" id="enemy-total" type="text"
             value="{current_team_scores/first_quarter + current_team_scores/second_quarter + current_team_scores/third_quarter + current_team_scores/fourth_quarter + current_team_scores/overtime}" />
         </td>
         <td />
@@ -175,7 +179,7 @@
 
   <xsl:template match="my_team">
     <xsl:variable name="teamId" select="team/id" />
-    <table id="team-container" data-schedule-id="{//game/schedule_id}">
+    <table id="home-team-container" data-schedule-id="{//game/schedule_id}" data-team-id="{$teamId}">
       <caption>
         <xsl:value-of select="team/school_name" />
         <xsl:text> Box Scores</xsl:text>
@@ -390,7 +394,7 @@
     <xsl:apply-templates />
   </xsl:template>
 
-  <xsl:template match="is_home_team|current_team_scores|game|id|subcmd|school_name|team_name|team_id|current_scores|league_id" />
+  <xsl:template match="user|is_home_team|current_team_scores|game|id|subcmd|school_name|team_name|team_id|current_scores|league_id" />
 
   <xsl:template match="message">
     <p>

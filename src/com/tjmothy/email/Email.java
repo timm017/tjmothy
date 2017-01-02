@@ -4,17 +4,20 @@ import java.util.ArrayList;
 
 public class Email
 {
-	private String subject = "Penncrest stats";
-	
-	private String body = "<body><p>Tim McKeown</p><p>7 points</p><p>Bob Higgins</p><p>100 points</p></body>";
-	
-	private ArrayList<String> recipients = new ArrayList<>(); 
+	private String subject = "Basketball stats";
+
+	private String body = "";
+
+	private ArrayList<String> recipients = new ArrayList<>();
 
 	public Email()
 	{
 		recipients.add("mckeown.timothy@gmail.com");
-//		recipients.add("rwhiggins2@gmail.com");
-//		recipients.add("kevindank@gmail.com");
+		recipients.add("rwhiggins2@gmail.com");
+//		recipients.add("sports@delcotimes.com");
+//		recipients.add("highschoolscores@philly.com");
+		// recipients.add("spiff10@verizon.net");
+		// recipients.add("kevindank@gmail.com");
 	}
 
 	// Setter methods = comments
@@ -27,17 +30,17 @@ public class Email
 	{
 		return this.subject;
 	}
-	
+
 	public void setBody(String body)
 	{
 		this.body = body;
 	}
-	
+
 	public String getBody()
 	{
 		return this.body;
 	}
-	
+
 	public ArrayList<String> getRecipients()
 	{
 		return this.recipients;

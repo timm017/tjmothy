@@ -18,7 +18,7 @@ public class Emailer
 	static Session getMailSession;
 	static MimeMessage generateMailMessage;
 	private Email email;
-	private static TProperties tprops = (TProperties) new TProperties().getInstance();
+	private static TProperties tprops = (TProperties) new TProperties();
 
 	public static void main(String args[]) throws AddressException, MessagingException
 	{
@@ -58,15 +58,16 @@ public class Emailer
 		// generateMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress("test2@crunchify.com"));
 		generateMailMessage.setSubject(email.getSubject());
 		String emailBody = email.getBody();
-		generateMailMessage.setContent(emailBody, "text/html");
+		System.out.println(email.getBody());
+		generateMailMessage.setContent(emailBody, "text/html; charset=utf-8");
 		System.out.println("Mail Session has been created successfully..");
 
 		// Step3
 		System.out.println("\n\n 3rd ===> Get Session and Send mail");
 		Transport transport = getMailSession.getTransport("smtp");
 
-		System.out.println("gmail_password: " + tprops.getProperty(TProperties.PropertyName.gmail_password));
-		System.out.println("password: " + tprops.getProperty(TProperties.PropertyName.password));
+//		System.out.println("gmail_password: " + tprops.getProperty(TProperties.PropertyName.gmail_password));
+//		System.out.println("password: " + tprops.getProperty(TProperties.PropertyName.password));
 		// Enter your correct gmail UserID and Password
 		// if you have 2FA enabled then provide App Specific Password
 		transport.connect("smtp.gmail.com", "sportsstatstracker@gmail.com", tprops.getProperty(TProperties.PropertyName.gmail_password));
