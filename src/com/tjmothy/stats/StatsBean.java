@@ -22,7 +22,7 @@ public class StatsBean
 	{
 		email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls;
 	}
-	
+
 	private TProperties tProps;
 
 	public StatsBean()
@@ -30,12 +30,13 @@ public class StatsBean
 		this.tProps = new TProperties();
 	}
 
-	public String getPlayersForTeam(int teamId)
+	public String getPlayersForTeam(int teamId, boolean myTeam)
 	{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuilder sb = new StringBuilder("<team_players id='" + teamId + "'>");
+		String elementName = (myTeam) ? "team_players" : "enemy_team_players";
+		StringBuilder sb = new StringBuilder("<" + elementName + " id='" + teamId + "'>");
 
 		try
 		{
@@ -78,7 +79,7 @@ public class StatsBean
 				;
 			}
 		}
-		sb.append("</team_players>");
+		sb.append("</" + elementName + ">");
 		return sb.toString();
 	}
 
@@ -929,7 +930,7 @@ public class StatsBean
 
 		// String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 	}
-	
+
 	public boolean isValidPhoneNumber(String phoneNumber)
 	{
 		Connection conn = null;

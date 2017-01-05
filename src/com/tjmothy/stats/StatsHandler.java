@@ -96,13 +96,13 @@ public class StatsHandler extends HttpServlet
 				session.setAttribute(SessionAttributes.phonenumber.name(), phoneNumber);
 				if (!game.getNoGameToday())
 				{
-					innerSB.append(user.toXML());
-					innerSB.append(statsBean.getPlayersForTeam(user.getTeamId()));
-					innerSB.append("<my_team>" + team.toXML() + statsBean.getCurrentTeamScores(team.getId(), game.getScheduleId()) + "</my_team>");
-					innerSB.append("<enemy_team>" + enemyTeam.toXML() + statsBean.getCurrentTeamScores(enemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
+//					innerSB.append(user.toXML());
+//					innerSB.append(statsBean.getPlayersForTeam(user.getTeamId()));
+//					innerSB.append("<my_team>" + team.toXML() + statsBean.getCurrentTeamScores(team.getId(), game.getScheduleId()) + "</my_team>");
+//					innerSB.append("<enemy_team>" + enemyTeam.toXML() + statsBean.getCurrentTeamScores(enemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
+					subcmd = "stats-view";
 				}
 				innerSB.append(game.toXML());
-				subcmd = "stats-view";
 				if (statsBean.isGameSubmitted(user.getTeamId(), game.getScheduleId()))
 				{
 					xslSheet = "stats-recap.xsl";
@@ -125,7 +125,6 @@ public class StatsHandler extends HttpServlet
 			System.out.println("Phone number invalid, logging user out");
 			subcmd = "logout";
 		}
-			
 		if(subcmd.equals("logout"))
 		{
 			System.out.println("logging user out");
@@ -141,10 +140,15 @@ public class StatsHandler extends HttpServlet
 			game = statsBean.gameInfo(user.getTeamId(), StatsBean.getTodayDate());
 			team = statsBean.teamInfo(user.getTeamId());
 			enemyTeam = statsBean.teamInfo((team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
+			if (statsBean.isGameSubmitted(user.getTeamId(), game.getScheduleId()))
+			{
+				xslSheet = "stats-recap.xsl";
+			}
 			if (!game.getNoGameToday())
 			{
 				innerSB.append(user.toXML());
-				innerSB.append(statsBean.getPlayersForTeam(user.getTeamId()));
+				innerSB.append(statsBean.getPlayersForTeam(user.getTeamId(), true));
+				innerSB.append(statsBean.getPlayersForTeam(enemyTeam.getId(), false));
 				innerSB.append("<my_team>" + team.toXML() + statsBean.getCurrentTeamScores(team.getId(), game.getScheduleId()) + "</my_team>");
 				innerSB.append("<enemy_team>" + enemyTeam.toXML() + statsBean.getCurrentTeamScores(enemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
 			}
@@ -254,7 +258,8 @@ public class StatsHandler extends HttpServlet
 			int totalEnemy = statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId);
 			statsBean.submitTeamTotal(totalMy, realScheduleId, submitMyTeam);
 			statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
-			innerSB.append(statsBean.getPlayersForTeam(realTeamId));
+			innerSB.append(statsBean.getPlayersForTeam(realTeamId, true));
+			innerSB.append(statsBean.getPlayersForTeam(realEnemyTeamId, false));
 			innerSB.append(submitMyTeam.toXML());
 			innerSB.append(submitEnemyTeam.toXML());
 			innerSB.append(statsBean.getCurrentTeamScores(realTeamId, realScheduleId));
@@ -273,7 +278,7 @@ public class StatsHandler extends HttpServlet
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append(innerSB.toString());
 		sb.append("</outertag>");
-//		System.out.println(sb.toString());
+		System.out.println(sb.toString());
 		StringReader xml = new StringReader(sb.toString());
 
 		try

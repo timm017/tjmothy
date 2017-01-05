@@ -26,11 +26,17 @@
                   <xsl:call-template name="totalTable" />
                 </p>
                 <p>
-                  <xsl:call-template name="playerTable" />
+                  <xsl:call-template name="myPlayerTable" />
+                </p>
+                <p>
+                  <xsl:call-template name="enemyPlayerTable" />
                 </p>
               </h2>
             </p>
-            <h2><xsl:value-of select="my_team/team/school_name"/> Highlights:</h2>
+            <h2>
+              <xsl:value-of select="my_team/team/school_name" />
+              Highlights:
+            </h2>
             <p>
               <xsl:value-of select="my_team/current_team_scores/highlights" />
             </p>
@@ -111,7 +117,9 @@
     </tr>
   </xsl:template>
 
-  <xsl:template name="playerTable">
+  <xsl:template name="myPlayerTable">
+    <xsl:value-of select="/outertag/my_team/team/school_name" />
+    <xsl:text> Players</xsl:text>
     <table border="1">
       <th>Player</th>
       <th>Fouls</th>
@@ -124,7 +132,30 @@
     </table>
   </xsl:template>
 
+  <xsl:template name="enemyPlayerTable">
+    <xsl:value-of select="/outertag/enemy_team/team/school_name" />
+    <xsl:text> Players</xsl:text>
+    <table border="1">
+      <th>Player</th>
+      <th>Fouls</th>
+      <th>FTM</th>
+      <th>FTA</th>
+      <th>FG2</th>
+      <th>FG3</th>
+      <th>Total</th>
+      <xsl:apply-templates select="enemy_team_players" />
+    </table>
+  </xsl:template>
+
   <xsl:template match="team_players">
+    <xsl:for-each select="player">
+      <tr>
+        <xsl:apply-templates select="." />
+      </tr>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="enemy_team_players">
     <xsl:for-each select="player">
       <tr>
         <xsl:apply-templates select="." />

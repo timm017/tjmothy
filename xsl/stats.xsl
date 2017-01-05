@@ -86,11 +86,31 @@
   </xsl:template>
 
   <xsl:template match="team_players">
-    <xsl:apply-templates />
+    <xsl:variable name="mySchool" select="/outertag/my_team/team/school_name" />
+    <p>
+      <span id="my-team-players-toggle">
+        Open/Close
+        <xsl:value-of select="$mySchool" />
+        Players
+      </span>
+    </p>
+    <div id="my-team-players-container">
+      <xsl:apply-templates />
+    </div>
   </xsl:template>
 
   <xsl:template match="enemy_team_players">
-    <xsl:apply-templates />
+    <xsl:variable name="enemySchool" select="/outertag/enemy_team/team/school_name" />
+    <p>
+      <span id="enemy-team-players-toggle">
+        Open/Close
+        <xsl:value-of select="$enemySchool" />
+        Players
+      </span>
+    </p>
+    <div id="enemy-team-players-container">
+      <xsl:apply-templates />
+    </div>
   </xsl:template>
 
   <xsl:template match="enemy_team">

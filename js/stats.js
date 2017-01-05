@@ -16,6 +16,13 @@
 	$(document).on('click', 'input.button-highlights', function(event) {
 		getHighlights(this);
 	});
+	$(document).on('click', 'span#my-team-players-toggle', function(event) {
+		$('div#my-team-players-container').toggle();
+	});
+	$(document).on('click', 'span#enemy-team-players-toggle', function(event) {
+		$('div#enemy-team-players-container').toggle();
+	});
+	$('div#enemy-team-players-container').hide();
 }
  
  /**
@@ -54,7 +61,7 @@
 function getHighlights(that) {
 	var highlights = $("textarea#highlights-text").val();
 	var teamId = $(that).data("team-id");
-	var teamTable = $("table#my-team-container");
+	var teamTable = $("table#home-team-container");
 	var scheduleId = $(teamTable).data("schedule-id");
 	console.log("highlights: " + highlights);
 	console.log("tid: " + teamId);

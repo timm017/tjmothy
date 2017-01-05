@@ -160,3 +160,15 @@ h2 {
 	font-family: Raleway, "Helvetica Neue", sans-serif;
 	color: green;
 }
+
+span#my-team-players-toggle {
+	align: left;
+	font-size: 30px;
+	color: blue;
+}
+
+span#enemy-team-players-toggle {
+	align: left;
+	font-size: 30px;
+	color: blue;
+}
