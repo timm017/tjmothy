@@ -76,7 +76,7 @@ public class StatsHandler extends HttpServlet
 			subcmd = "login";
 			if (session.getAttribute(SessionAttributes.logged_in.name()) != null && session.getAttribute(SessionAttributes.logged_in.name()).equals("true"))
 			{
-				System.out.println("we are logged in -> go to stats-view");
+				// We are logged out, redirect to stats-view
 				subcmd = "stats-view";
 			}
 		}
@@ -96,13 +96,10 @@ public class StatsHandler extends HttpServlet
 				session.setAttribute(SessionAttributes.phonenumber.name(), phoneNumber);
 				if (!game.getNoGameToday())
 				{
-//					innerSB.append(user.toXML());
-//					innerSB.append(statsBean.getPlayersForTeam(user.getTeamId()));
-//					innerSB.append("<my_team>" + team.toXML() + statsBean.getCurrentTeamScores(team.getId(), game.getScheduleId()) + "</my_team>");
-//					innerSB.append("<enemy_team>" + enemyTeam.toXML() + statsBean.getCurrentTeamScores(enemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
 					subcmd = "stats-view";
 				}
 				innerSB.append(game.toXML());
+				// If game is already submitted, show them the recap
 				if (statsBean.isGameSubmitted(user.getTeamId(), game.getScheduleId()))
 				{
 					xslSheet = "stats-recap.xsl";
@@ -110,7 +107,7 @@ public class StatsHandler extends HttpServlet
 			}
 			else
 			{
-				// Show login screen again
+				// User not logged in, show login screen again
 				innerSB.append("<login success='false'>");
 				innerSB.append("<username>" + phoneNumber + "</username>");
 				innerSB.append("<password>" + password + "</password>");
@@ -125,6 +122,7 @@ public class StatsHandler extends HttpServlet
 			System.out.println("Phone number invalid, logging user out");
 			subcmd = "logout";
 		}
+		// Log user out, clear sessions
 		if(subcmd.equals("logout"))
 		{
 			System.out.println("logging user out");
