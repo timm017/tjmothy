@@ -8,6 +8,31 @@ repositories {
 }
 
 dependencies {
-  providedCompile 'javax.servlet:servlet-api:2.5'
-  runtime 'javax.servlet:jstl:1.1.2'
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  //runtime 'javax.servlet:jstl:1.1.2'
 }
+
+// JDK version source compatibility
+sourceCompatibility = 1.7
+// project version
+version = '1.0'
+// WAR file name
+war.baseName = 'tjmothy-war-test'
+// Web directory, overrides the default value "webapp"
+project.webAppDirName = 'WebContent'
+
+// Set source directory
+sourceSets {
+	main {
+		java {
+			srcDir 'src'
+			}
+		}
+	}
+
+task gitPull(type: Exec) {
+    description 'Pulls git.'
+    commandLine "git", "pull"
+}
+
+war.dependsOn gitPull

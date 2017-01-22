@@ -6,13 +6,15 @@ public class Team
 	private String schoolName;
 	private String teamName;
 	private int leagueId;
+	private boolean isHomeTeam;
 	
-	public Team(int id, String schoolName, String teamName, int leagueId)
+	public Team(int id, String schoolName, String teamName, int leagueId, boolean isHomeTeam)
 	{
 		this.id = id;
 		this.schoolName = schoolName;
 		this.teamName = teamName;
 		this.leagueId = leagueId;
+		this.isHomeTeam = isHomeTeam;
 	}
 	
 	public String getSchoolName()
@@ -55,6 +57,11 @@ public class Team
 		this.id = id;
 	}
 	
+	public boolean getIsHomeTeam()
+	{
+		return this.isHomeTeam;
+	}
+	
 	public String toXML()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -63,6 +70,7 @@ public class Team
 		sb.append("<school_name>" + this.getSchoolName() + "</school_name>");
 		sb.append("<team_name>" + this.getTeamName() + "</team_name>");
 		sb.append("<league_id>" + this.getLeagueId() + "</league_id>");
+		sb.append("<is_home_team>" + this.getIsHomeTeam() + "</is_home_team>");
 		sb.append("</team>");
 		return sb.toString();
 	}

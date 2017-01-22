@@ -1,4 +1,91 @@
+body {
+	width: 80%;
+	text-align: center;
+	margin: 0 auto;
+}
 
+.wrapper-stats {
+	margin: 0 auto;
+	text-align: center;
+	margin: 0 auto;
+}
+
+/* SERVICES */
+#stats {
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	-moz-box-shadow: 0 0 3px 1px #CCC;
+	-webkit-box-shadow: 0 0 3px 1px;
+	box-shadow: 0 0 3px 1px #CCC;
+	font-family: FreeSans;
+	overflow: hidden;
+	padding: 15px 15px 15px 15px;
+	background-color: #FFF;
+}
+
+input.button-final-submit {
+	margin: 10px;
+	height: 50px;
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+	color: #fff;
+	font-size: 30px;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table td {
+	text-align: center;
+}
+
+table tr {
+	text-align: center;
+}
+
+table caption {
+	text-size: 1.5em;
+}
+
+table#team-container {
+	margin-top: 20px;
+}
+
+table#team-container tr {
+	margin: 20px;
+}
+
+table#team-container td {
+	margin: 20px;
+}
+
+#stats ul {
+	color: #645d5d;
+	list-style-type: none;
+}
+
+#stats li {
+	color: #645d5d;
+	list-style-type: none;
+}
+
+#stats h3 {
+	font-family: FreeSans;
+	font-size: 25px;
+	margin: 0px 0px 0px 3px;
+}
+
+#stats span {
+	margin-bottom: 205px;
+	vertical-align: middle;
+}
+
+#stats p {
+	margin-bottom: 45px;
+}
 
 #point-buttons-positive {
 	
@@ -9,16 +96,42 @@
 }
 
 #current-points span {
-	margin-right: 10px;
+	text-align: center;
+	margin: 0 auto;
 }
 
 #player-container {
 	background-color: #EEEEEE;
-	margin: 10px;
 	padding: 5px;
+	text-align: center;
+	margin: 0 auto;
 }
 
-#point-buttons-positive input {
+caption {
+	background: #dbb768;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+input.button-box-score {
+	height: 25px;
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+	color: #fff;
+	font-size: 13px;
+}
+
+input.button-highlights {
+	height: 25px;
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+	color: #fff;
+	font-size: 13px;
+}
+
+input.button-positive {
 	margin: 10px;
 	height: 50px;
 	width: 100px;
@@ -29,7 +142,7 @@
 	font-size: 30px;
 }
 
-#point-buttons-negative input {
+input.button-negative {
 	margin: 10px;
 	height: 50px;
 	width: 100px;
@@ -37,4 +150,25 @@
 	background-color: #d9534f;
 	border-color: #d43f3a;
 	font-size: 30px;
+}
+
+h2 {
+	font-family: Raleway, "Helvetica Neue", sans-serif;
+}
+
+#stats span.player-total {
+	font-family: Raleway, "Helvetica Neue", sans-serif;
+	color: green;
+}
+
+span#my-team-players-toggle {
+	align: left;
+	font-size: 30px;
+	color: blue;
+}
+
+span#enemy-team-players-toggle {
+	align: left;
+	font-size: 30px;
+	color: blue;
 }

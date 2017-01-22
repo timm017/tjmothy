@@ -12,6 +12,8 @@ public class LogInOutBean
 {
 	private User user;
 
+	private TProperties tprops = new TProperties();
+	
 	public enum Table
 	{
 		users
@@ -42,7 +44,7 @@ public class LogInOutBean
 		try
 		{
 			Class.forName(TProperties.DRIVERS);
-			conn = DriverManager.getConnection(TProperties.getConnection());
+			conn = DriverManager.getConnection(tprops.getConnection());
 			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.user_name.name() + "=? AND " + Column.password + "=?");
 			pstmt.setString(1, username);
 			pstmt.setString(2, Encryption.md5(password));

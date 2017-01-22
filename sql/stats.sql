@@ -7,6 +7,14 @@ CREATE TABLE users
 	last_name VARCHAR(255) NOT NULL,
 	password VARCHAR(255) NOT NULL,
 	team_id INT(10) NOT NULL,
+	email VARCHAR(255) NOT NULL DEFAULT '',
+	type INT(10) NOT NULL DEFAULT 1,
+	PRIMARY KEY(id) );
+	
+CREATE TABLE user_types
+( id int(10) NOT NULL auto_increment,
+	name VARCHAR(255) NOT NULL DEFAULT '',
+	description VARCHAR(255) NOT NULL DEFAULT '',
 	PRIMARY KEY(id) );
 
 CREATE TABLE leagues
@@ -29,26 +37,16 @@ CREATE TABLE players
 	PRIMARY KEY(id) );
 	
 CREATE TABLE player_points
-( id int(10) NOT NULL auto_increment, 
-	schedule_id INT(10),
-	player_id INT(10),
-	one_points INT(2),
-	one_points_attempted INT(2),
-	two_points INT(2),
-	three_points INT(2),
-	fouls INT(2),
-	PRIMARY KEY(id) );
-	
-CREATE TABLE player_points
 (  schedule_id INT(10),
 	player_id INT(10),
 	one_points INT(2) NOT NULL DEFAULT 0,
 	one_points_attempted INT(2) NOT NULL DEFAULT 0,
 	two_points INT(2) NOT NULL DEFAULT 0,
 	three_points INT(2) NOT NULL DEFAULT 0,
+	fouls INT(2) NOT NULL DEFAULT 0,
 	rebounds INT(2) NOT NULL DEFAULT 0,
 	PRIMARY KEY(schedule_id, player_id));
-	
+
 CREATE TABLE team_stats
 (  schedule_id INT(10),
 	team_id INT(10),
@@ -57,16 +55,23 @@ CREATE TABLE team_stats
 	third_quarter INT(2) NOT NULL DEFAULT 0,
 	fourth_quarter INT(2) NOT NULL DEFAULT 0,
 	overtime INT(2) NOT NULL DEFAULT 0,
-	highlights VARCHAR(255) NOT NULL,
+	highlights VARCHAR(255) NOT NULL DEFAULT '',
+	submitted BOOLEAN DEFAULT 0,
 	PRIMARY KEY(schedule_id, team_id));
+
+ALTER TABLE ALLITEMS CHANGE itemid itemid INT(10)AUTO_INCREMENT PRIMARY KEY;
+ALTER TABLE users ADD type int(10) NOT NULL DEFAULT 1;
+ALTER TABLE users ADD email VARCHAR(255) NOT NULL DEFAULT '';
+
+INSERT INTO user_types (name, description) VALUES ('regular', 'regular coach');
+INSERT INTO user_types (name, description) VALUES ('admin', 'admin super user. tim, bob, kevin');
+
+INSERT INTO schedule (id,game_day, home_team, home_id, home_score, road_team, road_id, road_score) VALUE (153, '2017-01-13', 'Penncrest', 1, 0, 'Conestoga', 2, 0);	
 
 REPLACE INTO player_points (schedule_id, player_id, one_points) VALUES (0, 1, one_points + 1);
 REPLACE INTO player_points SET one_points=one_points + 1 WHERE schedule_id=0 AND player_id=1;
 
 INSERT INTO player_points (schedule_id, player_id) VALUES (0, 1) ON DUPLICATE KEY UPDATE one_points = one_points + 1;
-	
-INSERT INTO users (phone_number, first_name, last_name, password, team_id) VALUES ("6104573819", "Timothy", "McKeown", "tmckeown1", 1);
-INSERT INTO users (phone_number, first_name, last_name, password, team_id) VALUES ("6108121272", "Bobb", "Higgins", "bobhiggins", 1);
 	
 INSERT INTO leagues (league_name) VALUE ("Central");
 

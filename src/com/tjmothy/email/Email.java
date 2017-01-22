@@ -1,85 +1,48 @@
 package com.tjmothy.email;
 
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.ArrayList;
 
 public class Email
 {
-	private String name = "";
-	private String company = "";
-	private String phone = "";
-	private String comments = "";
-	private String host = "localhost";
-	Properties properties = System.getProperties();
+	private String subject = "Basketball stats";
+
+	private String body = "";
+
+	private ArrayList<String> recipients = new ArrayList<>();
 
 	public Email()
 	{
-		properties.setProperty("mail.smtp.host", host);
-		//Session session = Session.getDefaultInstance(properties);
-	}
-
-	public Email(HashMap<String, String> hm)
-	{
-		init(hm);
-	}
-
-	private void init(HashMap<String, String> hm)
-	{
-		setName(hm.get("name"));
-		setCompany(hm.get("name"));
-		setPhone(hm.get("name"));
-		setComments(hm.get("name"));
+		recipients.add("mckeown.timothy@gmail.com");
+		recipients.add("rwhiggins2@gmail.com");
+		// recipients.add("sports@delcotimes.com");
+		// recipients.add("highschoolscores@philly.com");
+		// recipients.add("spiff10@verizon.net");
+		recipients.add("kevindank@gmail.com");
 	}
 
 	// Setter methods = comments
-	public void setName(String name)
+	public void setSubject(String subject)
 	{
-		this.name = name;
+		this.subject = subject;
 	}
 
-	public void setCompany(String company)
+	public String getSubject()
 	{
-		this.company = company;
+		return this.subject;
 	}
 
-	public void setPhone(String phone)
+	public void setBody(String body)
 	{
-		this.phone = phone;
+		this.body = body;
 	}
 
-	public void setComments(String comments)
+	public String getBody()
 	{
-		this.comments = comments;
+		return this.body;
 	}
 
-	// Getter methods
-	public String getName()
+	public ArrayList<String> getRecipients()
 	{
-		return this.name;
-	}
-
-	public String getCompany()
-	{
-		return this.company;
-	}
-
-	public String getPhone()
-	{
-		return this.phone;
-	}
-
-	public String getComments()
-	{
-		return this.comments;
-	}
-	
-	public void setHost(String host)
-	{
-		this.host = host;
-	}
-	
-	public String getHost()
-	{
-		return this.host;
+		return this.recipients;
 	}
 }

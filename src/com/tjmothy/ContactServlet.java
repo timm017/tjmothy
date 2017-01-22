@@ -99,7 +99,7 @@ public class ContactServlet extends HttpServlet
 			hm.put("company", request.getParameter("company"));
 			hm.put("phone", request.getParameter("phone"));
 			hm.put("comments", request.getParameter("comments"));
-			Email e = new Email(hm);
+//			Email e = new Email(hm);
 		}
 
 		sb.append("</outertag>");
