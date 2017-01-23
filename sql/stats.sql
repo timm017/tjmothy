@@ -1,3 +1,5 @@
+use stats;
+
 CREATE TABLE users
 ( id int(10) NOT NULL auto_increment,
 	phone_number VARCHAR(10) NOT NULL,
