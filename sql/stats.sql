@@ -25,6 +25,9 @@ CREATE TABLE teams
     school_name VARCHAR(255) NOT NULL,
 	team_name VARCHAR(255) NOT NULL,
 	league_id INT(3),
+	team_wins INT(2) DEFAULT 0,
+	team_loses INT(2) DEFAULT 0,
+	teamscol VARCHAR(45) DEFAULT ''
 	PRIMARY KEY(id) );
 
 CREATE TABLE players
@@ -56,6 +59,13 @@ CREATE TABLE team_stats
 	highlights VARCHAR(255) NOT NULL DEFAULT '',
 	submitted BOOLEAN DEFAULT 0,
 	PRIMARY KEY(schedule_id, team_id));
+	
+CREATE TABLE sports
+( id INT(2) NOT NULL auto_increment, 
+	sport VARCHAR(255) NOT NULL,
+	gender CHAR(1) NOT NULL,
+	description VARCHAR(255),
+	PRIMARY KEY(id) );
 
 ALTER TABLE ALLITEMS CHANGE itemid itemid INT(10)AUTO_INCREMENT PRIMARY KEY;
 ALTER TABLE users ADD type int(10) NOT NULL DEFAULT 1;

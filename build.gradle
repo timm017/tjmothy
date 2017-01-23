@@ -15,7 +15,7 @@ dependencies {
 // JDK version source compatibility
 sourceCompatibility = 1.7
 // project version
-version = '1.0'
+version = '1.0.1'
 // WAR file name
 war.baseName = 'tjmothy-war-test'
 // Web directory, overrides the default value "webapp"
