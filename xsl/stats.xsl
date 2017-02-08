@@ -20,7 +20,7 @@
               <h2>
                 <strong>
                   <xsl:value-of select="my_team/team/school_name" />
-                  Basketball stats.
+                  <xsl:text> Basketball stats.</xsl:text>
                 </strong>
               </h2>
             </p>
@@ -89,9 +89,9 @@
     <xsl:variable name="mySchool" select="/outertag/my_team/team/school_name" />
     <p>
       <span id="my-team-players-toggle">
-        Open/Close
+        <xsl:text> Open/Close</xsl:text>
         <xsl:value-of select="$mySchool" />
-        Players
+        <xsl:text>Players</xsl:text>
       </span>
     </p>
     <div id="my-team-players-container">
@@ -103,9 +103,9 @@
     <xsl:variable name="enemySchool" select="/outertag/enemy_team/team/school_name" />
     <p>
       <span id="enemy-team-players-toggle">
-        Open/Close
+        <xsl:text> Open/Close</xsl:text>
         <xsl:value-of select="$enemySchool" />
-        Players
+        <xsl:text> Players</xsl:text>
       </span>
     </p>
     <div id="enemy-team-players-container">

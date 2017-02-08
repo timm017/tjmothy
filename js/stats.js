@@ -22,8 +22,20 @@
 	$(document).on('click', 'span#enemy-team-players-toggle', function(event) {
 		$('div#enemy-team-players-container').toggle();
 	});
+	$(document).on('click', 'div#player-container table caption', function(event) {
+		console.log("clicked span");
+		$(this).siblings('tbody').toggle();
+	});
 	$('div#enemy-team-players-container').hide();
+	collapseAllPlayers();
 }
+ 
+ function collapseAllPlayers()
+ {
+	 $("div#player-container table tbody").each(function() {
+		 $(this).hide();
+	 });
+ }
  
  /**
   * Updates the total points for that particular player

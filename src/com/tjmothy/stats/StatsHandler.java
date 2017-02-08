@@ -119,7 +119,7 @@ public class StatsHandler extends HttpServlet
 		String phoneNumber = (String) session.getAttribute(SessionAttributes.phonenumber.name());
 		if(!statsBean.isValidPhoneNumber(phoneNumber))
 		{
-			System.out.println("Phone number invalid, logging user out");
+			System.err.println("Phone number invalid, logging user out");
 			subcmd = "logout";
 		}
 		// Log user out, clear sessions
@@ -164,8 +164,7 @@ public class StatsHandler extends HttpServlet
 			}
 			catch (NumberFormatException nfe)
 			{
-				System.out.println("Error converting score OR playerId to integer: " + nfe.getMessage());
-				;
+				System.err.println("Error converting score OR playerId to integer: " + nfe.getMessage());
 			}
 			statsBean.updatePlayerScore(realPlayerId, score, change);
 		}
@@ -186,7 +185,7 @@ public class StatsHandler extends HttpServlet
 			}
 			catch (NumberFormatException nfe)
 			{
-				System.out.println("Error converting score OR playerId to integer: " + nfe.getMessage());
+				System.err.println("Error converting score OR playerId to integer: " + nfe.getMessage());
 			}
 			statsBean.updateBoxScore(quarter, realScore, realTeamId, realScheduleId);
 		}
@@ -202,8 +201,7 @@ public class StatsHandler extends HttpServlet
 			}
 			catch (NumberFormatException nfe)
 			{
-				System.out.println("Error converting teamId to integer: " + nfe.getMessage());
-				;
+				System.err.println("Error converting teamId to integer: " + nfe.getMessage());
 			}
 			statsBean.updatePlayerScore(realTeamId, score, quarter);
 		}
@@ -221,7 +219,7 @@ public class StatsHandler extends HttpServlet
 			}
 			catch (NumberFormatException nfe)
 			{
-				System.out.println("Error converting score OR playerId to integer: " + nfe.getMessage());
+				System.err.println("Error converting score OR playerId to integer: " + nfe.getMessage());
 			}
 			statsBean.updateHighlights(highlights, realTeamId, realScheduleId);
 		}
@@ -241,7 +239,7 @@ public class StatsHandler extends HttpServlet
 			}
 			catch (NumberFormatException nfe)
 			{
-				System.out.println("Error converting score OR playerId to integer: " + nfe.getMessage());
+				System.err.println("Error converting score OR playerId to integer: " + nfe.getMessage());
 			}
 			game = statsBean.gameInfo(realTeamId, StatsBean.getTodayDate());
 			// Only mark as submitted for YOUR team (realTeamId)
@@ -276,7 +274,7 @@ public class StatsHandler extends HttpServlet
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append(innerSB.toString());
 		sb.append("</outertag>");
-		System.out.println(sb.toString());
+//		System.out.println(sb.toString());
 		StringReader xml = new StringReader(sb.toString());
 
 		try
@@ -316,7 +314,7 @@ public class StatsHandler extends HttpServlet
 			email.setBody(out.toString());
 			try
 			{
-				Emailer emailer = new Emailer(email);
+				new Emailer(email);
 			}
 			catch (MessagingException me)
 			{

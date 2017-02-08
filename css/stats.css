@@ -18,7 +18,7 @@ body {
 	-webkit-box-shadow: 0 0 3px 1px;
 	box-shadow: 0 0 3px 1px #CCC;
 	font-family: FreeSans;
-	overflow: hidden;
+	overflow: scroll;
 	padding: 15px 15px 15px 15px;
 	background-color: #FFF;
 }
@@ -48,6 +48,7 @@ table tr {
 
 table caption {
 	text-size: 1.5em;
+	white-space: nowrap;
 }
 
 table#team-container {
@@ -165,10 +166,12 @@ span#my-team-players-toggle {
 	align: left;
 	font-size: 30px;
 	color: blue;
+	cursor: s-resize;
 }
 
 span#enemy-team-players-toggle {
 	align: left;
 	font-size: 30px;
 	color: blue;
+	cursor: s-resize;
 }
