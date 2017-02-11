@@ -254,6 +254,12 @@ public class StatsHandler extends HttpServlet
 			int totalEnemy = statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId);
 			statsBean.submitTeamTotal(totalMy, realScheduleId, submitMyTeam);
 			statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
+			// Update ranking from view tables for each team
+			statsBean.updateTeamRanking(submitMyTeam);
+			statsBean.updateTeamRanking(submitEnemyTeam);
+			// Incremement either win or losses column for each team
+			statsBean.updateWinLoss(realTeamId, (totalMy > totalEnemy));
+			statsBean.updateWinLoss(realEnemyTeamId, (totalEnemy > totalMy));
 			innerSB.append(statsBean.getPlayersForTeam(realTeamId, true));
 			innerSB.append(statsBean.getPlayersForTeam(realEnemyTeamId, false));
 			innerSB.append(submitMyTeam.toXML());

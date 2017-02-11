@@ -13,11 +13,11 @@ public class Email
 	public Email()
 	{
 		recipients.add("mckeown.timothy@gmail.com");
-		recipients.add("rwhiggins2@gmail.com");
+		 recipients.add("rwhiggins2@gmail.com");
+		 recipients.add("kevindank@gmail.com");
 		// recipients.add("sports@delcotimes.com");
 		// recipients.add("highschoolscores@philly.com");
 		// recipients.add("spiff10@verizon.net");
-		recipients.add("kevindank@gmail.com");
 	}
 
 	// Setter methods = comments

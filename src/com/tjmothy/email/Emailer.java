@@ -58,7 +58,7 @@ public class Emailer
 		// generateMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress("test2@crunchify.com"));
 		generateMailMessage.setSubject(email.getSubject());
 		String emailBody = email.getBody();
-		System.out.println(email.getBody());
+//		System.out.println(email.getBody());
 		generateMailMessage.setContent(emailBody, "text/html; charset=utf-8");
 		System.out.println("Mail Session has been created successfully..");
 

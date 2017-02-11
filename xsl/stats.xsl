@@ -3,7 +3,9 @@
 
   <xsl:variable name="subcmd" select="/outertag/subcmd" />
 
-  <xsl:variable name="noGame" select="//game/no_game_today" />
+  <xsl:variable name="noGame" select="//game[1]/no_game_today" />
+  
+  <xsl:variable name="scheduleId" select="//game[1]/schedule_id" />
 
   <xsl:template match="/outertag">
     <html>
@@ -115,7 +117,7 @@
 
   <xsl:template match="enemy_team">
     <xsl:variable name="teamId" select="team/id" />
-    <table id="enemy-team-container" data-schedule-id="{//game/schedule_id}" data-team-id="{$teamId}">
+    <table id="enemy-team-container" data-schedule-id="{$scheduleId}" data-team-id="{$teamId}">
       <caption>
         <xsl:value-of select="team/school_name" />
         <xsl:text> Box Scores</xsl:text>
@@ -199,7 +201,7 @@
 
   <xsl:template match="my_team">
     <xsl:variable name="teamId" select="team/id" />
-    <table id="home-team-container" data-schedule-id="{//game/schedule_id}" data-team-id="{$teamId}">
+    <table id="home-team-container" data-schedule-id="{$scheduleId}" data-team-id="{$teamId}">
       <caption>
         <xsl:value-of select="team/school_name" />
         <xsl:text> Box Scores</xsl:text>
@@ -299,7 +301,7 @@
         <input type="hidden" name="subcmd" value="final-submit" />
         <input type="hidden" name="teamId" value="{/outertag/my_team/team/id}" />
         <input type="hidden" name="enemyTeamId" value="{/outertag/enemy_team/team/id}" />
-        <input type="hidden" name="scheduleId" value="{/outertag/game/schedule_id}" />
+        <input type="hidden" name="scheduleId" value="{$scheduleId}" />
       </form>
     </p>
   </xsl:template>
