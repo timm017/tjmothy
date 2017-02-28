@@ -21,7 +21,7 @@ public class LogInOutBean
 
 	public enum Column
 	{
-		id, first_name, last_name, user_name, email, password
+		id, first_name, last_name, user_name, email, password, phone_number
 	}
 
 	public LogInOutBean()
@@ -45,7 +45,7 @@ public class LogInOutBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tprops.getConnection());
-			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.user_name.name() + "=? AND " + Column.password + "=?");
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.phone_number.name() + "=? AND " + Column.password + "=?");
 			pstmt.setString(1, username);
 			pstmt.setString(2, Encryption.md5(password));
 			rs = pstmt.executeQuery();

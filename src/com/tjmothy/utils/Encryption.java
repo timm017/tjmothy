@@ -32,6 +32,11 @@ public class Encryption
 			digest.update(input.getBytes(), 0, input.length());
 			// Converts message digest value in base 16 (hex)
 			md5 = new BigInteger(1, digest.digest()).toString(16);
+			// Pad front with zeros b/c md5 sometimes cuts off before 32 chars
+			while (md5.length() < 32)
+			{
+				md5 = "0" + md5;
+			}
 		}
 		catch (NoSuchAlgorithmException e)
 		{

@@ -70,6 +70,12 @@ CREATE TABLE sports
 	gender CHAR(1) NOT NULL,
 	description VARCHAR(255),
 	PRIMARY KEY(id) );
+	
+CREATE TABLE season
+( id INT(2) NOT NULL auto_increment, 
+	season VARCHAR(10) NOT NULL,
+	year INT(4) NOT NULL,
+	PRIMARY KEY(id) );
 
 ALTER TABLE teams MODIFY COLUMN team_wins INT(2) NOT NULL DEFAULT 0;
 ALTER TABLE teams MODIFY COLUMN rank DECIMAL(4,3) NOT NULL DEFAULT 0.000;
@@ -80,7 +86,9 @@ ALTER TABLE teams ADD sport INT(2) DEFAULT 0;
 INSERT INTO user_types (name, description) VALUES ('regular', 'regular coach');
 INSERT INTO user_types (name, description) VALUES ('admin', 'admin super user. tim, bob, kevin');
 
-INSERT INTO sports (sport, gender, description) VALUES ('Basketball', 'G', 'Girls Basketball');
+INSERT INTO sports (sport, gender, description) VALUES ('Basketball', 'B', 'Boys Basketball');
+
+INSERT INTO season (season, year) VALUES ('Fall', 2017);
 
 INSERT INTO schedule (id,game_day, home_team, home_id, home_score, road_team, road_id, road_score) VALUE (153, '2017-01-13', 'Penncrest', 1, 0, 'Conestoga', 2, 0);	
 

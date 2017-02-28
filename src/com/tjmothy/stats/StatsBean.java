@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.tjmothy.utils.TProperties;
@@ -20,7 +21,7 @@ public class StatsBean
 
 	public enum Column
 	{
-		team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls;
+		sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls;
 	}
 
 	private TProperties tProps;
@@ -273,7 +274,6 @@ public class StatsBean
 		}
 		try
 		{
-			System.out.println("Connection: " + this.tProps.getConnection());
 			conn = DriverManager.getConnection(this.tProps.getConnection());
 			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.phone_number.name() + "=? AND " + Column.password.name() + "=?");
 			pstmt.setString(1, phoneNumber);
@@ -972,106 +972,6 @@ public class StatsBean
 		}
 		return isValid;
 	}
-
-	/**
-	 * Trouble updating with View table:
-	 *   Update rank from penncrest_table join teams set rank = (sum(win_points)+ sum(schedule_points)+sum(bonus_points))/sum(game_played) from penncrest_table where school_name = Penncrest
-	 * 
-	 * Valid query for getting ranking:
-	 *   select (sum(win_points)+ sum(schedule_points)+sum(bonus_points))/sum(game_played) from penncrest_table
-	 *   
-	 * Might need 2 queries
-	 * 
-	 * @param team
-	 */
-	public void updateTeamRanking(Team team)
-	{
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String query;
-		double rank = calculateRank(team);
-		System.out.println(team.getSchoolName() + " - " + rank);
-		try
-		{
-			Class.forName(TProperties.DRIVERS);
-			conn = DriverManager.getConnection(tProps.getConnection());
-			query = "UPDATE " + Table.teams.name() + " SET " + Column.rank.name() + "=? WHERE id=?";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setDouble(1, rank);
-			pstmt.setInt(2, team.getId());
-			pstmt.executeUpdate();
-		}
-		catch (Exception e)
-		{
-			System.out.println("StatsBean.updateTeamRankings(): " + e.getMessage());
-		}
-		finally
-		{
-			try
-			{
-				if (conn != null)
-					conn.close();
-				if (pstmt != null)
-					pstmt.close();
-				if (rs != null)
-					rs.close();
-			}
-			catch (Exception e)
-			{
-				;
-			}
-		}
-	}
-	
-	/**
-	 * After each game we will calculate the team ranking based on opponent and schedule.
-	 * @param team
-	 * @return
-	 */
-	private double calculateRank(Team team)
-	{
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		double rank = 0.0;
-		String tableName = getViewTable(team.getSchoolName());
-
-		try
-		{
-			Class.forName(TProperties.DRIVERS);
-			conn = DriverManager.getConnection(tProps.getConnection());
-			String query = "SELECT (SUM(win_points) + SUM(schedule_points) + SUM(bonus_points)) / SUM(game_played) AS " + Column.rank.name() + " FROM " + tableName;
-			System.out.println("rank query: " + query);
-			pstmt = conn.prepareStatement(query);
-			rs = pstmt.executeQuery();
-			while (rs.next())
-			{
-				rank = rs.getDouble(Column.rank.name());
-			}
-		}
-		catch (Exception e)
-		{
-			System.out.println("StatsBean.calculateRanking(): " + e.getMessage());
-		}
-		finally
-		{
-			try
-			{
-				if (conn != null)
-					conn.close();
-				if (pstmt != null)
-					pstmt.close();
-				if (rs != null)
-					rs.close();
-			}
-			catch (Exception e)
-			{
-				;
-			}
-		}
-		return rank;
-	}
 	
 	/**
 	 * Update either the win or loss column for each playing team.
@@ -1116,16 +1016,84 @@ public class StatsBean
 			}
 		}
 	}
-
-	/**
-	 * Get the view table from the school name.(i.e. garnet_valley_table)
-	 * 
-	 * @param schoolName
-	 * @return
-	 */
-	private String getViewTable(String schoolName)
+	
+	public void updateAllTeamRankings(int teamId, boolean win)
 	{
-		final String SUFFIX = "_table";
-		return schoolName.replaceAll(" ", "_").toLowerCase() + SUFFIX;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query;
+		String column = (win) ? Column.team_wins.name() : Column.team_loses.name();
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			query = "UPDATE " + Table.teams.name() + " SET " + column + "=" + column + " + 1 WHERE " + Column.id.name() + "=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, teamId);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updateWinLoss(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	public ArrayList<Integer> getTeamsForRankings(int sport, int season)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Integer> teams = new ArrayList<>();
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			pstmt = conn.prepareStatement("SELECT " + Column.id.name() + " FROM " + Table.teams.name() + " WHERE " + Column.sport.name() + "=? AND " + Column.season.name() + "=?");
+			pstmt.setInt(1, sport);
+			pstmt.setInt(2, season);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				// TODO: add to teams
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.isHomeTeam(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return teams;
 	}
 }

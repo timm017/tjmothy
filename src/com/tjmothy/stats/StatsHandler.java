@@ -26,6 +26,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import com.tjmothy.email.Email;
 import com.tjmothy.email.Emailer;
+import com.tjmothy.users.LogInOutBean;
 import com.tjmothy.utils.PathHelper;
 
 @WebServlet("/StatsHandler")
@@ -82,9 +83,10 @@ public class StatsHandler extends HttpServlet
 		}
 		if (subcmd.equals("login"))
 		{
+			LogInOutBean liob = new LogInOutBean();
 			String phoneNumber = request.getParameter("phonenumber");
 			String password = request.getParameter("password");
-			if (statsBean.login(phoneNumber, password))
+			if (liob.logIn(phoneNumber, password))
 			{
 				user = statsBean.userInfo(phoneNumber);
 				game = statsBean.gameInfo(user.getTeamId(), StatsBean.getTodayDate());
@@ -254,9 +256,6 @@ public class StatsHandler extends HttpServlet
 			int totalEnemy = statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId);
 			statsBean.submitTeamTotal(totalMy, realScheduleId, submitMyTeam);
 			statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
-			// Update ranking from view tables for each team
-			statsBean.updateTeamRanking(submitMyTeam);
-			statsBean.updateTeamRanking(submitEnemyTeam);
 			// Incremement either win or losses column for each team
 			statsBean.updateWinLoss(realTeamId, (totalMy > totalEnemy));
 			statsBean.updateWinLoss(realEnemyTeamId, (totalEnemy > totalMy));
