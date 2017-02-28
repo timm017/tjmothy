@@ -82,6 +82,7 @@ ALTER TABLE teams MODIFY COLUMN rank DECIMAL(4,3) NOT NULL DEFAULT 0.000;
 ALTER TABLE users ADD type int(10) NOT NULL DEFAULT 1;
 ALTER TABLE users ADD email VARCHAR(255) NOT NULL DEFAULT '';
 ALTER TABLE teams ADD sport INT(2) DEFAULT 0;
+ALTER TABLE teams ADD season INT(4) DEFAULT 1;
 
 INSERT INTO user_types (name, description) VALUES ('regular', 'regular coach');
 INSERT INTO user_types (name, description) VALUES ('admin', 'admin super user. tim, bob, kevin');

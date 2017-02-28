@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1017,20 +1018,42 @@ public class StatsBean
 		}
 	}
 	
-	public void updateAllTeamRankings(int teamId, boolean win)
+	/**
+	 * Calculates the team rank and updates the table
+	 * @param teamId
+	 */
+	public void updateTeamRanking(int teamId)
 	{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query;
-		String column = (win) ? Column.team_wins.name() : Column.team_loses.name();
 		try
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
-			query = "UPDATE " + Table.teams.name() + " SET " + column + "=" + column + " + 1 WHERE " + Column.id.name() + "=?";
+//			query = "UPDATE " + Table.teams.name() + " SET " + Column.rank.name() + "=? WHERE " + Column.id.name() + "=?";
+			query = "(SELECT" +
+			"sum(if(home_id=? AND home_score>road_score,5," +
+			"if(road_id=? AND road_score > home_score, 5, 0))) as win_points," +
+			"sum(if(home_id=? and home_score <> 0, 5 * team_wins/(team_wins + team_loses),0)" +
+			" + if(road_id=? and road_score <> 0, 5 * team_wins/(team_wins + team_loses),0)) as schedule_points, " +
+			"sum(if(home_id=? AND home_score>road_score," +
+			" 12 * team_wins/(team_wins+team_loses)," +
+			" if(road_id=? AND road_score > home_score," +
+			" 12 * team_wins/(team_wins + team_loses), 0))) as bonus_points" +
+			" FROM stats.schedule inner join stats.teams" +
+			" on schedule.home_id=? and teams.id = schedule.road_id" +
+			" or schedule.road_id=? and teams.id = schedule.home_id)";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, teamId);
+			pstmt.setInt(2, teamId);
+			pstmt.setInt(3, teamId);
+			pstmt.setInt(4, teamId);
+			pstmt.setInt(5, teamId);
+			pstmt.setInt(6, teamId);
+			pstmt.setInt(7, teamId);
+			pstmt.setInt(8, teamId);
 			pstmt.executeUpdate();
 		}
 		catch (Exception e)
@@ -1055,6 +1078,12 @@ public class StatsBean
 		}
 	}
 	
+	/**
+	 * Gets all the team IDS for that are going to have their power ranking updated
+	 * @param sport
+	 * @param season
+	 * @return
+	 */
 	public ArrayList<Integer> getTeamsForRankings(int sport, int season)
 	{
 		Connection conn = null;
@@ -1071,12 +1100,16 @@ public class StatsBean
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
-				// TODO: add to teams
+				teams.add(rs.getInt(Column.id.name()));
 			}
+		}
+		catch (SQLException sqle)
+		{
+			System.out.println("1 StatsBean.getTeamsForRankings(): " + sqle.getMessage());
 		}
 		catch (Exception e)
 		{
-			System.out.println("StatsBean.isHomeTeam(): " + e.getMessage());
+			System.out.println("2 StatsBean.getTeamsForRankings(): " + e.getMessage());
 		}
 		finally
 		{
