@@ -79,6 +79,8 @@ CREATE TABLE season
 	year INT(4) NOT NULL,
 	PRIMARY KEY(id) );
 
+CREATE UNIQUE INDEX scheduleTeam ON team_stats(schedule_id, team_id);
+	
 ALTER TABLE teams MODIFY COLUMN team_wins INT(2) NOT NULL DEFAULT 0;
 ALTER TABLE teams MODIFY COLUMN rank DECIMAL(4,3) NOT NULL DEFAULT 0.000;
 ALTER TABLE users ADD type int(10) NOT NULL DEFAULT 1;

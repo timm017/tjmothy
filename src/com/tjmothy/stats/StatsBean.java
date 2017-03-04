@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.tjmothy.stats.StatsBean.Column;
+import com.tjmothy.stats.StatsBean.Table;
 import com.tjmothy.utils.TProperties;
 
 public class StatsBean
@@ -56,7 +58,6 @@ public class StatsBean
 				sb.append("<id>" + playerId + "</id>");
 				sb.append("<first_name>" + firstName + "</first_name>");
 				sb.append("<last_name>" + lastName + "</last_name>");
-				System.out.println("scheduleID: " + getScheduleIdByDate(getTodayDate()));
 				sb.append(getCurrentPlayerScores(playerId, getScheduleIdByDate(getTodayDate())));
 				sb.append("</player>");
 			}
@@ -684,6 +685,7 @@ public class StatsBean
 	}
 
 	/**
+	 * Sets the submitted field to 1
 	 * 
 	 * @param teamId
 	 * @param scheduleId
@@ -706,7 +708,7 @@ public class StatsBean
 		}
 		catch (Exception e)
 		{
-			System.out.println("StatsBean.updatePlayerScore(): " + e.getMessage());
+			System.err.println("StatsBean.updatePlayerScore(): " + e.getMessage());
 		}
 		finally
 		{
@@ -772,6 +774,7 @@ public class StatsBean
 				;
 			}
 		}
+		System.out.println("isGameSubmitted: " + submitted + " team: " + teamId + " sch: " + scheduleId);
 		return submitted;
 	}
 
@@ -841,9 +844,7 @@ public class StatsBean
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
 			query = "UPDATE " + Table.schedule.name() + " SET " + (team.getIsHomeTeam() ? Column.home_score.name() : Column.road_score.name()) + "=? WHERE " + Column.id.name() + "=?";
-			System.out.println("query: " + query);
 			pstmt = conn.prepareStatement(query);
-			System.out.println(total + " " + scheduleId);
 			pstmt.setInt(1, total);
 			pstmt.setInt(2, scheduleId);
 			pstmt.executeUpdate();

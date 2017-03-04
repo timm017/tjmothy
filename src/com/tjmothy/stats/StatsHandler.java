@@ -7,6 +7,10 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
@@ -26,8 +30,11 @@ import javax.xml.transform.stream.StreamSource;
 
 import com.tjmothy.email.Email;
 import com.tjmothy.email.Emailer;
+import com.tjmothy.stats.StatsBean.Column;
+import com.tjmothy.stats.StatsBean.Table;
 import com.tjmothy.users.LogInOutBean;
 import com.tjmothy.utils.PathHelper;
+import com.tjmothy.utils.TProperties;
 
 @WebServlet("/StatsHandler")
 public class StatsHandler extends HttpServlet
@@ -244,8 +251,6 @@ public class StatsHandler extends HttpServlet
 				System.err.println("Error converting score OR playerId to integer: " + nfe.getMessage());
 			}
 			game = statsBean.gameInfo(realTeamId, StatsBean.getTodayDate());
-			// Only mark as submitted for YOUR team (realTeamId)
-			statsBean.submitTeamStats(realTeamId, realScheduleId);
 			xslSheet = "stats-recap.xsl";
 			Team submitMyTeam = statsBean.teamInfo(realTeamId);
 			Team submitEnemyTeam = statsBean.teamInfo(realEnemyTeamId);
@@ -256,9 +261,15 @@ public class StatsHandler extends HttpServlet
 			int totalEnemy = statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId);
 			statsBean.submitTeamTotal(totalMy, realScheduleId, submitMyTeam);
 			statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
-			// Incremement either win or losses column for each team
-			statsBean.updateWinLoss(realTeamId, (totalMy > totalEnemy));
-			statsBean.updateWinLoss(realEnemyTeamId, (totalEnemy > totalMy));
+			// If user refreshes submit page, don't update win/loss. Should we include Email? SubmitTotals?
+			if (!statsBean.isGameSubmitted(submitMyTeam.getId(), game.getScheduleId()))
+			{
+				// Incremement either win or losses column for each team
+				statsBean.updateWinLoss(realTeamId, (totalMy > totalEnemy));
+				statsBean.updateWinLoss(realEnemyTeamId, (totalEnemy > totalMy));
+			}
+			// Only mark as submitted for YOUR team (realTeamId)
+			statsBean.submitTeamStats(realTeamId, realScheduleId);
 			// Get XML for final submission recap
 			innerSB.append(statsBean.getPlayersForTeam(realTeamId, true));
 			innerSB.append(statsBean.getPlayersForTeam(realEnemyTeamId, false));
