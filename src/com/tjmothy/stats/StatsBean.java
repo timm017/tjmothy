@@ -1019,46 +1019,75 @@ public class StatsBean
 	}
 	
 	/**
-	 * Calculates the team rank and updates the table
+	 * 
+	 */
+	public void updateAllRanksForAllTeams()
+	{
+		System.out.println("Updating ALL team ranks ");
+		// getTeams (sport, season)
+		ArrayList<Integer> teamIds = getTeamsForRankings(1, 1);
+		Thread thread = new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for (Integer teamId : teamIds)
+				{
+					updateAllRanksForTeam(teamId);
+				}
+			}
+
+		});
+		thread.start();
+	}
+	
+	/**
+	 * Updates:
+	 *   Schedule Points
+	 *   Bonus Points
+	 *   Rank value 
+	 * @param teamId
+	 * @param season
+	 */
+	public void updateAllRanksForTeam(int teamId)
+	{
+		updateTeamSchedulePoints(teamId);
+		updateTeamBonusPoints(teamId);
+		updateTeamRank(teamId);
+	}
+	
+	/**
+	 * 
 	 * @param teamId
 	 */
-	public void updateTeamRanking(int teamId)
+	private void updateTeamSchedulePoints(int teamId)
 	{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query;
 		try
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
-//			query = "UPDATE " + Table.teams.name() + " SET " + Column.rank.name() + "=? WHERE " + Column.id.name() + "=?";
-			query = "(SELECT" +
-			"sum(if(home_id=? AND home_score>road_score,5," +
-			"if(road_id=? AND road_score > home_score, 5, 0))) as win_points," +
-			"sum(if(home_id=? and home_score <> 0, 5 * team_wins/(team_wins + team_loses),0)" +
-			" + if(road_id=? and road_score <> 0, 5 * team_wins/(team_wins + team_loses),0)) as schedule_points, " +
-			"sum(if(home_id=? AND home_score>road_score," +
-			" 12 * team_wins/(team_wins+team_loses)," +
-			" if(road_id=? AND road_score > home_score," +
-			" 12 * team_wins/(team_wins + team_loses), 0))) as bonus_points" +
-			" FROM stats.schedule inner join stats.teams" +
-			" on schedule.home_id=? and teams.id = schedule.road_id" +
-			" or schedule.road_id=? and teams.id = schedule.home_id)";
+			query = "UPDATE teams SET sch_pts = " +
+	                "(SELECT " +
+	                "IFNULL(SUM(IF(home_id = ? AND home_score <> 0, 5 * team_wins/(team_wins + team_loses),0) " +
+	                "+ IF(road_id = ? AND road_score <> 0, 5 * team_wins/(team_wins + team_loses),0)), 0) " +
+	                "FROM schedule INNER JOIN (SELECT * FROM teams) AS temp " +
+	                "ON schedule.home_id = ? AND temp.id = schedule.road_id " +
+	                "OR schedule.road_id = ? AND temp.id = schedule.home_id) " +
+	                "WHERE id = ?;";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, teamId);
 			pstmt.setInt(2, teamId);
 			pstmt.setInt(3, teamId);
 			pstmt.setInt(4, teamId);
 			pstmt.setInt(5, teamId);
-			pstmt.setInt(6, teamId);
-			pstmt.setInt(7, teamId);
-			pstmt.setInt(8, teamId);
 			pstmt.executeUpdate();
 		}
 		catch (Exception e)
 		{
-			System.out.println("StatsBean.updateWinLoss(): " + e.getMessage());
+			System.out.println("StatsBean.updateTeamSchedulePoints(): " + e.getMessage());
 		}
 		finally
 		{
@@ -1068,8 +1097,99 @@ public class StatsBean
 					conn.close();
 				if (pstmt != null)
 					pstmt.close();
-				if (rs != null)
-					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param teamId
+	 */
+	private void updateTeamBonusPoints(int teamId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String query;
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			query = "update teams " +
+					"set bns_pts = " +
+					"(select " +
+					"IFNULL(sum(if(home_id = ? AND home_score>road_score, " +
+					"12 * team_wins/(team_wins+team_loses), " +
+					"if(road_id = ? AND road_score > home_score, " +
+					"12 * team_wins/(team_wins + team_loses), 0))), 0) " +
+					"from schedule inner join (select * from teams) as temp " +
+					"on schedule.home_id = ? and temp.id = schedule.road_id " +
+					"or schedule.road_id = ? and temp.id = schedule.home_id) " +
+					"WHERE id = ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, teamId);
+			pstmt.setInt(2, teamId);
+			pstmt.setInt(3, teamId);
+			pstmt.setInt(4, teamId);
+			pstmt.setInt(5, teamId);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.err.println("StatsBean.updateTeamBonusPoints(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param teamId
+	 */
+	private void updateTeamRank(int teamId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String query;
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			query = "update teams " +
+					"set rank = " +
+					"(SELECT IFNULL((team_wins * 5 + sch_pts + bns_pts)/(team_wins + team_loses), 0)) " +
+					"where id = ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, teamId);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.err.println("StatsBean.updateTeamRank(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
 			}
 			catch (Exception e)
 			{
@@ -1105,11 +1225,11 @@ public class StatsBean
 		}
 		catch (SQLException sqle)
 		{
-			System.out.println("1 StatsBean.getTeamsForRankings(): " + sqle.getMessage());
+			System.err.println("1 StatsBean.getTeamsForRankings(): " + sqle.getMessage());
 		}
 		catch (Exception e)
 		{
-			System.out.println("2 StatsBean.getTeamsForRankings(): " + e.getMessage());
+			System.err.println("2 StatsBean.getTeamsForRankings(): " + e.getMessage());
 		}
 		finally
 		{

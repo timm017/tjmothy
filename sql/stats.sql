@@ -31,7 +31,9 @@ CREATE TABLE teams
 	team_loses INT(2) DEFAULT 0,
 	teamscol VARCHAR(45) DEFAULT ''
 	sport INT(2) DEFAULT 0,
-	rank DECIMAL(4,3) DEFAULT 0.000
+	sch_pts DECIMAL(7,4) NOT NULL DEFAULT 0.0000,
+    bns_pts DECIMAL(7,4) NOT NULL DEFAULT 0.0000,
+    rank DECIMAL(5,3) NOT NULL DEFAULT 0.000,
 	PRIMARY KEY(id) );
 
 CREATE TABLE players
@@ -83,6 +85,11 @@ ALTER TABLE users ADD type int(10) NOT NULL DEFAULT 1;
 ALTER TABLE users ADD email VARCHAR(255) NOT NULL DEFAULT '';
 ALTER TABLE teams ADD sport INT(2) DEFAULT 0;
 ALTER TABLE teams ADD season INT(4) DEFAULT 1;
+
+update teams set sch_pts = 0.0000 where sch_pts IS NULL;
+update teams set bns_pts = 0.0000 where bns_pts IS NULL;
+ALTER TABLE teams MODIFY COLUMN sch_pts DECIMAL(7,4) NOT NULL DEFAULT 0.0000;
+ALTER TABLE teams MODIFY COLUMN bns_pts DECIMAL(7,4) NOT NULL DEFAULT 0.0000;
 
 INSERT INTO user_types (name, description) VALUES ('regular', 'regular coach');
 INSERT INTO user_types (name, description) VALUES ('admin', 'admin super user. tim, bob, kevin');

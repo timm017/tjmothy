@@ -259,6 +259,7 @@ public class StatsHandler extends HttpServlet
 			// Incremement either win or losses column for each team
 			statsBean.updateWinLoss(realTeamId, (totalMy > totalEnemy));
 			statsBean.updateWinLoss(realEnemyTeamId, (totalEnemy > totalMy));
+			// Get XML for final submission recap
 			innerSB.append(statsBean.getPlayersForTeam(realTeamId, true));
 			innerSB.append(statsBean.getPlayersForTeam(realEnemyTeamId, false));
 			innerSB.append(submitMyTeam.toXML());
@@ -266,6 +267,8 @@ public class StatsHandler extends HttpServlet
 			innerSB.append(statsBean.getCurrentTeamScores(realTeamId, realScheduleId));
 			final String subjectLine = submitMyTeam.getSchoolName() + " stats";
 			final String emailXml = "<outertag><subcmd>" + subcmd + "</subcmd>" + innerSB.toString() + "</outertag>";
+			// Thread to loop through all teams and update their rankings
+			statsBean.updateAllRanksForAllTeams();
 			// Send email
 			sendEmail(emailXml, subjectLine);
 

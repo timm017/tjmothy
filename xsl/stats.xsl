@@ -91,7 +91,7 @@
     <xsl:variable name="mySchool" select="/outertag/my_team/team/school_name" />
     <p>
       <span id="my-team-players-toggle">
-        <xsl:text> Open/Close</xsl:text>
+        <xsl:text> Open/Close </xsl:text>
         <xsl:value-of select="$mySchool" />
         <xsl:text>Players</xsl:text>
       </span>
@@ -105,7 +105,7 @@
     <xsl:variable name="enemySchool" select="/outertag/enemy_team/team/school_name" />
     <p>
       <span id="enemy-team-players-toggle">
-        <xsl:text> Open/Close</xsl:text>
+        <xsl:text> Open/Close </xsl:text>
         <xsl:value-of select="$enemySchool" />
         <xsl:text> Players</xsl:text>
       </span>
