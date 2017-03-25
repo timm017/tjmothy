@@ -80,38 +80,20 @@ CREATE TABLE season
 	PRIMARY KEY(id) );
 
 CREATE UNIQUE INDEX scheduleTeam ON team_stats(schedule_id, team_id);
-	
+
+ALTER TABLE users MODIFY COLUMN phonenumber DECIMAL(4,3) NOT NULL DEFAULT 0.000;	
 ALTER TABLE teams MODIFY COLUMN team_wins INT(2) NOT NULL DEFAULT 0;
 ALTER TABLE teams MODIFY COLUMN rank DECIMAL(4,3) NOT NULL DEFAULT 0.000;
 ALTER TABLE users ADD type int(10) NOT NULL DEFAULT 1;
 ALTER TABLE users ADD email VARCHAR(255) NOT NULL DEFAULT '';
 ALTER TABLE teams ADD sport INT(2) DEFAULT 0;
 ALTER TABLE teams ADD season INT(4) DEFAULT 1;
-
-update teams set sch_pts = 0.0000 where sch_pts IS NULL;
-update teams set bns_pts = 0.0000 where bns_pts IS NULL;
 ALTER TABLE teams MODIFY COLUMN sch_pts DECIMAL(7,4) NOT NULL DEFAULT 0.0000;
 ALTER TABLE teams MODIFY COLUMN bns_pts DECIMAL(7,4) NOT NULL DEFAULT 0.0000;
 
-INSERT INTO user_types (name, description) VALUES ('regular', 'regular coach');
-INSERT INTO user_types (name, description) VALUES ('admin', 'admin super user. tim, bob, kevin');
+update teams set sch_pts = 0.0000 where sch_pts IS NULL;
+update teams set bns_pts = 0.0000 where bns_pts IS NULL;
 
 INSERT INTO sports (sport, gender, description) VALUES ('Basketball', 'B', 'Boys Basketball');
 
-INSERT INTO season (season, year) VALUES ('Fall', 2017);
-
 INSERT INTO schedule (id,game_day, home_team, home_id, home_score, road_team, road_id, road_score) VALUE (153, '2017-01-13', 'Penncrest', 1, 0, 'Conestoga', 2, 0);	
-
-REPLACE INTO player_points (schedule_id, player_id, one_points) VALUES (0, 1, one_points + 1);
-REPLACE INTO player_points SET one_points=one_points + 1 WHERE schedule_id=0 AND player_id=1;
-
-INSERT INTO player_points (schedule_id, player_id) VALUES (0, 1) ON DUPLICATE KEY UPDATE one_points = one_points + 1;
-	
-INSERT INTO leagues (league_name) VALUE ("Central");
-
-INSERT INTO teams (school_name, team_name, league_id) VALUE ("Penncrest", "Lions", 1);
-
-INSERT INTO players (first_name, last_name, team_id) VALUE ("Timothy", "McKeown", 1);
-INSERT INTO players (first_name, last_name, team_id) VALUE ("Bob", "Higgins", 1);
-INSERT INTO players (first_name, last_name, team_id) VALUE ("Robbie", "Higgins", 1);
-INSERT INTO players (first_name, last_name, team_id) VALUE ("Kevin", "Danko", 1);

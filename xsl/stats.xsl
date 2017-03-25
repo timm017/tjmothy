@@ -4,8 +4,10 @@
   <xsl:variable name="subcmd" select="/outertag/subcmd" />
 
   <xsl:variable name="noGame" select="//game[1]/no_game_today" />
-  
+
   <xsl:variable name="scheduleId" select="//game[1]/schedule_id" />
+
+  <xsl:variable name="sportId" select="//game[1]/sport" />
 
   <xsl:template match="/outertag">
     <html>
@@ -22,7 +24,7 @@
               <h2>
                 <strong>
                   <xsl:value-of select="my_team/team/school_name" />
-                  <xsl:text> Basketball stats.</xsl:text>
+                  <xsl:text> Team Stats</xsl:text>
                 </strong>
               </h2>
             </p>
@@ -38,6 +40,12 @@
               </xsl:when>
               <xsl:when test="$subcmd = 'logout'">
                 <xsl:call-template name="login" />
+              </xsl:when>
+              <xsl:when test="$sportId = '13'">
+                <xsl:message>
+                  baseball template
+                </xsl:message>
+                <xsl:call-template name="totalsOnly" />
               </xsl:when>
               <xsl:when test="$subcmd = 'stats-view'">
                 <xsl:call-template name="stats-view" />
@@ -414,6 +422,47 @@
 
   <xsl:template match="last_name">
     <xsl:apply-templates />
+  </xsl:template>
+
+  <xsl:template name="totalsOnly">
+    <xsl:variable name="myTeamId" select="my_team/team/id" />
+    <xsl:variable name="enemyTeamId" select="enemy_team/team/id" />
+    <table id="home-team-total-container" data-schedule-id="{$scheduleId}" data-team-id="{$myTeamId}">
+      <caption>
+        <xsl:value-of select="my_team/team/school_name" />
+        <xsl:text> Total Score</xsl:text>
+      </caption>
+      <tr>
+        <td>
+          <input id="total-{$myTeamId}" type="text" value="" />
+        </td>
+        <td>
+          <input class="button-total-score" data-team-id="{$myTeamId}" type="button" value="Update" />
+        </td>
+      </tr>
+    </table>
+    
+    <table id="enemy-team-total-container" data-schedule-id="{$scheduleId}" data-team-id="{$enemyTeamId}">
+      <caption>
+        <xsl:value-of select="enemy_team/team/school_name" />
+        <xsl:text> Total Score</xsl:text>
+      </caption>
+      <tr>
+        <td>
+          <input id="total-{$enemyTeamId}" type="text" value="" />
+        </td>
+        <td>
+          <input class="button-total-score" data-team-id="{$enemyTeamId}" type="button" value="Update" />
+        </td>
+      </tr>
+    </table>
+    <form action="./stats" method="POST" id="stats-form">
+        <input class="button-final-submit" type="submit" value="Final Submit!" />
+        <input type="hidden" name="subcmd" value="final-submit" />
+        <input type="hidden" name="teamId" value="{$myTeamId}" />
+        <input type="hidden" name="enemyTeamId" value="{$enemyTeamId}" />
+        <input type="hidden" name="scheduleId" value="{$scheduleId}" />
+      </form>
   </xsl:template>
 
   <xsl:template match="user|is_home_team|current_team_scores|game|id|subcmd|school_name|team_name|team_id|current_scores|league_id" />

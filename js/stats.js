@@ -26,6 +26,14 @@
 		console.log("clicked span");
 		$(this).siblings('tbody').toggle();
 	});
+	$(document).on('click', '#enemy-team-total-container input.button-total-score', function(event) {
+		console.log("click my");
+		getTotalScoreData(this, 'enemy');
+	});
+	$(document).on('click', '#home-team-total-container input.button-total-score', function(event) {
+		console.log("click enemy");
+		getTotalScoreData(this, 'home');
+	});
 	$('div#enemy-team-players-container').hide();
 	collapseAllPlayers();
 }
@@ -124,6 +132,17 @@ function getBoxScoreData(that, team) {
 	updateBoxScore(quarter, score, teamId, scheduleId, team);
 }
 
+function getTotalScoreData(that, team) {
+	var teamId = $(that).data("team-id");
+	var teamTable = $("table#" + team + "-team-total-container");
+	var scheduleId = $(teamTable).data("schedule-id");
+	var total = $("input#total-" + teamId).val();
+	console.log("team id: " + teamId);
+	console.log("schedule id: " + scheduleId);
+	console.log("total: " + total);
+	submitTeamTotal(total, teamId, scheduleId, team);
+}
+
 function updateHighlights(highlights, teamId, scheduleId) {
 	var url = './stats';
 	var subcmd = "update-highlights"
@@ -152,6 +171,19 @@ function updateBoxScore(quarter, score, teamId, scheduleId, team) {
 		async : false,
 		success : function(data) {
 			updateTeamTotal(team);
+		}
+	});
+}
+
+function submitTeamTotal(total, teamId, scheduleId, team) {
+	var url = './stats?subcmd=update-total-score&total='
+			+ total + '&teamId=' + teamId + '&scheduleId=' + scheduleId;
+	console.log("URL: " + url);
+	$.ajax({
+		type : "POST",
+		url : url,
+		async : false,
+		success : function(data) {
 		}
 	});
 }

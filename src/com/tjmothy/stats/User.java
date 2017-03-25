@@ -8,8 +8,8 @@ public class User
 	private String phoneNumber;
 	private int id;
 	private String email;
-	private int type;;
-
+	private int type;
+	
 	public User(int id, String firstName, String lastName, int teamId, String phoneNumber, String email, int type)
 	{
 		this.id = id;

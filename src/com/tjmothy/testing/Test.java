@@ -11,19 +11,19 @@ public class Test
 	public static void main(String[] args)
 	{
 
-		String[] atp = { "tmckeown", "penncrest"};
-		List<String> players = Arrays.asList(atp);
+		String[] passwords = { "player1", "player2", "player3"};
+		List<String> players = Arrays.asList(passwords);
 
 		// Old looping
-		for (String player : players)
+		for (String password : passwords)
 		{
-			System.out.print(player + "; ");
+			System.out.print(password + " : " + Encryption.md5(password));
 		}
 
 		// Using lambda expression and functional operations
-		players.forEach((player) -> System.out.print(Encryption.md5(player) + "\n "));
+//		players.forEach((player) -> System.out.print(Encryption.md5(player) + "\n "));
 
 		// Using double colon operator in Java 8
-		players.forEach(System.out::println);
+//		players.forEach(System.out::println);
 	}
 }

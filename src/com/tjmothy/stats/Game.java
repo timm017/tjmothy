@@ -9,8 +9,9 @@ public class Game
 	private String awayTeamSchool;
 	private String gameDay;
 	private boolean noGameToday = false;
+	private int sport = 0;
 
-	public Game(int scheduleId, int homeTeamId, int awayTeamId, String homeTeamSchool, String awayTeamSchool, String gameDay)
+	public Game(int scheduleId, int homeTeamId, int awayTeamId, String homeTeamSchool, String awayTeamSchool, String gameDay, int sport)
 	{
 		this.scheduleId = scheduleId;
 		this.homeTeamId = homeTeamId;
@@ -18,6 +19,7 @@ public class Game
 		this.awayTeamId = awayTeamId;
 		this.awayTeamSchool = awayTeamSchool;
 		this.gameDay = gameDay;
+		this.sport = sport;
 	}
 	
 	public Game()
@@ -94,6 +96,16 @@ public class Game
 	{
 		this.awayTeamSchool = awayTeamSchool;
 	}
+	
+	public void setSport(int sport)
+	{
+		this.sport = sport;
+	}
+	
+	public int getSport()
+	{
+		return this.sport;
+	}
 
 	public String toXML()
 	{
@@ -105,6 +117,7 @@ public class Game
 		sb.append("<away_team_id>" + this.getAwayTeamId() + "</away_team_id>");
 		sb.append("<away_team_school>" + this.getAwayTeamSchool() + "</away_team_school>");
 		sb.append("<no_game_today>" + this.getNoGameToday() + "</no_game_today>");
+		sb.append("<sport>" + this.getSport() + "</sport>");
 		sb.append("</game>");
 		return sb.toString();
 	}

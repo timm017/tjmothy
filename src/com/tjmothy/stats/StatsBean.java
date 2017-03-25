@@ -10,8 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import com.tjmothy.stats.StatsBean.Column;
-import com.tjmothy.stats.StatsBean.Table;
+import com.tjmothy.users.LogInOutBean;
 import com.tjmothy.utils.TProperties;
 
 public class StatsBean
@@ -117,6 +116,10 @@ public class StatsBean
 				int type = rs.getInt(Column.type.name());
 				user = new User(userId, firstName, lastName, teamId, phoneNumber, email, type);
 			}
+			if(user == null)
+			{
+				user = new User(0, "", "", getBaseballTeamId(phoneNumber), phoneNumber, "", 1);
+			}
 		}
 		catch (Exception e)
 		{
@@ -171,7 +174,8 @@ public class StatsBean
 				String homeSchool = rs.getString(Column.home_team.name());
 				int roadId = rs.getInt(Column.road_id.name());
 				String roadSchool = rs.getString(Column.road_team.name());
-				game = new Game(scheduleId, homeId, roadId, homeSchool, roadSchool, date);
+				int sport = rs.getInt(Column.sport.name());
+				game = new Game(scheduleId, homeId, roadId, homeSchool, roadSchool, date, sport);
 			}
 		}
 		catch (Exception e)
@@ -637,7 +641,7 @@ public class StatsBean
 		}
 	}
 
-	public int getTeamTotalScore(int teamId, int scheduleId)
+	public int getTeamTotalScoreFromQuarters(int teamId, int scheduleId)
 	{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -664,6 +668,64 @@ public class StatsBean
 		catch (Exception e)
 		{
 			System.out.println("StatsBean.getCurrentTeamScores(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return total;
+	}
+	
+	public int getTeamTotalScore(int teamId, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int total = 0;
+		String awayHomeColumn;
+		String awayHomeId;
+		if(isHomeTeamByScheduleId(teamId, scheduleId))
+		{
+			awayHomeColumn = Column.home_score.name();
+			awayHomeId = Column.home_id.name();
+		}
+		else
+		{
+			awayHomeColumn = Column.road_score.name();
+			awayHomeId = Column.road_id.name();
+		}
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			pstmt = conn.prepareStatement("SELECT " + awayHomeColumn + " FROM " + Table.schedule.name() + " WHERE " + awayHomeId + "=? AND " + Column.id.name() + "=?");
+			String query = "SELECT " + awayHomeColumn + " FROM " + Table.schedule.name() + " WHERE " + awayHomeId + "=" + teamId + " AND " + Column.id.name() + "=" + scheduleId;
+			System.out.println(query);
+			pstmt.setInt(1, teamId);
+			pstmt.setInt(2, scheduleId);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				total = rs.getInt(awayHomeColumn);
+				System.out.println("total: " + total);
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.getTeamTotalScore(): " + e.getMessage());
 		}
 		finally
 		{
@@ -806,6 +868,49 @@ public class StatsBean
 		catch (Exception e)
 		{
 			System.out.println("StatsBean.isHomeTeam(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return isHomeTeam;
+	}
+	
+	private boolean isHomeTeamByScheduleId(int teamId, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		boolean isHomeTeam = false;
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.id.name() + "=? AND " + Column.home_id.name() + "=?");
+			pstmt.setInt(1, scheduleId);
+			pstmt.setInt(2, teamId);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				isHomeTeam = true;
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.isHomeTeamByScheduleId(): " + e.getMessage());
 		}
 		finally
 		{
@@ -1249,5 +1354,92 @@ public class StatsBean
 			}
 		}
 		return teams;
+	}
+	
+	
+	/***********************************************
+	 * BASEBALL
+	 ***********************************************/
+	public int getBaseballTeamId(String username)
+	{
+		int teamId = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			pstmt = conn.prepareStatement("SELECT id FROM " + Table.teams.name() + " WHERE " + Column.school_name.name() + "=? AND " + Column.sport.name() + "=?");
+			pstmt.setString(1, username);
+			pstmt.setInt(2, LogInOutBean.BASEBALL_ID);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				teamId = rs.getInt(Column.id.name());
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.getBaseballTeamId(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return teamId;
+	}
+	
+	public void updateTeamTotal(int total, int teamId, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query;
+		String homeAwayColumn = (isHomeTeamByScheduleId(teamId, scheduleId)) ? Column.home_score.name() : Column.road_score.name();
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			query = "UPDATE " + Table.schedule.name() + " SET " + homeAwayColumn + "=? WHERE " + Column.id.name() + "=?";
+			System.out.println("UPDATE " + Table.schedule.name() + " SET " + homeAwayColumn + "=" + total + " WHERE " + Column.id.name() + "=" + scheduleId);
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, total);
+			pstmt.setInt(2, scheduleId);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updateTeamTotal(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
 	}
 }

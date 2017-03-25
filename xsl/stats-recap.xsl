@@ -5,6 +5,8 @@
 
   <xsl:variable name="noGame" select="//game/no_game_today" />
 
+  <xsl:variable name="sportId" select="/outertag/game/sport" />
+
   <xsl:template match="/outertag">
     <html>
       <head>
@@ -13,40 +15,78 @@
         <script language="JavaScript" src="js/stats.js" type="text/javascript" />
       </head>
       <body>
-        <div class="wrapper-stats">
-          <div id="stats">
-            <p>
-              <h2>
-                <strong>
-                  <xsl:value-of select="team/school_name" />
-                  Basketball Recap.
-                </strong>
-                <p>
-                  Total Score:
-                  <xsl:call-template name="totalTable" />
-                </p>
-                <p>
-                  <xsl:call-template name="myPlayerTable" />
-                </p>
-                <p>
-                  <xsl:call-template name="enemyPlayerTable" />
-                </p>
-              </h2>
-            </p>
-            <h2>
-              <xsl:value-of select="my_team/team/school_name" />
-              Highlights:
-            </h2>
-            <p>
-              <xsl:value-of select="my_team/current_team_scores/highlights" />
-            </p>
-          </div>
-        </div>
+        <xsl:choose>
+          <xsl:when test="$sportId = 13">
+            <xsl:call-template name="totalsOnlyBody" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="regularBody" />
+          </xsl:otherwise>
+        </xsl:choose>
         <script type="text/javascript">
           <xsl:text>statsBindings();</xsl:text>
         </script>
       </body>
     </html>
+  </xsl:template>
+
+  <xsl:template name="regularBody">
+    <div class="wrapper-stats">
+      <a href="./stats?subcmd=logout">Logout</a>
+      <div id="stats">
+        <p>
+          <h2>
+            <strong>
+              <xsl:value-of select="team/school_name" />
+              Recap.
+            </strong>
+            <p>
+              Total Score:
+              <xsl:call-template name="totalTable" />
+            </p>
+            <p>
+              <xsl:call-template name="myPlayerTable" />
+            </p>
+            <p>
+              <xsl:call-template name="enemyPlayerTable" />
+            </p>
+          </h2>
+        </p>
+        <h2>
+          <xsl:value-of select="my_team/team/school_name" />
+          Highlights:
+        </h2>
+        <p>
+          <xsl:value-of select="my_team/current_team_scores/highlights" />
+        </p>
+      </div>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="totalsOnlyBody">
+    <div class="wrapper-stats">
+      <a href="./stats?subcmd=logout">Logout</a>
+      <div id="stats">
+        <p>
+          <h2>
+            <strong>
+              <xsl:value-of select="team/school_name" />
+              Recap.
+            </strong>
+            <p>
+              <xsl:value-of select="my_team/team/school_name" />
+              Total Score:
+              <xsl:value-of select="my_team/total" />
+            </p>
+            <p>
+              <xsl:value-of select="enemy_team/team/school_name" />
+              Total Score:
+              <xsl:value-of select="enemy_team/total" />
+            </p>
+          </h2>
+        </p>
+      </div>
+    </div>
   </xsl:template>
 
   <xsl:template name="totalTable">

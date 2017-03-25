@@ -7,10 +7,6 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
@@ -30,11 +26,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import com.tjmothy.email.Email;
 import com.tjmothy.email.Emailer;
-import com.tjmothy.stats.StatsBean.Column;
-import com.tjmothy.stats.StatsBean.Table;
 import com.tjmothy.users.LogInOutBean;
 import com.tjmothy.utils.PathHelper;
-import com.tjmothy.utils.TProperties;
 
 @WebServlet("/StatsHandler")
 public class StatsHandler extends HttpServlet
@@ -84,7 +77,7 @@ public class StatsHandler extends HttpServlet
 			subcmd = "login";
 			if (session.getAttribute(SessionAttributes.logged_in.name()) != null && session.getAttribute(SessionAttributes.logged_in.name()).equals("true"))
 			{
-				// We are logged out, redirect to stats-view
+				// We are logged in, redirect to stats-view
 				subcmd = "stats-view";
 			}
 		}
@@ -93,6 +86,7 @@ public class StatsHandler extends HttpServlet
 			LogInOutBean liob = new LogInOutBean();
 			String phoneNumber = request.getParameter("phonenumber");
 			String password = request.getParameter("password");
+			// REGULAR
 			if (liob.logIn(phoneNumber, password))
 			{
 				user = statsBean.userInfo(phoneNumber);
@@ -100,7 +94,31 @@ public class StatsHandler extends HttpServlet
 				team = statsBean.teamInfo(user.getTeamId());
 				enemyTeam = statsBean.teamInfo((team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
 				System.out.println("enemy team home-> " + team.getIsHomeTeam() + " enemy teamId: " + (team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
-				// Create session variables, logged_in for webapp and phonenumber for authentication? 
+				// Create session variables, logged_in for webapp and phonenumber for authentication?
+				session.setAttribute(SessionAttributes.logged_in.name(), "true");
+				session.setAttribute(SessionAttributes.phonenumber.name(), phoneNumber);
+				if (!game.getNoGameToday())
+				{
+					subcmd = "stats-view";
+				}
+				innerSB.append(game.toXML());
+				// If game is already submitted, show them the recap
+				if (statsBean.isGameSubmitted(user.getTeamId(), game.getScheduleId()))
+				{
+					xslSheet = "stats-recap.xsl";
+				}
+			}
+			// BASEBALL
+			else if (liob.logInBaseball(phoneNumber, password))
+			{
+				// public User(int id, String firstName, String lastName, int teamId, String phoneNumber, String email, int type)
+				// user = new User(0, "", "", statsBean.getBaseballTeamId(phoneNumber), "", "", 1);
+				user = statsBean.userInfo(phoneNumber);
+				game = statsBean.gameInfo(user.getTeamId(), StatsBean.getTodayDate());
+				team = statsBean.teamInfo(user.getTeamId());
+				enemyTeam = statsBean.teamInfo((team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
+				System.out.println("enemy team home-> " + team.getIsHomeTeam() + " enemy teamId: " + (team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
+				// Create session variables, logged_in for webapp and phonenumber for authentication?
 				session.setAttribute(SessionAttributes.logged_in.name(), "true");
 				session.setAttribute(SessionAttributes.phonenumber.name(), phoneNumber);
 				if (!game.getNoGameToday())
@@ -123,16 +141,17 @@ public class StatsHandler extends HttpServlet
 				innerSB.append("</login>");
 			}
 		}
-		
+
 		// If phonenumber is invalid then user is not authenticated to execute anything below, log them out
 		String phoneNumber = (String) session.getAttribute(SessionAttributes.phonenumber.name());
-		if(!statsBean.isValidPhoneNumber(phoneNumber))
+		LogInOutBean liob = new LogInOutBean();
+		if (!statsBean.isValidPhoneNumber(phoneNumber) && !liob.logInBaseball(phoneNumber, "baseball"))
 		{
 			System.err.println("Phone number invalid, logging user out");
 			subcmd = "logout";
 		}
 		// Log user out, clear sessions
-		if(subcmd.equals("logout"))
+		if (subcmd.equals("logout"))
 		{
 			System.out.println("logging user out");
 			session.invalidate();
@@ -232,6 +251,27 @@ public class StatsHandler extends HttpServlet
 			}
 			statsBean.updateHighlights(highlights, realTeamId, realScheduleId);
 		}
+		else if (subcmd.equals("update-total-score"))
+		{
+			String total = request.getParameter("total");
+			String teamId = request.getParameter("teamId");
+			String scheduleId = request.getParameter("scheduleId");
+			int realTotal = -1;
+			int realTeamId = -1;
+			int realScheduleId = -1;
+			try
+			{
+				realTeamId = Integer.parseInt(teamId);
+				realScheduleId = Integer.parseInt(scheduleId);
+				realTotal = Integer.parseInt(total);
+			}
+			catch (NumberFormatException nfe)
+			{
+				System.err.println("Error converting score OR playerId to integer: " + nfe.getMessage());
+			}
+			statsBean.updateBoxScore("q1", 0, realTeamId, realScheduleId);
+			statsBean.updateTeamTotal(realTotal, realTeamId, realScheduleId);
+		}
 		else if (subcmd.equals("final-submit"))
 		{
 			String teamId = request.getParameter("teamId");
@@ -254,13 +294,24 @@ public class StatsHandler extends HttpServlet
 			xslSheet = "stats-recap.xsl";
 			Team submitMyTeam = statsBean.teamInfo(realTeamId);
 			Team submitEnemyTeam = statsBean.teamInfo(realEnemyTeamId);
-			innerSB.append("<my_team>" + submitMyTeam.toXML() + statsBean.getCurrentTeamScores(submitMyTeam.getId(), game.getScheduleId()) + "</my_team>");
-			innerSB.append("<enemy_team>" + submitEnemyTeam.toXML() + statsBean.getCurrentTeamScores(submitEnemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
-			// Set the total for MY & ENEMY teams in the "schedule" table
-			int totalMy = statsBean.getTeamTotalScore(realTeamId, realScheduleId);
-			int totalEnemy = statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId);
-			statsBean.submitTeamTotal(totalMy, realScheduleId, submitMyTeam);
-			statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
+			int totalMy = 0;
+			int totalEnemy = 0;
+			if (game.getSport() == LogInOutBean.BASEBALL_ID)
+			{
+				innerSB.append("<my_team>" + submitMyTeam.toXML() + "<total>" + statsBean.getTeamTotalScore(realTeamId, realScheduleId) + "</total></my_team>");
+				innerSB.append("<enemy_team>" + submitEnemyTeam.toXML() + "<total>" + statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId) + "</total></enemy_team>");
+				totalMy = statsBean.getTeamTotalScore(realTeamId, realScheduleId);
+			}
+			else
+			{
+				innerSB.append("<my_team>" + submitMyTeam.toXML() + statsBean.getCurrentTeamScores(submitMyTeam.getId(), game.getScheduleId()) + "</my_team>");
+				innerSB.append("<enemy_team>" + submitEnemyTeam.toXML() + statsBean.getCurrentTeamScores(submitEnemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
+				// Set the total for MY & ENEMY teams in the "schedule" table
+				totalMy = statsBean.getTeamTotalScoreFromQuarters(realTeamId, realScheduleId);
+				totalEnemy = statsBean.getTeamTotalScoreFromQuarters(realEnemyTeamId, realScheduleId);
+				statsBean.submitTeamTotal(totalMy, realScheduleId, submitMyTeam);
+				statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
+			}
 			// If user refreshes submit page, don't update win/loss. Should we include Email? SubmitTotals?
 			if (!statsBean.isGameSubmitted(submitMyTeam.getId(), game.getScheduleId()))
 			{
@@ -270,30 +321,29 @@ public class StatsHandler extends HttpServlet
 			}
 			// Only mark as submitted for YOUR team (realTeamId)
 			statsBean.submitTeamStats(realTeamId, realScheduleId);
+			innerSB.append(game.toXML());
 			// Get XML for final submission recap
 			innerSB.append(statsBean.getPlayersForTeam(realTeamId, true));
 			innerSB.append(statsBean.getPlayersForTeam(realEnemyTeamId, false));
+			innerSB.append(statsBean.getCurrentTeamScores(realTeamId, realScheduleId));
 			innerSB.append(submitMyTeam.toXML());
 			innerSB.append(submitEnemyTeam.toXML());
-			innerSB.append(statsBean.getCurrentTeamScores(realTeamId, realScheduleId));
 			final String subjectLine = submitMyTeam.getSchoolName() + " stats";
 			final String emailXml = "<outertag><subcmd>" + subcmd + "</subcmd>" + innerSB.toString() + "</outertag>";
 			// Thread to loop through all teams and update their rankings
 			statsBean.updateAllRanksForAllTeams();
 			// Send email
-			sendEmail(emailXml, subjectLine);
+			sendEmail(emailXml, subjectLine, (user == null) ? "timm017@yahoo.com" : user.getEmail());
 
 		}
 		ServletContext servletContext = getServletContext();
 		String contextPath = servletContext.getRealPath(File.separator);
-
 		PrintWriter out = response.getWriter();
-
 		StringBuffer sb = new StringBuffer("<outertag>");
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append(innerSB.toString());
 		sb.append("</outertag>");
-//		System.out.println(sb.toString());
+		System.out.println(sb.toString());
 		StringReader xml = new StringReader(sb.toString());
 
 		try
@@ -313,10 +363,16 @@ public class StatsHandler extends HttpServlet
 	/**
 	 * Send email using HTML created by stats-recap XSL sheet
 	 * 
-	 * @param xml - The XML to transform with stats-recap
-	 * @param subjectLine - Subjectline for the email
+	 * @param xml
+	 *            - The XML to transform with stats-recap
+	 * @param subjectLine
+	 *            - Subjectline for the email
+	 * 
+	 * @param email
+	 *            - The user's email to send the stats to
+	 * 
 	 */
-	private void sendEmail(String xml, String subjectLine)
+	private void sendEmail(String xml, String subjectLine, String userEmail)
 	{
 		try
 		{
@@ -329,6 +385,7 @@ public class StatsHandler extends HttpServlet
 			StringWriter out = new StringWriter();
 			transformer.transform(xmlDoc, new StreamResult(out));
 			Email email = new Email();
+			email.addEmail(userEmail);
 			email.setSubject(subjectLine);
 			email.setBody(out.toString());
 			try
