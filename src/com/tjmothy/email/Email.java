@@ -9,6 +9,8 @@ public class Email
 	private String body = "";
 
 	private ArrayList<String> recipients = new ArrayList<>();
+	
+	public final static String DEFAULT_EMAIL = "timm017@yahoo.com";
 
 	public Email()
 	{
@@ -47,7 +49,7 @@ public class Email
 		return this.recipients;
 	}
 	
-	public void addEmail(String email)
+	public void addRecipient(String email)
 	{
 		this.recipients.add(email);
 	}

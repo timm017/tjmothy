@@ -49,9 +49,10 @@ public class LogInOutBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tprops.getConnection());
-			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.phone_number.name() + "=? AND " + Column.password + "=?");
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE (" + Column.phone_number.name() + "=? OR "  + Column.email.name() + "=?) AND " + Column.password + "=?");
 			pstmt.setString(1, username);
-			pstmt.setString(2, Encryption.md5(password));
+			pstmt.setString(2, username);
+			pstmt.setString(3, Encryption.md5(password));
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{

@@ -103,8 +103,9 @@ public class StatsBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
-			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.phone_number.name() + "=?");
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.phone_number.name() + "=? OR " + Column.email.name() + "=?");
 			pstmt.setString(1, phoneNumber);
+			pstmt.setString(2, phoneNumber);
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
@@ -162,6 +163,7 @@ public class StatsBean
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
 			String query = "SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.game_day.name() + "=? AND (" + Column.home_id.name() + "=? OR " + Column.road_id.name() + "=?)";
+			System.out.println("SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.game_day.name() + "='" + date + "' AND (" + Column.home_id.name() + "=" + teamId + " OR " + Column.road_id.name() + "=" + teamId + ")");
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, date);
 			pstmt.setInt(2, teamId);

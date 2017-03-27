@@ -11,7 +11,7 @@ public class Test
 	public static void main(String[] args)
 	{
 
-		String[] passwords = { "player1", "player2", "player3"};
+		String[] passwords = { "baseball"};
 		List<String> players = Arrays.asList(passwords);
 
 		// Old looping

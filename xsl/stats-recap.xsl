@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <!-- True if calling this template for the email -->
+  <xsl:param name="email_template" />
+
   <xsl:variable name="subcmd" select="/outertag/subcmd" />
 
   <xsl:variable name="noGame" select="//game/no_game_today" />
@@ -32,7 +35,9 @@
 
   <xsl:template name="regularBody">
     <div class="wrapper-stats">
-      <a href="./stats?subcmd=logout">Logout</a>
+      <xsl:if test="email_template = 'true'">
+        <a href="./stats?subcmd=logout">Logout</a>
+      </xsl:if>
       <div id="stats">
         <p>
           <h2>
@@ -52,20 +57,24 @@
             </p>
           </h2>
         </p>
-        <h2>
-          <xsl:value-of select="my_team/team/school_name" />
-          Highlights:
-        </h2>
-        <p>
-          <xsl:value-of select="my_team/current_team_scores/highlights" />
-        </p>
+        <xsl:if test="my_team/current_team_scores/highlights != ''">
+          <h2>
+            <xsl:value-of select="my_team/team/school_name" />
+            Highlights:
+          </h2>
+          <p>
+            <xsl:value-of select="my_team/current_team_scores/highlights" />
+          </p>
+        </xsl:if>
       </div>
     </div>
   </xsl:template>
 
   <xsl:template name="totalsOnlyBody">
     <div class="wrapper-stats">
-      <a href="./stats?subcmd=logout">Logout</a>
+      <xsl:if test="email_template = 'true'">
+        <a href="./stats?subcmd=logout">Logout</a>
+      </xsl:if>
       <div id="stats">
         <p>
           <h2>

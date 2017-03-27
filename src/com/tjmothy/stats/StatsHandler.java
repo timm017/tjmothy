@@ -65,6 +65,7 @@ public class StatsHandler extends HttpServlet
 		HttpSession session = request.getSession(true);
 		String xslSheet = getServletConfig().getInitParameter("xslSheet");
 		String subcmd = request.getParameter("subcmd");
+		String outputMode = request.getParameter("outputMode");
 		System.out.println("POST: subcmd: " + subcmd);
 		StatsBean statsBean = new StatsBean();
 		StringBuilder innerSB = new StringBuilder();
@@ -333,7 +334,7 @@ public class StatsHandler extends HttpServlet
 			// Thread to loop through all teams and update their rankings
 			statsBean.updateAllRanksForAllTeams();
 			// Send email
-			sendEmail(emailXml, subjectLine, (user == null) ? "timm017@yahoo.com" : user.getEmail());
+			sendEmail(emailXml, subjectLine, (user == null) ? Email.DEFAULT_EMAIL : user.getEmail());
 
 		}
 		ServletContext servletContext = getServletContext();
@@ -343,7 +344,7 @@ public class StatsHandler extends HttpServlet
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append(innerSB.toString());
 		sb.append("</outertag>");
-		System.out.println(sb.toString());
+		// System.out.println(sb.toString());
 		StringReader xml = new StringReader(sb.toString());
 
 		try
@@ -382,10 +383,11 @@ public class StatsHandler extends HttpServlet
 			Source xslDoc = new StreamSource(contextPath + PathHelper.XSL_PATH + EMAIL_XSL);
 			Source xmlDoc = new StreamSource(new ByteArrayInputStream(xml.getBytes("utf-8")));
 			Transformer transformer = tFactory.newTransformer(xslDoc);
+			transformer.setParameter("email_template", "true");
 			StringWriter out = new StringWriter();
 			transformer.transform(xmlDoc, new StreamResult(out));
 			Email email = new Email();
-			email.addEmail(userEmail);
+			email.addRecipient(userEmail);
 			email.setSubject(subjectLine);
 			email.setBody(out.toString());
 			try
