@@ -23,7 +23,7 @@ public class StatsBean
 
 	public enum Column
 	{
-		sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls;
+		sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches;
 	}
 
 	private TProperties tProps;
@@ -117,7 +117,7 @@ public class StatsBean
 				int type = rs.getInt(Column.type.name());
 				user = new User(userId, firstName, lastName, teamId, phoneNumber, email, type);
 			}
-			if(user == null)
+			if (user == null)
 			{
 				user = new User(0, "", "", getBaseballTeamId(phoneNumber), phoneNumber, "", 1);
 			}
@@ -689,7 +689,7 @@ public class StatsBean
 		}
 		return total;
 	}
-	
+
 	public int getTeamTotalScore(int teamId, int scheduleId)
 	{
 		Connection conn = null;
@@ -698,7 +698,7 @@ public class StatsBean
 		int total = 0;
 		String awayHomeColumn;
 		String awayHomeId;
-		if(isHomeTeamByScheduleId(teamId, scheduleId))
+		if (isHomeTeamByScheduleId(teamId, scheduleId))
 		{
 			awayHomeColumn = Column.home_score.name();
 			awayHomeId = Column.home_id.name();
@@ -889,7 +889,7 @@ public class StatsBean
 		}
 		return isHomeTeam;
 	}
-	
+
 	private boolean isHomeTeamByScheduleId(int teamId, int scheduleId)
 	{
 		Connection conn = null;
@@ -1051,8 +1051,9 @@ public class StatsBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
-			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.phone_number.name() + "=?");
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.phone_number.name() + "=? OR " + Column.email.name() + "=?");
 			pstmt.setString(1, phoneNumber);
+			pstmt.setString(2, phoneNumber);
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
@@ -1081,7 +1082,7 @@ public class StatsBean
 		}
 		return isValid;
 	}
-	
+
 	/**
 	 * Update either the win or loss column for each playing team.
 	 * 
@@ -1125,15 +1126,15 @@ public class StatsBean
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
-	public void updateAllRanksForAllTeams()
+	public void updateAllRanksForAllTeams(int sport, int season)
 	{
 		System.out.println("Updating ALL team ranks ");
 		// getTeams (sport, season)
-		ArrayList<Integer> teamIds = getTeamsForRankings(1, 1);
+		ArrayList<Integer> teamIds = getTeamsForRankings(sport, season);
 		Thread thread = new Thread(new Runnable()
 		{
 			@Override
@@ -1141,29 +1142,34 @@ public class StatsBean
 			{
 				for (Integer teamId : teamIds)
 				{
-					updateAllRanksForTeam(teamId);
+					updateAllRanksForTeam(teamId, sport);
 				}
 			}
 
 		});
 		thread.start();
 	}
-	
+
 	/**
-	 * Updates:
-	 *   Schedule Points
-	 *   Bonus Points
-	 *   Rank value 
+	 * Updates: Schedule Points Bonus Points Rank value
+	 * 
 	 * @param teamId
 	 * @param season
 	 */
-	public void updateAllRanksForTeam(int teamId)
+	public void updateAllRanksForTeam(int teamId, int sport)
 	{
-		updateTeamSchedulePoints(teamId);
-		updateTeamBonusPoints(teamId);
-		updateTeamRank(teamId);
+		if (sport == LogInOutBean.BASEBALL_ID)
+		{
+
+		}
+		else
+		{
+			updateTeamSchedulePoints(teamId);
+			updateTeamBonusPoints(teamId);
+			updateTeamRank(teamId);
+		}
 	}
-	
+
 	/**
 	 * 
 	 * @param teamId
@@ -1177,14 +1183,8 @@ public class StatsBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
-			query = "UPDATE teams SET sch_pts = " +
-	                "(SELECT " +
-	                "IFNULL(SUM(IF(home_id = ? AND home_score <> 0, 5 * team_wins/(team_wins + team_loses),0) " +
-	                "+ IF(road_id = ? AND road_score <> 0, 5 * team_wins/(team_wins + team_loses),0)), 0) " +
-	                "FROM schedule INNER JOIN (SELECT * FROM teams) AS temp " +
-	                "ON schedule.home_id = ? AND temp.id = schedule.road_id " +
-	                "OR schedule.road_id = ? AND temp.id = schedule.home_id) " +
-	                "WHERE id = ?;";
+			query = "UPDATE teams SET sch_pts = " + "(SELECT " + "IFNULL(SUM(IF(home_id = ? AND home_score <> 0, 5 * team_wins/(team_wins + team_loses),0) " + "+ IF(road_id = ? AND road_score <> 0, 5 * team_wins/(team_wins + team_loses),0)), 0) " + "FROM schedule INNER JOIN (SELECT * FROM teams) AS temp " + "ON schedule.home_id = ? AND temp.id = schedule.road_id "
+					+ "OR schedule.road_id = ? AND temp.id = schedule.home_id) " + "WHERE id = ?;";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, teamId);
 			pstmt.setInt(2, teamId);
@@ -1212,7 +1212,7 @@ public class StatsBean
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param teamId
@@ -1226,17 +1226,8 @@ public class StatsBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
-			query = "update teams " +
-					"set bns_pts = " +
-					"(select " +
-					"IFNULL(sum(if(home_id = ? AND home_score>road_score, " +
-					"12 * team_wins/(team_wins+team_loses), " +
-					"if(road_id = ? AND road_score > home_score, " +
-					"12 * team_wins/(team_wins + team_loses), 0))), 0) " +
-					"from schedule inner join (select * from teams) as temp " +
-					"on schedule.home_id = ? and temp.id = schedule.road_id " +
-					"or schedule.road_id = ? and temp.id = schedule.home_id) " +
-					"WHERE id = ?";
+			query = "update teams " + "set bns_pts = " + "(select " + "IFNULL(sum(if(home_id = ? AND home_score>road_score, " + "12 * team_wins/(team_wins+team_loses), " + "if(road_id = ? AND road_score > home_score, " + "12 * team_wins/(team_wins + team_loses), 0))), 0) " + "from schedule inner join (select * from teams) as temp "
+					+ "on schedule.home_id = ? and temp.id = schedule.road_id " + "or schedule.road_id = ? and temp.id = schedule.home_id) " + "WHERE id = ?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, teamId);
 			pstmt.setInt(2, teamId);
@@ -1264,7 +1255,7 @@ public class StatsBean
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param teamId
@@ -1278,10 +1269,7 @@ public class StatsBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
-			query = "update teams " +
-					"set rank = " +
-					"(SELECT IFNULL((team_wins * 5 + sch_pts + bns_pts)/(team_wins + team_loses), 0)) " +
-					"where id = ?";
+			query = "update teams " + "set rank = " + "(SELECT IFNULL((team_wins * 5 + sch_pts + bns_pts)/(team_wins + team_loses), 0)) " + "where id = ?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, teamId);
 			pstmt.executeUpdate();
@@ -1305,9 +1293,10 @@ public class StatsBean
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets all the team IDS for that are going to have their power ranking updated
+	 * 
 	 * @param sport
 	 * @param season
 	 * @return
@@ -1357,8 +1346,7 @@ public class StatsBean
 		}
 		return teams;
 	}
-	
-	
+
 	/***********************************************
 	 * BASEBALL
 	 ***********************************************/
@@ -1404,7 +1392,7 @@ public class StatsBean
 		}
 		return teamId;
 	}
-	
+
 	public void updateTeamTotal(int total, int teamId, int scheduleId)
 	{
 		Connection conn = null;
@@ -1426,6 +1414,47 @@ public class StatsBean
 		catch (Exception e)
 		{
 			System.out.println("StatsBean.updateTeamTotal(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	public void updatePitchTotal(int playerId, int pitches, int scheduleId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query;
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			query = "INSERT INTO " + Table.player_points.name() + " (" + Column.schedule_id.name() + ", " + Column.player_id.name() + ", " + Column.pitches.name() + ") VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE " + Column.pitches.name() + "=?";
+			// query = "REPLACE INTO " + Table.player_points.name() + " SET " + getColumn(score) + "=" + getColumn(score) + " " + getOperator(change) + " 1" + " WHERE " + Column.schedule_id.name() + "=?" + " AND " + Column.player_id.name() + "=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, scheduleId);
+			pstmt.setInt(2, playerId);
+			pstmt.setInt(3, pitches);
+			pstmt.setInt(4, pitches);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updatePitchTotal(): " + e.getMessage());
 		}
 		finally
 		{

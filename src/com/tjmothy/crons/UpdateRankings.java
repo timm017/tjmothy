@@ -10,6 +10,7 @@ public class UpdateRankings
 	{
 		System.out.println("Updating ranks: ");
 		StatsBean statsBean = new StatsBean();
+		// teamId, sportId
 		ArrayList<Integer> teamIds = statsBean.getTeamsForRankings(1, 1);
 		Thread thread = new Thread(new Runnable()
 		{
@@ -18,7 +19,8 @@ public class UpdateRankings
 			{
 				for (Integer teamId : teamIds)
 				{
-					statsBean.updateAllRanksForTeam(teamId);
+					// teamId, sportId
+					statsBean.updateAllRanksForTeam(teamId, 1);
 				}
 			}
 

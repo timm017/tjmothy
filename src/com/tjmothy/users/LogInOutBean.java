@@ -44,6 +44,7 @@ public class LogInOutBean
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		System.out.println("regular login: " + username + " : " + password);
 
 		try
 		{
@@ -79,6 +80,7 @@ public class LogInOutBean
 				;
 			}
 		}
+		System.out.println("reg login: " + success);
 		return success;
 	}
 

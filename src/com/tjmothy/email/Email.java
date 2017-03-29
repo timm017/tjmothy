@@ -9,7 +9,7 @@ public class Email
 	private String body = "";
 
 	private ArrayList<String> recipients = new ArrayList<>();
-	
+
 	public final static String DEFAULT_EMAIL = "timm017@yahoo.com";
 
 	public Email()
@@ -17,7 +17,7 @@ public class Email
 		// Add any email here for who you want to send stats to on Final Submission
 		recipients.add("mckeown.timothy@gmail.com");
 		recipients.add("rwhiggins2@gmail.com");
-//		recipients.add("kevindank@gmail.com");
+		// recipients.add("kevindank@gmail.com");
 		// recipients.add("sports@delcotimes.com");
 		// recipients.add("highschoolscores@philly.com");
 		// recipients.add("spiff10@verizon.net");
@@ -48,9 +48,12 @@ public class Email
 	{
 		return this.recipients;
 	}
-	
+
 	public void addRecipient(String email)
 	{
-		this.recipients.add(email);
+		if (!email.equals(""))
+		{
+			this.recipients.add(email);
+		}
 	}
 }

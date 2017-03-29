@@ -26,6 +26,7 @@
 		console.log("clicked span");
 		$(this).siblings('tbody').toggle();
 	});
+	//baseball stuff
 	$(document).on('click', '#enemy-team-total-container input.button-total-score', function(event) {
 		console.log("click my");
 		getTotalScoreData(this, 'enemy');
@@ -33,6 +34,9 @@
 	$(document).on('click', '#home-team-total-container input.button-total-score', function(event) {
 		console.log("click enemy");
 		getTotalScoreData(this, 'home');
+	});
+	$(document).on('click', 'input.button-total-pitches', function(event) {
+		getTotalPitchData(this);
 	});
 	$('div#enemy-team-players-container').hide();
 	collapseAllPlayers();
@@ -143,6 +147,16 @@ function getTotalScoreData(that, team) {
 	submitTeamTotal(total, teamId, scheduleId, team);
 }
 
+function getTotalPitchData(that) {
+	var playerId = $(that).data("player-id");
+	var scheduleId = $(that).data("schedule-id");
+	var pitches = $("input#pitches-" + playerId).val();
+	console.log("playerId: " + playerId);
+	console.log("pitches: " + pitches);
+	console.log("scheduleId: " + scheduleId);
+	submitPitchTotal(playerId, pitches, scheduleId);
+}
+
 function updateHighlights(highlights, teamId, scheduleId) {
 	var url = './stats';
 	var subcmd = "update-highlights"
@@ -178,6 +192,19 @@ function updateBoxScore(quarter, score, teamId, scheduleId, team) {
 function submitTeamTotal(total, teamId, scheduleId, team) {
 	var url = './stats?subcmd=update-total-score&total='
 			+ total + '&teamId=' + teamId + '&scheduleId=' + scheduleId;
+	console.log("URL: " + url);
+	$.ajax({
+		type : "POST",
+		url : url,
+		async : false,
+		success : function(data) {
+		}
+	});
+}
+
+function submitPitchTotal(playerId, pitches, scheduleId) {
+	var url = './stats?subcmd=update-pitch-total&pitches='
+			+ pitches + '&playerId=' + playerId + '&scheduleId=' + scheduleId;
 	console.log("URL: " + url);
 	$.ajax({
 		type : "POST",

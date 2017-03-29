@@ -10,6 +10,18 @@ body {
 	margin: 0 auto;
 }
 
+div.baseball-my-team-container {
+	background: #98FB98;
+	padding:10px;
+	margin-bottom: 20px;
+}
+
+div.baseball-enemy-team-container {
+	background: #FF9999;
+	padding:10px;
+	margin-bottom: 20px;
+}
+
 /* SERVICES */
 #stats {
 	border: 1px solid #CCC;
@@ -109,7 +121,7 @@ table#team-container td {
 }
 
 caption {
-	background: #dbb768;
+	background: #D3D3D3;
 	font-weight: bold;
 	font-size: 1.1em;
 }
@@ -123,7 +135,7 @@ input.button-box-score {
 	font-size: 13px;
 }
 
-input.button-total-score {
+input.button-total-score, input.button-total-pitches{
 	height: 25px;
 	color: #fff;
 	background-color: #5cb85c;
