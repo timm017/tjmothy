@@ -481,6 +481,9 @@
       <xsl:for-each select="team_players/player ">
         <tr>
           <td>
+            <xsl:text>#</xsl:text>
+            <xsl:value-of select="number" />
+            <xsl:text> </xsl:text>
             <xsl:value-of select="first_name" />
             <xsl:text> </xsl:text>
             <xsl:value-of select="last_name" />

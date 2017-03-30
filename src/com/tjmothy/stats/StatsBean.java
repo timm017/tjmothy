@@ -1,5 +1,6 @@
 package com.tjmothy.stats;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,7 +24,7 @@ public class StatsBean
 
 	public enum Column
 	{
-		sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches;
+		sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number
 	}
 
 	private TProperties tProps;
@@ -54,9 +55,11 @@ public class StatsBean
 				int playerId = rs.getInt(Column.id.name());
 				String firstName = rs.getString(Column.first_name.name());
 				String lastName = rs.getString(Column.last_name.name());
+				int number = rs.getInt(Column.number.name());
 				sb.append("<id>" + playerId + "</id>");
 				sb.append("<first_name>" + firstName + "</first_name>");
 				sb.append("<last_name>" + lastName + "</last_name>");
+				sb.append("<number>" + number + "</number>");
 				sb.append(getCurrentPlayerScores(playerId, getScheduleIdByDate(getTodayDate())));
 				sb.append("</player>");
 			}
@@ -1145,7 +1148,6 @@ public class StatsBean
 					updateAllRanksForTeam(teamId, sport);
 				}
 			}
-
 		});
 		thread.start();
 	}
@@ -1160,13 +1162,44 @@ public class StatsBean
 	{
 		if (sport == LogInOutBean.BASEBALL_ID)
 		{
-
+			updateBaseballRanks();
 		}
 		else
 		{
 			updateTeamSchedulePoints(teamId);
 			updateTeamBonusPoints(teamId);
 			updateTeamRank(teamId);
+		}
+	}
+
+	private void updateBaseballRanks()
+	{
+		Connection conn = null;
+		// For passing params to stored procedure
+		//String call = "{call ADDFACULTYDEPTSAL(?,?,?)});
+		String call = "{call baseball_rating()}";
+		try
+		{
+			System.out.println("updating all baseball ranks...");
+			conn = DriverManager.getConnection(tProps.getConnection());
+			CallableStatement stmt = conn.prepareCall(call);
+			stmt.execute();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updateTeamSchedulePoints(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
 		}
 	}
 
@@ -1432,7 +1465,7 @@ public class StatsBean
 			}
 		}
 	}
-	
+
 	public void updatePitchTotal(int playerId, int pitches, int scheduleId)
 	{
 		Connection conn = null;
