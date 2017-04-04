@@ -4,6 +4,15 @@ import java.util.ArrayList;
 
 import com.tjmothy.stats.StatsBean;
 
+/**
+ * Loops through all teams for that sport and season then will update all team ranks (schedule, bonus, power)
+ * args:
+ *  0 - The sport id
+ *  1 - the season
+ *  
+ * @author tmckeown
+ *
+ */
 public class UpdateRankings
 {
 	public static void main(String[] args)

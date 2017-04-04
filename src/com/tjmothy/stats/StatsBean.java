@@ -1169,9 +1169,13 @@ public class StatsBean
 			updateTeamSchedulePoints(teamId);
 			updateTeamBonusPoints(teamId);
 			updateTeamRank(teamId);
+//			updateBasketballRanks();
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void updateBaseballRanks()
 	{
 		Connection conn = null;
@@ -1187,7 +1191,42 @@ public class StatsBean
 		}
 		catch (Exception e)
 		{
-			System.out.println("StatsBean.updateTeamSchedulePoints(): " + e.getMessage());
+			System.out.println("StatsBean.updateBaseballRanks(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	/**
+	 * Currently not used. Instead of calling the 3 ranking methods we should be calling the MySQL procedure directly
+	 * incase of any changes.
+	 */
+	private void updateBasketballRanks()
+	{
+		Connection conn = null;
+		// For passing params to stored procedure
+		//String call = "{call ADDFACULTYDEPTSAL(?,?,?)});
+		String call = "{call basketball_rating()}";
+		try
+		{
+			System.out.println("updating all basketball ranks...");
+			conn = DriverManager.getConnection(tProps.getConnection());
+			CallableStatement stmt = conn.prepareCall(call);
+			stmt.execute();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updateBasketballRanks(): " + e.getMessage());
 		}
 		finally
 		{

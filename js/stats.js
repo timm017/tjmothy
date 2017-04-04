@@ -1,6 +1,4 @@
-/**
- * 
- */function statsBindings() {
+function statsBindings() {
 	$(document).on('click', 'input.button-positive', function(event) {
 		increasePlayerScore(this);
 	});
@@ -28,11 +26,9 @@
 	});
 	//baseball stuff
 	$(document).on('click', '#enemy-team-total-container input.button-total-score', function(event) {
-		console.log("click my");
 		getTotalScoreData(this, 'enemy');
 	});
 	$(document).on('click', '#home-team-total-container input.button-total-score', function(event) {
-		console.log("click enemy");
 		getTotalScoreData(this, 'home');
 	});
 	$(document).on('click', 'input.button-total-pitches', function(event) {
@@ -58,10 +54,10 @@
 	 var twos = $('span#current-2-' + playerId).text() * 2;
 	 var threes = $('span#current-3-' + playerId).text() * 3;
 	 var total = (isNaN(parseInt(ones)) ? 0 : parseInt(ones)) + parseInt(twos) + parseInt(threes);
-	 console.log(playerId + "ones " + ones);
-	 console.log(playerId + "twos " + twos);
-	 console.log(playerId + "threes " + threes);
-	 console.log(playerId + "total " + total);
+//	 console.log(playerId + "ones " + ones);
+//	 console.log(playerId + "twos " + twos);
+//	 console.log(playerId + "threes " + threes);
+//	 console.log(playerId + "total " + total);
 	 $('span#player-total-' + playerId).html(" (Total: " + total + ")");
  }
  
@@ -87,9 +83,9 @@ function getHighlights(that) {
 	var teamId = $(that).data("team-id");
 	var teamTable = $("table#home-team-container");
 	var scheduleId = $(teamTable).data("schedule-id");
-	console.log("highlights: " + highlights);
-	console.log("tid: " + teamId);
-	console.log("sid: " + scheduleId);
+//	console.log("highlights: " + highlights);
+//	console.log("tid: " + teamId);
+//	console.log("sid: " + scheduleId);
 	updateHighlights(highlights, teamId, scheduleId);
 }
 
@@ -129,10 +125,10 @@ function getBoxScoreData(that, team) {
 	var teamTable = $("table#" + team + "-team-container");
 	var scheduleId = $(teamTable).data("schedule-id");
 	var score = $("input#" + quarter + '-' + teamId).val();
-	console.log("quarter: " + quarter);
-	console.log("team id: " + teamId);
-	console.log("schedule id: " + scheduleId);
-	console.log("score: " + score);
+//	console.log("quarter: " + quarter);
+//	console.log("team id: " + teamId);
+//	console.log("schedule id: " + scheduleId);
+//	console.log("score: " + score);
 	updateBoxScore(quarter, score, teamId, scheduleId, team);
 }
 
@@ -141,9 +137,9 @@ function getTotalScoreData(that, team) {
 	var teamTable = $("table#" + team + "-team-total-container");
 	var scheduleId = $(teamTable).data("schedule-id");
 	var total = $("input#total-" + teamId).val();
-	console.log("team id: " + teamId);
-	console.log("schedule id: " + scheduleId);
-	console.log("total: " + total);
+//	console.log("team id: " + teamId);
+//	console.log("schedule id: " + scheduleId);
+//	console.log("total: " + total);
 	submitTeamTotal(total, teamId, scheduleId, team);
 }
 
@@ -151,9 +147,9 @@ function getTotalPitchData(that) {
 	var playerId = $(that).data("player-id");
 	var scheduleId = $(that).data("schedule-id");
 	var pitches = $("input#pitches-" + playerId).val();
-	console.log("playerId: " + playerId);
-	console.log("pitches: " + pitches);
-	console.log("scheduleId: " + scheduleId);
+//	console.log("playerId: " + playerId);
+//	console.log("pitches: " + pitches);
+//	console.log("scheduleId: " + scheduleId);
 	submitPitchTotal(playerId, pitches, scheduleId);
 }
 

@@ -41,6 +41,7 @@ CREATE TABLE players
 	first_name VARCHAR(255) NOT NULL,
 	last_name VARCHAR(255) NOT NULL,
 	team_id INT(10),
+	number INT(3),
 	PRIMARY KEY(id) );
 	
 CREATE TABLE player_points
@@ -94,6 +95,8 @@ ALTER TABLE teams MODIFY COLUMN bns_pts DECIMAL(7,4) NOT NULL DEFAULT 0.0000;
 
 update teams set sch_pts = 0.0000 where sch_pts IS NULL;
 update teams set bns_pts = 0.0000 where bns_pts IS NULL;
+
+insert into players (first_name, last_name, team_id) values ('timstrath', 'tim strath', 131);
 
 INSERT INTO sports (sport, gender, description) VALUES ('Basketball', 'B', 'Boys Basketball');
 

@@ -462,6 +462,9 @@
           </td>
         </tr>
       </table>
+      <xsl:if test="count(team_players/player) &gt; 0">
+        <xsl:call-template name="baseballEnemyPlayers" />
+      </xsl:if>
     </div>
 
     <form action="./stats" method="POST" id="stats-form">
@@ -479,6 +482,32 @@
         <xsl:text> Pitchers</xsl:text>
       </caption>
       <xsl:for-each select="team_players/player ">
+        <tr>
+          <td>
+            <xsl:text>#</xsl:text>
+            <xsl:value-of select="number" />
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="first_name" />
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="last_name" />
+          </td>
+          <td>
+            <input id="pitches-{id}" type="number" value="" />
+          </td>
+          <td>
+            <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" />
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+  
+    <xsl:template name="baseballEnemyPlayers">
+    <table id="pitchers-container">
+      <caption>
+        <xsl:text> Pitchers</xsl:text>
+      </caption>
+      <xsl:for-each select="enemy_team_players/player ">
         <tr>
           <td>
             <xsl:text>#</xsl:text>
