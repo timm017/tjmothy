@@ -15,7 +15,7 @@ public class TProperties extends Properties
 
 	public enum PropertyName
 	{
-		url, password, user, drivers, gmail_password
+		url, password, user, drivers, gmail_password, stat_supplier_id
 	}
 	
 	public TProperties()
