@@ -8,3 +8,4 @@
 *.ear
 /bin/
 tjmdb.properties
+/WebContent/

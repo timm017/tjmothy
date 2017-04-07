@@ -34,9 +34,9 @@ public class UpdateRankings
 		}
 
 		System.out.println("Updating ranks: season:" + seasonId + " sport:" + sportId);
-		StatsBean statsBean = new StatsBean();
+		final StatsBean statsBean = new StatsBean();
 		// sportId, seasonId
-		ArrayList<Integer> teamIds = statsBean.getTeamsForRankings(sportId, seasonId);
+		final ArrayList<Integer> teamIds = statsBean.getTeamsForRankings(sportId, seasonId);
 		Thread thread = new Thread(new Runnable()
 		{
 			@Override

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import com.tjmothy.stats.Game;
 import com.tjmothy.utils.Encryption;
 import com.tjmothy.utils.TProperties;
 
@@ -13,8 +14,6 @@ public class LogInOutBean
 	private User user;
 
 	private TProperties tprops = new TProperties();
-
-	public static final int BASEBALL_ID = 13;
 
 	private final String BASEBALL_PASSWORD = "baseball";
 
@@ -107,7 +106,7 @@ public class LogInOutBean
 			conn = DriverManager.getConnection(tprops.getConnection());
 			pstmt = conn.prepareStatement("SELECT * FROM " + Table.teams.name() + " WHERE " + Column.school_name.name() + "=? AND " + Column.sport.name() + "=?");
 			pstmt.setString(1, username);
-			pstmt.setInt(2, BASEBALL_ID);
+			pstmt.setInt(2, Game.BASEBALL_ID);
 			rs = pstmt.executeQuery();
 			if (password.equalsIgnoreCase(BASEBALL_PASSWORD))
 			{

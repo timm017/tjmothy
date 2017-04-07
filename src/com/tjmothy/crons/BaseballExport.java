@@ -22,16 +22,18 @@ import com.tjmothy.stats.BaseballExportBean;
  */
 public class BaseballExport
 {
+	final static String MAX_PREPS_BASEBALL_FOLDER = "max_preps_baseball";
+	final static String BASEBALL_PITCHERS_PREFIX = "baseball_pitchers_export_";
+	
 	public static void main(String[] args)
 	{
-		final String MAX_PREPS_BASEBALL_FOLDER = "max_preps_baseball";
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
 		LocalDate localDate = LocalDate.now();
 		System.out.println("Creating baseball text export for Max Preps -> " + dtf.format(localDate));
 		BaseballExportBean beb = new BaseballExportBean();
 		ArrayList<String> lines = beb.getPitchersList();
 		//baseball_pitchers_export_2016_11_16.txt
-		Path file = Paths.get("../" + MAX_PREPS_BASEBALL_FOLDER + "/baseball_pitchers_export_" + dtf.format(localDate) + ".txt");
+		Path file = Paths.get("../" + MAX_PREPS_BASEBALL_FOLDER + "/" + BASEBALL_PITCHERS_PREFIX + dtf.format(localDate) + ".txt");
 		System.out.println("path: " + file.toString());
 		try
 		{

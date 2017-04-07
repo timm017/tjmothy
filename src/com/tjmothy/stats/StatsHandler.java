@@ -293,7 +293,7 @@ public class StatsHandler extends HttpServlet
 			Team submitEnemyTeam = statsBean.teamInfo(realEnemyTeamId);
 			int totalMy = 0;
 			int totalEnemy = 0;
-			if (game.getSport() == LogInOutBean.BASEBALL_ID)
+			if (game.getSport() == Game.BASEBALL_ID)
 			{
 				innerSB.append("<my_team>" + submitMyTeam.toXML() + "<total>" + statsBean.getTeamTotalScore(realTeamId, realScheduleId) + "</total></my_team>");
 				innerSB.append("<enemy_team>" + submitEnemyTeam.toXML() + "<total>" + statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId) + "</total></enemy_team>");

@@ -21,7 +21,6 @@ function statsBindings() {
 		$('div#enemy-team-players-container').toggle();
 	});
 	$(document).on('click', 'div#player-container table caption', function(event) {
-		console.log("clicked span");
 		$(this).siblings('tbody').toggle();
 	});
 	//baseball stuff
@@ -34,6 +33,26 @@ function statsBindings() {
 	$(document).on('click', 'input.button-total-pitches', function(event) {
 		getTotalPitchData(this);
 	});
+	// When the user clicks out of the pitch input field it will update the DB.
+	// Sometimes they forget to hit update for each one
+	$(document).on('blur', 'input.player-pitches', function(event) {
+		var playerId = $(this).data("player-id");
+		var pitches = $(this).val();
+		var scheduleId = $(this).data("schedule-id");
+		if(pitches != '')  {
+			submitPitchTotal(playerId, pitches, scheduleId);
+		}
+	});
+	$(document).on('blur', 'input.team-score', function(event) {
+		var teamId = $(this).data("team-id");
+		var scheduleId = $(this).data("schedule-id");
+		var score = $(this).val();
+		if(score != '') {
+			console.log(teamId + " : " + scheduleId + " : " + score);
+			submitTeamTotal(score, teamId, scheduleId);	
+		}
+	});
+	
 	$('div#enemy-team-players-container').hide();
 	collapseAllPlayers();
 }
@@ -125,10 +144,6 @@ function getBoxScoreData(that, team) {
 	var teamTable = $("table#" + team + "-team-container");
 	var scheduleId = $(teamTable).data("schedule-id");
 	var score = $("input#" + quarter + '-' + teamId).val();
-//	console.log("quarter: " + quarter);
-//	console.log("team id: " + teamId);
-//	console.log("schedule id: " + scheduleId);
-//	console.log("score: " + score);
 	updateBoxScore(quarter, score, teamId, scheduleId, team);
 }
 
@@ -137,19 +152,13 @@ function getTotalScoreData(that, team) {
 	var teamTable = $("table#" + team + "-team-total-container");
 	var scheduleId = $(teamTable).data("schedule-id");
 	var total = $("input#total-" + teamId).val();
-//	console.log("team id: " + teamId);
-//	console.log("schedule id: " + scheduleId);
-//	console.log("total: " + total);
-	submitTeamTotal(total, teamId, scheduleId, team);
+	submitTeamTotal(total, teamId, scheduleId);
 }
 
 function getTotalPitchData(that) {
 	var playerId = $(that).data("player-id");
 	var scheduleId = $(that).data("schedule-id");
 	var pitches = $("input#pitches-" + playerId).val();
-//	console.log("playerId: " + playerId);
-//	console.log("pitches: " + pitches);
-//	console.log("scheduleId: " + scheduleId);
 	submitPitchTotal(playerId, pitches, scheduleId);
 }
 
@@ -185,7 +194,7 @@ function updateBoxScore(quarter, score, teamId, scheduleId, team) {
 	});
 }
 
-function submitTeamTotal(total, teamId, scheduleId, team) {
+function submitTeamTotal(total, teamId, scheduleId) {
 	var url = './stats?subcmd=update-total-score&total='
 			+ total + '&teamId=' + teamId + '&scheduleId=' + scheduleId;
 	console.log("URL: " + url);

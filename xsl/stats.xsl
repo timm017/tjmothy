@@ -434,7 +434,7 @@
         </caption>
         <tr>
           <td>
-            <input id="total-{$myTeamId}" type="number" value="" />
+            <input class="team-score" id="total-{$myTeamId}" data-schedule-id="{$scheduleId}" data-team-id="{$myTeamId}" type="number" value="" />
           </td>
           <td>
             <input class="button-total-score" data-team-id="{$myTeamId}" type="button" value="Update" />
@@ -455,7 +455,7 @@
         </caption>
         <tr>
           <td>
-            <input id="total-{$enemyTeamId}" type="number" value="" />
+            <input class="team-score" id="total-{$enemyTeamId}" data-schedule-id="{$scheduleId}" data-team-id="{$enemyTeamId}" type="number" value="" />
           </td>
           <td>
             <input class="button-total-score" data-team-id="{$enemyTeamId}" type="button" value="Update" />
@@ -466,9 +466,9 @@
         <xsl:call-template name="baseballEnemyPlayers" />
       </xsl:if>
     </div>
-
+    <!-- BASEBALL -->
     <form action="./stats" method="POST" id="stats-form">
-      <input class="button-final-submit" type="submit" value="Final Submit!" />
+      <input class="button-final-submit" id="final-submit-baseball" type="submit" value="Final Submit!" />
       <input type="hidden" name="subcmd" value="final-submit" />
       <input type="hidden" name="teamId" value="{$myTeamId}" />
       <input type="hidden" name="enemyTeamId" value="{$enemyTeamId}" />
@@ -492,7 +492,7 @@
             <xsl:value-of select="last_name" />
           </td>
           <td>
-            <input id="pitches-{id}" type="number" value="" />
+            <input class="player-pitches" id="pitches-{id}" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="number" value="" />
           </td>
           <td>
             <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" />
@@ -501,8 +501,8 @@
       </xsl:for-each>
     </table>
   </xsl:template>
-  
-    <xsl:template name="baseballEnemyPlayers">
+
+  <xsl:template name="baseballEnemyPlayers">
     <table id="pitchers-container">
       <caption>
         <xsl:text> Pitchers</xsl:text>
@@ -518,7 +518,7 @@
             <xsl:value-of select="last_name" />
           </td>
           <td>
-            <input id="pitches-{id}" type="number" value="" />
+            <input class="player-pitches" id="pitches-{id}" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="number" value="" />
           </td>
           <td>
             <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" />

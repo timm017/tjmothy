@@ -1133,11 +1133,11 @@ public class StatsBean
 	/**
 	 * 
 	 */
-	public void updateAllRanksForAllTeams(int sport, int season)
+	public void updateAllRanksForAllTeams(final int sport, int season)
 	{
 		System.out.println("Updating ALL team ranks ");
 		// getTeams (sport, season)
-		ArrayList<Integer> teamIds = getTeamsForRankings(sport, season);
+		final ArrayList<Integer> teamIds = getTeamsForRankings(sport, season);
 		Thread thread = new Thread(new Runnable()
 		{
 			@Override
@@ -1160,7 +1160,7 @@ public class StatsBean
 	 */
 	public void updateAllRanksForTeam(int teamId, int sport)
 	{
-		if (sport == LogInOutBean.BASEBALL_ID)
+		if (sport == Game.BASEBALL_ID)
 		{
 			updateBaseballRanks();
 		}
@@ -1435,7 +1435,7 @@ public class StatsBean
 			conn = DriverManager.getConnection(tProps.getConnection());
 			pstmt = conn.prepareStatement("SELECT id FROM " + Table.teams.name() + " WHERE " + Column.school_name.name() + "=? AND " + Column.sport.name() + "=?");
 			pstmt.setString(1, username);
-			pstmt.setInt(2, LogInOutBean.BASEBALL_ID);
+			pstmt.setInt(2, Game.BASEBALL_ID);
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
