@@ -1,5 +1,10 @@
 package com.tjmothy.stats;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.tjmothy.email.ReminderBean.Column;
+
 public class User
 {
 	private String firstName;
@@ -19,6 +24,24 @@ public class User
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.type = type;
+	}
+	
+	public User(ResultSet rs)
+	{
+		try
+		{
+			this.id = rs.getInt(Column.id.name());
+			this.firstName = rs.getString(Column.first_name.name());
+			this.lastName = rs.getString(Column.last_name.name());
+			this.teamId = rs.getInt(Column.team_id.name());
+			this.phoneNumber = rs.getString(Column.phone_number.name());
+			this.email = rs.getString(Column.email.name());
+			this.type = rs.getInt(Column.type.name());
+		}
+		catch (SQLException sqle)
+		{
+			System.out.println("User.user() -> " + sqle.getMessage());
+		}
 	}
 
 	public String getFirstName()
