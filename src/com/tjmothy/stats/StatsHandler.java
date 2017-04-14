@@ -382,7 +382,7 @@ public class StatsHandler extends HttpServlet
 			transformer.setParameter("email_template", "true");
 			StringWriter out = new StringWriter();
 			transformer.transform(xmlDoc, new StreamResult(out));
-			Email email = new Email();
+			Email email = new Email(true);
 			email.addRecipient(userEmail);
 			email.setSubject(subjectLine);
 			email.setBody(out.toString());

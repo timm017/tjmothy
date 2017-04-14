@@ -12,11 +12,14 @@ public class Email
 
 	public final static String DEFAULT_EMAIL = "timm017@yahoo.com";
 
-	public Email()
+	public Email(boolean addAdminEmails)
 	{
 		// Add any email here for who you want to send stats to on Final Submission
-		recipients.add("mckeown.timothy@gmail.com");
-		recipients.add("rwhiggins2@gmail.com");
+		if (addAdminEmails)
+		{
+			recipients.add("mckeown.timothy@gmail.com");
+			recipients.add("rwhiggins2@gmail.com");
+		}
 		// recipients.add("kevindank@gmail.com");
 		// recipients.add("sports@delcotimes.com");
 		// recipients.add("highschoolscores@philly.com");

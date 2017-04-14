@@ -17,7 +17,8 @@ import com.tjmothy.stats.Game;
  */
 public class ReminderEmails
 {
-	final static String REMINDER_SUBJECT = "Distict Scores Reminder";
+	final static int MAX_EMAIL_SIZE = 50;
+	final static String REMINDER_SUBJECT = "Distict Scores: Reminder";
 	final static String REMINDER_BODY = "Hope you are having a great day. Friendly reminder to please submit your scores for today using this link: <a href=\"http://stats.tjmothy.com/index.php/add-stats/\">Add Stats</a><br/><br/>Thank you,<br>District Scores";
 
 	public static void main(String[] args)
@@ -26,21 +27,24 @@ public class ReminderEmails
 		ReminderBean rb = new ReminderBean();
 		ArrayList<String> emails = rb.getEmailsForReminder(Game.BASEBALL_ID);
 
-		String body = "";
+		if (emails.size() > MAX_EMAIL_SIZE)
+		{
+			System.out.println("Hit max size (" + MAX_EMAIL_SIZE + ") for reminder emails -> " + emails.size());
+			return;
+		}
 		for (String email : emails)
 		{
-			body += email + "\n";
+			System.out.println("sendimg reminder email to -> " + email);
+			sendEmail(REMINDER_BODY, REMINDER_SUBJECT, email);
 		}
-		sendEmail("", REMINDER_SUBJECT, "mckeown.timothy@gmail.com");
-
 	}
 
-	private static void sendEmail(String xml, String subjectLine, String userEmail)
+	private static void sendEmail(String body, String subjectLine, String userEmail)
 	{
-		Email email = new Email();
+		Email email = new Email(false);
 		email.addRecipient(userEmail);
 		email.setSubject(subjectLine);
-		email.setBody(REMINDER_BODY);
+		email.setBody(body);
 		try
 		{
 			new Emailer(email);

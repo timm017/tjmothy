@@ -52,7 +52,6 @@ public class ReminderBean
 			while (rs.next())
 			{
 				int teamId = rs.getInt(Column.home_id.name());
-				System.out.println("teamId: " + teamId);
 				User user = getUserFromTeamId(teamId);
 				if (user != null)
 				{

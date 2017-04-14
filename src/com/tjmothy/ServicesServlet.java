@@ -89,7 +89,7 @@ public class ServicesServlet extends HttpServlet
 
 		if (subcmd.equals("email"))
 		{
-			Email e = new Email();
+			Email e = new Email(true);
 			HashMap<String, String> hm = new HashMap<String, String>();
 			hm.put("name", request.getParameter("name"));
 			hm.put("company", request.getParameter("company"));

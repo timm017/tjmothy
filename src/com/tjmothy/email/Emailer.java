@@ -22,7 +22,7 @@ public class Emailer
 
 	public static void main(String args[]) throws AddressException, MessagingException
 	{
-		Email email = new Email();
+		Email email = new Email(true);
 		Emailer e = new Emailer(email);
 		System.out.println("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
 	}
