@@ -3,8 +3,6 @@ package com.tjmothy.stats;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.tjmothy.email.ReminderBean.Column;
-
 public class User
 {
 	private String firstName;
@@ -30,13 +28,13 @@ public class User
 	{
 		try
 		{
-			this.id = rs.getInt(Column.id.name());
-			this.firstName = rs.getString(Column.first_name.name());
-			this.lastName = rs.getString(Column.last_name.name());
-			this.teamId = rs.getInt(Column.team_id.name());
-			this.phoneNumber = rs.getString(Column.phone_number.name());
-			this.email = rs.getString(Column.email.name());
-			this.type = rs.getInt(Column.type.name());
+			this.id = rs.getInt(StatsBean.Column.id.name());
+			this.firstName = rs.getString(StatsBean.Column.first_name.name());
+			this.lastName = rs.getString(StatsBean.Column.last_name.name());
+			this.teamId = rs.getInt(StatsBean.Column.team_id.name());
+			this.phoneNumber = rs.getString(StatsBean.Column.phone_number.name());
+			this.email = rs.getString(StatsBean.Column.email.name());
+			this.type = rs.getInt(StatsBean.Column.type.name());
 		}
 		catch (SQLException sqle)
 		{

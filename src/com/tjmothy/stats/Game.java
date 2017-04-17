@@ -10,6 +10,7 @@ public class Game
 	private String gameDay;
 	private boolean noGameToday = false;
 	private int sport = 0;
+	public static final int BASKETBALL_GIRLS = 1;
 	public static final int BASEBALL_ID = 13;
 
 	public Game(int scheduleId, int homeTeamId, int awayTeamId, String homeTeamSchool, String awayTeamSchool, String gameDay, int sport)

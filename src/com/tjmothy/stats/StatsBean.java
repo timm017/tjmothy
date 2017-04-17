@@ -1143,9 +1143,16 @@ public class StatsBean
 			@Override
 			public void run()
 			{
-				for (Integer teamId : teamIds)
+				if (sport == Game.BASEBALL_ID)
 				{
-					updateAllRanksForTeam(teamId, sport);
+					updateAllRanksForTeam(-1, sport);
+				}
+				else
+				{
+					for (Integer teamId : teamIds)
+					{
+						updateAllRanksForTeam(teamId, sport);
+					}
 				}
 			}
 		});
@@ -1164,34 +1171,42 @@ public class StatsBean
 		{
 			updateBaseballRanks();
 		}
+		else if(sport == Game.BASKETBALL_GIRLS)
+		{
+			updateTeamSchedulePoints(teamId);
+			updateTeamBonusPoints(teamId);
+			updateTeamRank(teamId);
+			// updateBasketballRanks();
+		}
 		else
 		{
 			updateTeamSchedulePoints(teamId);
 			updateTeamBonusPoints(teamId);
 			updateTeamRank(teamId);
-//			updateBasketballRanks();
+			// updateBasketballRanks();
 		}
 	}
 
 	/**
-	 * 
+	 * Calls the ranking procedure in MySQL to update all the ranks for baseball
 	 */
 	private void updateBaseballRanks()
 	{
 		Connection conn = null;
 		// For passing params to stored procedure
-		//String call = "{call ADDFACULTYDEPTSAL(?,?,?)});
+		// String call = "{call ADDFACULTYDEPTSAL(?,?,?)});
 		String call = "{call baseball_rating()}";
 		try
 		{
 			System.out.println("updating all baseball ranks...");
+			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
 			CallableStatement stmt = conn.prepareCall(call);
 			stmt.execute();
 		}
 		catch (Exception e)
 		{
-			System.out.println("StatsBean.updateBaseballRanks(): " + e.getMessage());
+			System.err.println("StatsBean.updateBaseballRanks(): " + e.getMessage());
 		}
 		finally
 		{
@@ -1206,16 +1221,15 @@ public class StatsBean
 			}
 		}
 	}
-	
+
 	/**
-	 * Currently not used. Instead of calling the 3 ranking methods we should be calling the MySQL procedure directly
-	 * incase of any changes.
+	 * Currently not used. Instead of calling the 3 ranking methods we should be calling the MySQL procedure directly incase of any changes.
 	 */
 	private void updateBasketballRanks()
 	{
 		Connection conn = null;
 		// For passing params to stored procedure
-		//String call = "{call ADDFACULTYDEPTSAL(?,?,?)});
+		// String call = "{call ADDFACULTYDEPTSAL(?,?,?)});
 		String call = "{call basketball_rating()}";
 		try
 		{
@@ -1241,7 +1255,7 @@ public class StatsBean
 			}
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @param teamId

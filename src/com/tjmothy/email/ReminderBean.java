@@ -6,22 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import com.tjmothy.stats.StatsBean;
 import com.tjmothy.stats.User;
 import com.tjmothy.utils.TProperties;
 
 public class ReminderBean
 {
-
-	public enum Table
-	{
-		leagues, teams, players, users, player_points, schedule, team_stats
-	}
-
-	public enum Column
-	{
-		sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number
-	}
-
+	
 	private TProperties tProps;
 
 	public ReminderBean()
@@ -31,6 +22,7 @@ public class ReminderBean
 
 	/**
 	 * Retrieves a list of all teamIds that haven't submitted their games for the current day.
+	 * Then collects the email associated with that teamId.
 	 * 
 	 * @param sportId
 	 * @return
@@ -46,12 +38,13 @@ public class ReminderBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
-			pstmt = conn.prepareStatement("SELECT s.id, s.home_id FROM schedule s WHERE s.home_id NOT IN(SELECT ts.team_id FROM team_stats ts WHERE ts.schedule_id = s.id) AND s.game_day = CURDATE() AND s.sport=?");
+//			pstmt = conn.prepareStatement("SELECT s.id, s.home_id FROM schedule s WHERE s.home_id NOT IN(SELECT ts.team_id FROM team_stats ts WHERE ts.schedule_id = s.id AND ts.submitted = 0) AND s.game_day = CURDATE() AND s.sport=?");
+			pstmt = conn.prepareStatement("SELECT s.id, s.home_id FROM schedule s WHERE s.id NOT IN (SELECT ts.schedule_id FROM team_stats ts) AND s.game_day = CURDATE() AND s.sport=?");
 			pstmt.setInt(1, sportId);
 			rs = pstmt.executeQuery();
 			while (rs.next())
 			{
-				int teamId = rs.getInt(Column.home_id.name());
+				int teamId = rs.getInt(StatsBean.Column.home_id.name());
 				User user = getUserFromTeamId(teamId);
 				if (user != null)
 				{
@@ -86,6 +79,12 @@ public class ReminderBean
 		return reminderEmails;
 	}
 
+	/**
+	 * Creates a new user object from the teamId
+	 * 
+	 * @param teamId
+	 * @return
+	 */
 	private User getUserFromTeamId(int teamId)
 	{
 		Connection conn = null;

@@ -82,7 +82,29 @@ public class StatsHandler extends HttpServlet
 				subcmd = "stats-view";
 			}
 		}
-		if (subcmd.equals("login"))
+		// Any commands that don't require authentication go here
+		if (subcmd.equals("update-rankings"))
+		{
+			String sportId = request.getParameter("sport");
+			int realSportId = -1;
+			try
+			{
+				realSportId = Integer.parseInt(sportId);
+			}
+			catch (NumberFormatException nfe)
+			{
+				System.err.println("subcmd-> " + subcmd + " Error converting sportId integer: " + nfe.getMessage());
+			}
+			// sport, season
+			statsBean.updateAllRanksForAllTeams(Game.BASEBALL_ID, 1);
+			System.out.println("UPDATE RANKINGS FOR SPORT " + realSportId);
+			PrintWriter out = response.getWriter();
+			out.println("<html><body>");
+			out.println("<h2>Rankings have been updated.</h2>");
+			out.println("</body></html>");
+			return;
+		}
+		else if (subcmd.equals("login"))
 		{
 			LogInOutBean liob = new LogInOutBean();
 			String phoneNumber = request.getParameter("phonenumber");
@@ -340,7 +362,7 @@ public class StatsHandler extends HttpServlet
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append(innerSB.toString());
 		sb.append("</outertag>");
-		 System.out.println(sb.toString());
+		System.out.println(sb.toString());
 		StringReader xml = new StringReader(sb.toString());
 
 		try
