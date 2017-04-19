@@ -96,6 +96,7 @@ public class StatsHandler extends HttpServlet
 				System.err.println("subcmd-> " + subcmd + " Error converting sportId integer: " + nfe.getMessage());
 			}
 			// sport, season
+			statsBean.updateRecords();
 			statsBean.updateAllRanksForAllTeams(Game.BASEBALL_ID, 1);
 			System.out.println("UPDATE RANKINGS FOR SPORT " + realSportId);
 			PrintWriter out = response.getWriter();

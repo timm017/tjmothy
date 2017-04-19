@@ -1190,6 +1190,41 @@ public class StatsBean
 	/**
 	 * Calls the ranking procedure in MySQL to update all the ranks for baseball
 	 */
+	public void updateRecords()
+	{
+		Connection conn = null;
+		// For passing params to stored procedure
+		// String call = "{call ADDFACULTYDEPTSAL(?,?,?)});
+		String call = "{call update_records()}";
+		try
+		{
+			System.out.println("updating records...");
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			CallableStatement stmt = conn.prepareCall(call);
+			stmt.execute();
+		}
+		catch (Exception e)
+		{
+			System.err.println("StatsBean.updateRecords(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+	
+	/**
+	 * Calls the ranking procedure in MySQL to update all the ranks for baseball
+	 */
 	private void updateBaseballRanks()
 	{
 		Connection conn = null;
