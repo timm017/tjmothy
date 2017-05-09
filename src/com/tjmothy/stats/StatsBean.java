@@ -24,7 +24,7 @@ public class StatsBean
 
 	public enum Column
 	{
-		sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number
+		sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number, league_game
 	}
 
 	private TProperties tProps;
@@ -180,7 +180,8 @@ public class StatsBean
 				int roadId = rs.getInt(Column.road_id.name());
 				String roadSchool = rs.getString(Column.road_team.name());
 				int sport = rs.getInt(Column.sport.name());
-				game = new Game(scheduleId, homeId, roadId, homeSchool, roadSchool, date, sport);
+				String leagueGame = rs.getString(Column.league_game.name());
+				game = new Game(scheduleId, homeId, roadId, homeSchool, roadSchool, date, sport, leagueGame);
 			}
 		}
 		catch (Exception e)
@@ -1171,7 +1172,7 @@ public class StatsBean
 		{
 			updateBaseballRanks();
 		}
-		else if(sport == Game.BASKETBALL_GIRLS)
+		else if (sport == Game.BASKETBALL_GIRLS)
 		{
 			updateTeamSchedulePoints(teamId);
 			updateTeamBonusPoints(teamId);
@@ -1221,7 +1222,7 @@ public class StatsBean
 			}
 		}
 	}
-	
+
 	/**
 	 * Calls the ranking procedure in MySQL to update all the ranks for baseball
 	 */
@@ -1290,7 +1291,7 @@ public class StatsBean
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param teamId

@@ -437,7 +437,7 @@
             <input class="team-score" id="total-{$myTeamId}" data-schedule-id="{$scheduleId}" data-team-id="{$myTeamId}" type="number" value="" />
           </td>
           <td>
-            <input class="button-total-score" data-team-id="{$myTeamId}" type="button" value="Update" />
+<!--             <input class="button-total-score" data-team-id="{$myTeamId}" type="button" value="Update" /> -->
           </td>
         </tr>
       </table>
@@ -458,7 +458,7 @@
             <input class="team-score" id="total-{$enemyTeamId}" data-schedule-id="{$scheduleId}" data-team-id="{$enemyTeamId}" type="number" value="" />
           </td>
           <td>
-            <input class="button-total-score" data-team-id="{$enemyTeamId}" type="button" value="Update" />
+<!--             <input class="button-total-score" data-team-id="{$enemyTeamId}" type="button" value="Update" /> -->
           </td>
         </tr>
       </table>
@@ -495,7 +495,7 @@
             <input class="player-pitches" id="pitches-{id}" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="number" value="" />
           </td>
           <td>
-            <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" />
+<!--             <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" /> -->
           </td>
         </tr>
       </xsl:for-each>
@@ -521,7 +521,7 @@
             <input class="player-pitches" id="pitches-{id}" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="number" value="" />
           </td>
           <td>
-            <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" />
+<!--             <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" /> -->
           </td>
         </tr>
       </xsl:for-each>

@@ -22,7 +22,7 @@ import com.tjmothy.utils.PathHelper;
 /**
  * Servlet implementation class PPEServlet
  */
-@WebServlet("/ContactServlet")
+
 public class PortfolioServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;

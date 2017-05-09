@@ -82,8 +82,11 @@ CREATE TABLE season
 
 CREATE UNIQUE INDEX scheduleTeam ON team_stats(schedule_id, team_id);
 
+ALTER TABLE schedule MODIFY COLUMN league_game VARCHAR(45) NOT NULL DEFAULT 'y';
+update schedule set league_game ='y' where league_game is null;
+
 ALTER TABLE player_points MODIFY COLUMN pitches INT(3) NOT NULL DEFAULT 0;
-ALTER TABLE users MODIFY COLUMN phonenumber DECIMAL(4,3) NOT NULL DEFAULT 0.000;	
+ALTER TABLE users MODIFY COLUMN phonenumber DECIMAL(4,3) NOT NULL DEFAULT 0.000;
 ALTER TABLE teams MODIFY COLUMN team_wins INT(2) NOT NULL DEFAULT 0;
 ALTER TABLE teams MODIFY COLUMN rank DECIMAL(4,3) NOT NULL DEFAULT 0.000;
 ALTER TABLE users ADD type int(10) NOT NULL DEFAULT 1;

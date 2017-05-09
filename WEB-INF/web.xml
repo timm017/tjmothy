@@ -119,34 +119,6 @@
     <url-pattern>/websitechecker</url-pattern>
   </servlet-mapping>
 
-  <!-- Registration servlet -->
-  <servlet>
-    <servlet-name>RegistrationHandler</servlet-name>
-    <servlet-class>com.tjmothy.users.RegistrationHandler</servlet-class>
-    <init-param>
-      <param-name>xslSheet</param-name>
-      <param-value>registration.xsl</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RegistrationHandler</servlet-name>
-    <url-pattern>/registration</url-pattern>
-  </servlet-mapping>
-
-  <!-- Registration servlet -->
-  <servlet>
-    <servlet-name>LogInOutHandler</servlet-name>
-    <servlet-class>com.tjmothy.users.LogInOutHandler</servlet-class>
-    <init-param>
-      <param-name>xslSheet</param-name>
-      <param-value>home.xsl</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LogInOutHandler</servlet-name>
-    <url-pattern>/login</url-pattern>
-  </servlet-mapping>
-
   <!-- Tools servlet -->
   <servlet>
     <servlet-name>ToolsHandler</servlet-name>

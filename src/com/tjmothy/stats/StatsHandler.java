@@ -333,7 +333,7 @@ public class StatsHandler extends HttpServlet
 				statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
 			}
 			// If user refreshes submit page, don't update win/loss. Should we include Email? SubmitTotals?
-			if (!statsBean.isGameSubmitted(submitMyTeam.getId(), game.getScheduleId()))
+			if (!statsBean.isGameSubmitted(submitMyTeam.getId(), game.getScheduleId()) && game.isLeaugeGame())
 			{
 				// Incremement either win or losses column for each team
 				statsBean.updateWinLoss(realTeamId, (totalMy > totalEnemy));
@@ -363,7 +363,7 @@ public class StatsHandler extends HttpServlet
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append(innerSB.toString());
 		sb.append("</outertag>");
-		System.out.println(sb.toString());
+//		System.out.println(sb.toString());
 		StringReader xml = new StringReader(sb.toString());
 
 		try

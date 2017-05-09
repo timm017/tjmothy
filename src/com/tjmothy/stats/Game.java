@@ -10,10 +10,11 @@ public class Game
 	private String gameDay;
 	private boolean noGameToday = false;
 	private int sport = 0;
+	private String leagueGame;
 	public static final int BASKETBALL_GIRLS = 1;
 	public static final int BASEBALL_ID = 13;
 
-	public Game(int scheduleId, int homeTeamId, int awayTeamId, String homeTeamSchool, String awayTeamSchool, String gameDay, int sport)
+	public Game(int scheduleId, int homeTeamId, int awayTeamId, String homeTeamSchool, String awayTeamSchool, String gameDay, int sport, String leagueGame)
 	{
 		this.scheduleId = scheduleId;
 		this.homeTeamId = homeTeamId;
@@ -22,6 +23,7 @@ public class Game
 		this.awayTeamSchool = awayTeamSchool;
 		this.gameDay = gameDay;
 		this.sport = sport;
+		this.leagueGame = leagueGame;
 	}
 	
 	public Game()
@@ -107,6 +109,18 @@ public class Game
 	public int getSport()
 	{
 		return this.sport;
+	}
+	
+	public boolean isLeaugeGame()
+	{
+		if(this.leagueGame.equalsIgnoreCase("y"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public String toXML()

@@ -21,7 +21,6 @@ import javax.xml.transform.stream.StreamSource;
 import com.tjmothy.bcrypt.BCrypt;
 import com.tjmothy.utils.PathHelper;
 
-@WebServlet("/RegistrationHandler")
 public class LogInOutHandler extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
