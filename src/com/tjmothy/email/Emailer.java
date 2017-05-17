@@ -55,7 +55,6 @@ public class Emailer
 			System.out.println("\n (" + i + ") 2nd ===> Adding \"" + emailAddress + "\" to list...");
 			i++;
 		}
-		// generateMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress("test2@crunchify.com"));
 		generateMailMessage.setSubject(email.getSubject());
 		String emailBody = email.getBody();
 //		System.out.println(email.getBody());

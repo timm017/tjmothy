@@ -65,27 +65,21 @@
   </xsl:template>
 
   <xsl:template name="login">
-    <form action="./stats" method="POST">
-      <label>
-        <b>Username</b>
-      </label>
-      <br />
-      <input type="text" placeholder="Enter Phone Number" name="phonenumber" />
-      <p />
-      <label>
-        <b>Password</b>
-      </label>
-      <br />
-      <input type="password" placeholder="Enter Password" name="password" />
-      <p />
-      <button type="submit">Login</button>
-      <input type="hidden" name="subcmd" value="login" />
-    </form>
-    <xsl:if test="login/@success = 'false'">
-      <p style="color:red;">
-        <xsl:text>Incorrect username or password for.</xsl:text>
-      </p>
-    </xsl:if>
+    <div class="login-block">
+      <form action="./stats" method="POST">
+        <img src="images/login.png" />
+        <p />
+        <input type="text" placeholder="Phone number or email" name="phonenumber" />
+        <input type="password" placeholder="Enter Password" name="password" />
+        <button type="submit" class="button-gray button">Login</button>
+        <input type="hidden" name="subcmd" value="login" />
+      </form>
+      <!-- <xsl:if test="login/@success = 'false'">
+        <p style="color:red;">
+          <xsl:text>Incorrect username or password for.</xsl:text>
+        </p>
+      </xsl:if> -->
+    </div>
   </xsl:template>
 
   <xsl:template name="stats-view">
@@ -437,7 +431,7 @@
             <input class="team-score" id="total-{$myTeamId}" data-schedule-id="{$scheduleId}" data-team-id="{$myTeamId}" type="number" value="" />
           </td>
           <td>
-<!--             <input class="button-total-score" data-team-id="{$myTeamId}" type="button" value="Update" /> -->
+            <!-- <input class="button-total-score" data-team-id="{$myTeamId}" type="button" value="Update" /> -->
           </td>
         </tr>
       </table>
@@ -458,7 +452,7 @@
             <input class="team-score" id="total-{$enemyTeamId}" data-schedule-id="{$scheduleId}" data-team-id="{$enemyTeamId}" type="number" value="" />
           </td>
           <td>
-<!--             <input class="button-total-score" data-team-id="{$enemyTeamId}" type="button" value="Update" /> -->
+            <!-- <input class="button-total-score" data-team-id="{$enemyTeamId}" type="button" value="Update" /> -->
           </td>
         </tr>
       </table>
@@ -495,7 +489,7 @@
             <input class="player-pitches" id="pitches-{id}" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="number" value="" />
           </td>
           <td>
-<!--             <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" /> -->
+            <!-- <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" /> -->
           </td>
         </tr>
       </xsl:for-each>
@@ -521,7 +515,7 @@
             <input class="player-pitches" id="pitches-{id}" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="number" value="" />
           </td>
           <td>
-<!--             <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" /> -->
+            <!-- <input class="button-total-pitches" data-player-id="{id}" data-schedule-id="{$scheduleId}" type="button" value="Update" /> -->
           </td>
         </tr>
       </xsl:for-each>
