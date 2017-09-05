@@ -25,7 +25,7 @@ public class StatsBean
 
 	public enum Column
 	{
-		sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number, league_game
+		scoreless, team_ties, sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number, league_game
 	}
 
 	private TProperties tProps;
@@ -1128,7 +1128,53 @@ public class StatsBean
 			}
 			catch (Exception e)
 			{
-				;
+				System.out.println("Error closing connection-> StatsBean.updateWinLoss(): " + e.getMessage());
+			}
+		}
+	}
+
+	/**
+	 * TODO: come back and merge with updateWinLoss() method
+	 * 
+	 * updateTie - When there is a tie increment a tie for both the teams in the "teams" table
+	 * 
+	 * @param homeId
+	 * @param roadId
+	 */
+	public void updateTie(int teamId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query;
+		try
+		{
+			System.out.println("----------------- calling team ties [" + teamId + "]-------------------");
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			query = "UPDATE " + Table.teams.name() + " SET " + Column.team_ties.name() + "=" + Column.team_ties.name() + "+1 WHERE " + Column.id.name() + "=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, teamId);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updateTie(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				System.out.println("Error closing connection-> StatsBean.updateWinLoss(): " + e.getMessage());
 			}
 		}
 	}
@@ -1138,25 +1184,38 @@ public class StatsBean
 	 */
 	public void updateAllRanksForAllTeams(final int sport, int season)
 	{
-		System.out.println("Updating ALL team ranks ");
+		System.out.println("Updating ALL team ranks. sport: " + sport + " season: " + season);
 		// getTeams (sport, season)
-		final ArrayList<Integer> teamIds = getTeamsForRankings(sport, season);
 		Thread thread = new Thread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				if (sport == Game.BASEBALL_ID)
+				// sportid was not specified in the URL call for "update" button
+				if (sport == -1)
 				{
-					updateAllRanksForTeam(-1, sport);
-				}
-				else
-				{
+					final ArrayList<Integer> teamIds = getTeamsForRankings(sport, season);
 					for (Integer teamId : teamIds)
 					{
 						updateAllRanksForTeam(teamId, sport);
 					}
 				}
+				// sport specified, only call procedure for that sport
+				else
+				{
+					callProcedureForSport(sport);
+				}
+				// if (sport == Game.BASEBALL_ID)
+				// {
+				// updateAllRanksForTeam(-1, sport);
+				// }
+				// else
+				// {
+				// for (Integer teamId : teamIds)
+				// {
+				// updateAllRanksForTeam(teamId, sport);
+				// }
+				// }
 			}
 		});
 		thread.start();
@@ -1193,15 +1252,51 @@ public class StatsBean
 	/**
 	 * Calls the ranking procedure in MySQL to update all the ranks for baseball
 	 */
-	public void updateRecords()
+	public void updateRecords(int sportId)
 	{
 		Connection conn = null;
 		// For passing params to stored procedure
 		// String call = "{call ADDFACULTYDEPTSAL(?,?,?)});
-		String call = "{call update_records()}";
+		String call = "{call update_records(?)}";
 		try
 		{
 			System.out.println("updating records...");
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			CallableStatement stmt = conn.prepareCall(call);
+			stmt.setInt(1, sportId);
+			stmt.execute();
+		}
+		catch (Exception e)
+		{
+			System.err.println("StatsBean.updateRecords(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+
+	/**
+	 * Calls the appropriate procedure for the specific sport
+	 */
+	public void callProcedureForSport(int sport)
+	{
+		Connection conn = null;
+		// For passing params to stored procedure
+		// String call = "{call ADDFACULTYDEPTSAL(?,?,?)});
+		String call = "{call " + Sport.getProcedure(sport) + "}";
+		try
+		{
+			System.out.println("calling procedure: " + call);
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
 			CallableStatement stmt = conn.prepareCall(call);
@@ -1209,7 +1304,7 @@ public class StatsBean
 		}
 		catch (Exception e)
 		{
-			System.err.println("StatsBean.updateRecords(): " + e.getMessage());
+			System.err.println("StatsBean.callProcedureForSport(): " + e.getMessage());
 		}
 		finally
 		{
@@ -1579,6 +1674,88 @@ public class StatsBean
 		catch (Exception e)
 		{
 			System.out.println("StatsBean.updatePitchTotal(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+
+	/**
+	 * Called during final submit. Uses the coachButton procedure to update the two teams for the specified schedule_id
+	 */
+	public void finalSubmitCoachButton(int scheduleId, int homeScore, int roadScore)
+	{
+		Connection conn = null;
+		// schedule_id, home_id, home_score, road_id, road_score
+		String call = "{call coachButton(?, ?, ?)}";
+		try
+		{
+			System.out.println("calling coach button...");
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			CallableStatement stmt = conn.prepareCall(call);
+			stmt.setInt(1, scheduleId);
+			stmt.setInt(2, homeScore);
+			stmt.setInt(3, roadScore);
+			stmt.execute();
+		}
+		catch (Exception e)
+		{
+			System.err.println("StatsBean.finalSubmitCoachButton(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+	}
+
+	/**
+	 * To determine whether or not the game is really a 0-0 submission we mark the scoreless column.
+	 * 
+	 * @param scheduleId
+	 * @param homeScore
+	 * @param roadScore
+	 */
+	public void scoreless(int scheduleId)
+	{
+		System.out.println("update scoreless for scheduleId-> " + scheduleId);
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			String query = "UPDATE " + Table.schedule.name() + " SET " + Column.scoreless.name() + "=1 WHERE " + Column.id.name() + "=?";
+			System.out.println("UPDATE " + Table.schedule.name() + " SET " + Column.scoreless.name() + "=1 WHERE " + Column.id.name() + "=" + scheduleId);
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, scheduleId);
+			pstmt.executeUpdate();
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.updateTeamTotal(): " + e.getMessage());
 		}
 		finally
 		{

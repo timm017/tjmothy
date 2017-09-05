@@ -13,7 +13,7 @@ import com.tjmothy.stats.StatsBean;
  * @author tmckeown
  *
  */
-public class UpdateRankings
+class UpdateRankings
 {
 	public static void main(String[] args)
 	{

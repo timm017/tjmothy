@@ -18,14 +18,15 @@
         <script language="JavaScript" src="js/stats.js" type="text/javascript" />
       </head>
       <body>
-        <xsl:choose>
-          <xsl:when test="$sportId = 13">
+      <xsl:call-template name="totalsOnlyBody" />
+        <!-- <xsl:choose>
+          <xsl:when test="$sportId = 13 or $sportId = 5">
             <xsl:call-template name="totalsOnlyBody" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="regularBody" />
           </xsl:otherwise>
-        </xsl:choose>
+        </xsl:choose> -->
         <script type="text/javascript">
           <xsl:text>statsBindings();</xsl:text>
         </script>

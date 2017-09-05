@@ -41,7 +41,8 @@
               <xsl:when test="$subcmd = 'logout'">
                 <xsl:call-template name="login" />
               </xsl:when>
-              <xsl:when test="$sportId = '13'">
+              <!-- For now we are using this for all sports (total scores only) -->
+              <xsl:when test="$sportId = '13' or $sportId = '5' or $sportId = $sportId">
                 <xsl:call-template name="baseballStats" />
               </xsl:when>
               <xsl:when test="$subcmd = 'stats-view'">
@@ -418,7 +419,6 @@
   <xsl:template name="baseballStats">
     <xsl:variable name="myTeamId" select="my_team/team/id" />
     <xsl:variable name="enemyTeamId" select="enemy_team/team/id" />
-
     <div class="baseball-my-team-container">
       <!-- total MY team score -->
       <table id="home-team-total-container" data-schedule-id="{$scheduleId}" data-team-id="{$myTeamId}">
@@ -435,9 +435,9 @@
           </td>
         </tr>
       </table>
-      <xsl:if test="count(team_players/player) &gt; 0">
+      <!-- <xsl:if test="count(team_players/player) &gt; 0">
         <xsl:call-template name="baseballMyPlayers" />
-      </xsl:if>
+      </xsl:if> -->
     </div>
 
     <div class="baseball-enemy-team-container">
@@ -456,9 +456,9 @@
           </td>
         </tr>
       </table>
-      <xsl:if test="count(team_players/player) &gt; 0">
+      <!-- <xsl:if test="count(team_players/player) &gt; 0">
         <xsl:call-template name="baseballEnemyPlayers" />
-      </xsl:if>
+      </xsl:if> -->
     </div>
     <!-- BASEBALL -->
     <form action="./stats" method="POST" id="stats-form">

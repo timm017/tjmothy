@@ -83,6 +83,7 @@ public class StatsHandler extends HttpServlet
 			}
 		}
 		// Any commands that don't require authentication go here
+		// Usually called from the tabulators button for update ranks
 		if (subcmd.equals("update-rankings"))
 		{
 			String sportId = request.getParameter("sport");
@@ -95,9 +96,10 @@ public class StatsHandler extends HttpServlet
 			{
 				System.err.println("subcmd-> " + subcmd + " Error converting sportId integer: " + nfe.getMessage());
 			}
+			statsBean.updateRecords(realSportId);
 			// sport, season
-			statsBean.updateRecords();
-			statsBean.updateAllRanksForAllTeams(Game.BASEBALL_ID, 1);
+			statsBean.updateAllRanksForAllTeams(realSportId, 1);
+			// statsBean.updateAllRanksForAllTeams(Game.BASEBALL_ID, 1);
 			System.out.println("UPDATE RANKINGS FOR SPORT " + realSportId);
 			PrintWriter out = response.getWriter();
 			out.println("<html><body>");
@@ -116,6 +118,9 @@ public class StatsHandler extends HttpServlet
 				user = statsBean.userInfo(phoneNumber);
 				game = statsBean.gameInfo(user.getTeamId(), StatsBean.getTodayDate());
 				team = statsBean.teamInfo(user.getTeamId());
+				System.out.println("isHome:" + team.getIsHomeTeam());
+				System.out.println("isAway: " + game.getAwayTeamId());
+				System.out.println("getHomeId: " + game.getHomeTeamId());
 				enemyTeam = statsBean.teamInfo((team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
 				System.out.println("enemy team home-> " + team.getIsHomeTeam() + " enemy teamId: " + (team.getIsHomeTeam() ? game.getAwayTeamId() : game.getHomeTeamId()));
 				// Create session variables, logged_in for webapp and phonenumber for authentication?
@@ -316,11 +321,13 @@ public class StatsHandler extends HttpServlet
 			Team submitEnemyTeam = statsBean.teamInfo(realEnemyTeamId);
 			int totalMy = 0;
 			int totalEnemy = 0;
-			if (game.getSport() == Game.BASEBALL_ID)
+			totalMy = statsBean.getTeamTotalScore(realTeamId, realScheduleId);
+			totalEnemy = statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId);
+			// for now we are using score totals (in the future we will be recording quarters, players, etc)
+			if (true)
 			{
 				innerSB.append("<my_team>" + submitMyTeam.toXML() + "<total>" + statsBean.getTeamTotalScore(realTeamId, realScheduleId) + "</total></my_team>");
 				innerSB.append("<enemy_team>" + submitEnemyTeam.toXML() + "<total>" + statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId) + "</total></enemy_team>");
-				totalMy = statsBean.getTeamTotalScore(realTeamId, realScheduleId);
 			}
 			else
 			{
@@ -333,18 +340,42 @@ public class StatsHandler extends HttpServlet
 				statsBean.submitTeamTotal(totalEnemy, realScheduleId, submitEnemyTeam);
 			}
 			// If user refreshes submit page, don't update win/loss. Should we include Email? SubmitTotals?
-			if (!statsBean.isGameSubmitted(submitMyTeam.getId(), game.getScheduleId()) && game.isLeaugeGame())
+			if (!statsBean.isGameSubmitted(submitMyTeam.getId(), game.getScheduleId()))
 			{
+				// Only baseball doesn't count NON-league games
+				if ((game.getSport() == Sport.BASEBALL && game.isLeaugeGame()) || game.getSport() != Sport.BASEBALL)
+				{
+					if (totalMy == totalEnemy)
+					{
+						System.out.println("Tie game: home-> " + realTeamId + " road-> " + realEnemyTeamId);
+						statsBean.updateTie(realTeamId);
+						statsBean.updateTie(realEnemyTeamId);
+						if (totalMy == 0 && totalEnemy == 0)
+						{
+							// if score is 0-0, update scoreless column for this game
+							statsBean.scoreless(game.getScheduleId());
+						}
+					}
+					else
+					{
+						statsBean.updateWinLoss(realTeamId, (totalMy > totalEnemy));
+						statsBean.updateWinLoss(realEnemyTeamId, (totalEnemy > totalMy));
+					}
+					statsBean.callProcedureForSport(game.getSport());
+				}
+				// calls the coachButton
+				// statsBean.finalSubmitCoachButton(realScheduleId, totalMy, totalEnemy);
 				// Incremement either win or losses column for each team
-				statsBean.updateWinLoss(realTeamId, (totalMy > totalEnemy));
-				statsBean.updateWinLoss(realEnemyTeamId, (totalEnemy > totalMy));
+				// TODO: we don't keep track of players stats yet
+				// statsBean.updateWinLoss(realTeamId, (totalMy > totalEnemy));
+				// statsBean.updateWinLoss(realEnemyTeamId, (totalEnemy > totalMy));
 			}
 			// Only mark as submitted for YOUR team (realTeamId)
 			statsBean.submitTeamStats(realTeamId, realScheduleId);
 			innerSB.append(game.toXML());
 			// Get XML for final submission recap
-			innerSB.append(statsBean.getPlayersForTeam(realTeamId, true));
-			innerSB.append(statsBean.getPlayersForTeam(realEnemyTeamId, false));
+			// innerSB.append(statsBean.getPlayersForTeam(realTeamId, true));
+			// innerSB.append(statsBean.getPlayersForTeam(realEnemyTeamId, false));
 			innerSB.append(statsBean.getCurrentTeamScores(realTeamId, realScheduleId));
 			innerSB.append(submitMyTeam.toXML());
 			innerSB.append(submitEnemyTeam.toXML());
@@ -363,7 +394,7 @@ public class StatsHandler extends HttpServlet
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append(innerSB.toString());
 		sb.append("</outertag>");
-//		System.out.println(sb.toString());
+		// System.out.println(sb.toString());
 		StringReader xml = new StringReader(sb.toString());
 
 		try

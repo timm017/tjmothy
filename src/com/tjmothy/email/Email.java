@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Email
 {
-	private String subject = "Basketball stats";
+	private String subject = "Team Stats";
 
 	private String body = "";
 
