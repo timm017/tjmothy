@@ -754,7 +754,8 @@ public class StatsBean
 	}
 
 	/**
-	 * Sets the submitted field to 1
+	 * Sets BOTH teams submitted field to 1 for the particular schedule_id.
+	 * This prevents dupes from being entered.
 	 * 
 	 * @param teamId
 	 * @param scheduleId
@@ -769,10 +770,10 @@ public class StatsBean
 		{
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
-			query = "UPDATE " + Table.team_stats.name() + " SET " + Column.submitted.name() + "=1 WHERE " + Column.team_id.name() + "=? AND + " + Column.schedule_id.name() + "=?";
+//			query = "UPDATE " + Table.team_stats.name() + " SET " + Column.submitted.name() + "=1 WHERE " + Column.team_id.name() + "=? AND + " + Column.schedule_id.name() + "=?";
+			query = "UPDATE " + Table.team_stats.name() + " SET " + Column.submitted.name() + "=1 WHERE + " + Column.schedule_id.name() + "=?";
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, teamId);
-			pstmt.setInt(2, scheduleId);
+			pstmt.setInt(1, scheduleId);
 			pstmt.executeUpdate();
 		}
 		catch (Exception e)

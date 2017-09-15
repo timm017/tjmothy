@@ -323,7 +323,7 @@ public class StatsHandler extends HttpServlet
 			int totalEnemy = 0;
 			totalMy = statsBean.getTeamTotalScore(realTeamId, realScheduleId);
 			totalEnemy = statsBean.getTeamTotalScore(realEnemyTeamId, realScheduleId);
-			// for now we are using score totals (in the future we will be recording quarters, players, etc)
+			// for now, we are using score totals (in the future we will be recording quarters, players, etc)
 			if (true)
 			{
 				innerSB.append("<my_team>" + submitMyTeam.toXML() + "<total>" + statsBean.getTeamTotalScore(realTeamId, realScheduleId) + "</total></my_team>");
