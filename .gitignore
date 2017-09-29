@@ -1,7 +1,7 @@
 *.class
 .classpath
 .project
-
+.idea
 # Package Files #
 *.war
 *.ear
@@ -9,3 +9,4 @@
 tjmdb.properties
 /WebContent/
 baseball-export.txt
+tjmothy.iml

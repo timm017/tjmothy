@@ -30,10 +30,7 @@
             </p>
             <xsl:choose>
               <xsl:when test="$noGame = 'true'">
-                <xsl:message>
-                  <xsl:value-of select="$noGame" />
-                </xsl:message>
-                <xsl:text>No game for today.</xsl:text>
+                <xsl:call-template name="noGameToday" />
               </xsl:when>
               <xsl:when test="$subcmd = 'login'">
                 <xsl:call-template name="login" />
@@ -520,6 +517,12 @@
         </tr>
       </xsl:for-each>
     </table>
+  </xsl:template>
+
+  <xsl:template name="noGameToday">
+    <xsl:variable name="tabulatorEmail" select="//tabulator/email" />
+    <xsl:text>No game for today </xsl:text>
+    <xsl:text> - </xsl:text><a href="mailto:{$tabulatorEmail}">Email tabulator</a>
   </xsl:template>
 
   <xsl:template match="user|is_home_team|current_team_scores|game|id|subcmd|school_name|team_name|team_id|current_scores|league_id" />

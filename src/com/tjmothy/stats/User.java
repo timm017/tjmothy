@@ -12,6 +12,7 @@ public class User
 	private int id;
 	private String email;
 	private int type;
+	public final static int TABULATOR = 3;
 	
 	public User(int id, String firstName, String lastName, int teamId, String phoneNumber, String email, int type)
 	{

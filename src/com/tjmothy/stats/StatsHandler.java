@@ -131,6 +131,7 @@ public class StatsHandler extends HttpServlet
 					subcmd = "stats-view";
 				}
 				innerSB.append(game.toXML());
+				innerSB.append(statsBean.getTabulatorForSport(game.getSport()));
 				// If game is already submitted, show them the recap
 				if (statsBean.isGameSubmitted(user.getTeamId(), game.getScheduleId()))
 				{
@@ -183,6 +184,10 @@ public class StatsHandler extends HttpServlet
 				innerSB.append("<my_team>" + team.toXML() + statsBean.getCurrentTeamScores(team.getId(), game.getScheduleId()) + "</my_team>");
 				innerSB.append("<enemy_team>" + enemyTeam.toXML() + statsBean.getCurrentTeamScores(enemyTeam.getId(), game.getScheduleId()) + "</enemy_team>");
 			}
+			innerSB.append("<my_team><total>" + statsBean.getTeamTotalScore(team.getId(), game.getScheduleId()) + "</total></my_team>");
+			if(enemyTeam != null)
+				innerSB.append("<enemy_team><total>" + statsBean.getTeamTotalScore(enemyTeam.getId(), game.getScheduleId()) + "</total></enemy_team>");
+			innerSB.append(statsBean.getTabulatorForSport(game.getSport()));
 			innerSB.append(game.toXML());
 		}
 		else if (subcmd.equals("update-player-score"))
@@ -394,7 +399,7 @@ public class StatsHandler extends HttpServlet
 		sb.append("<subcmd>" + subcmd + "</subcmd>");
 		sb.append(innerSB.toString());
 		sb.append("</outertag>");
-		// System.out.println(sb.toString());
+//		System.out.println(sb.toString());
 		StringReader xml = new StringReader(sb.toString());
 
 		try
@@ -419,7 +424,7 @@ public class StatsHandler extends HttpServlet
 	 * @param subjectLine
 	 *            - Subjectline for the email
 	 * 
-	 * @param email
+	 * @param userEmail
 	 *            - The user's email to send the stats to
 	 * 
 	 */

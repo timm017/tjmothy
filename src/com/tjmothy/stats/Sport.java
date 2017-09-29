@@ -53,7 +53,7 @@ public class Sport
 		case FOOTBALL:
 			return "football_rating()";
 		case GOLF:
-			return "gorl_rating()";
+			return "golf_rating()";
 		case GIRLS_SOCCER:
 			return "girlsSoccer_rating()";
 		case BOYS_SOCCER:
@@ -61,19 +61,19 @@ public class Sport
 		case TENNIS:
 			return "tennis_rating()";
 		case VOLLEYBALL:
-			return "volleyball_rating()";
+			return "girlsVolleyball_rating()";
 		case SWIMMING_DIVING:
 			return "swimmingDiving_rating()";
 		case WRESTLING:
-			return "wresling_rating()";
+			return "wrestling_rating()";
 		case BASEBALL:
 			return "baseball_rating()";
 		case SOFTBALL:
 			return "softball_rating()";
 		case GIRLS_LOCROSSE:
-			return "girlLocrosse_rating()";
+			return "girlsLacrosse_rating()";
 		case BOYS_LOCROSSE:
-			return "boysLocrosse_rating()";
+			return "boysLacrosse_rating()";
 		case GIRLS_TRACK:
 			return "girlsTrack_rating()";
 		case BOYS_TRACK:

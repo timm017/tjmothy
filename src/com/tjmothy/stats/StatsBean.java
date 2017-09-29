@@ -25,7 +25,7 @@ public class StatsBean
 
 	public enum Column
 	{
-		scoreless, team_ties, sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number, league_game
+		sport_id, scoreless, team_ties, sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number, league_game
 	}
 
 	private TProperties tProps;
@@ -167,7 +167,7 @@ public class StatsBean
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
 			String query = "SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.game_day.name() + "=? AND (" + Column.home_id.name() + "=? OR " + Column.road_id.name() + "=?)";
-			System.out.println("SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.game_day.name() + "='" + date + "' AND (" + Column.home_id.name() + "=" + teamId + " OR " + Column.road_id.name() + "=" + teamId + ")");
+			System.out.println("GameInfo-> SELECT * FROM " + Table.schedule.name() + " WHERE " + Column.game_day.name() + "='" + date + "' AND (" + Column.home_id.name() + "=" + teamId + " OR " + Column.road_id.name() + "=" + teamId + ")");
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, date);
 			pstmt.setInt(2, teamId);
@@ -187,7 +187,7 @@ public class StatsBean
 		}
 		catch (Exception e)
 		{
-			System.out.println("StatsBean.userInfo(): " + e.getMessage());
+			System.out.println("StatsBean.gameInfo(): " + e.getMessage());
 		}
 		finally
 		{
@@ -1139,8 +1139,7 @@ public class StatsBean
 	 * 
 	 * updateTie - When there is a tie increment a tie for both the teams in the "teams" table
 	 * 
-	 * @param homeId
-	 * @param roadId
+	 * @param teamId
 	 */
 	public void updateTie(int teamId)
 	{
@@ -1226,7 +1225,7 @@ public class StatsBean
 	 * Updates: Schedule Points Bonus Points Rank value
 	 * 
 	 * @param teamId
-	 * @param season
+	 * @param sport
 	 */
 	public void updateAllRanksForTeam(int teamId, int sport)
 	{
@@ -1774,5 +1773,58 @@ public class StatsBean
 				;
 			}
 		}
+	}
+
+	/**
+	 * Gets the tabulator info for when there is no game so the user can email their tabulator to report scores they missed.
+	 * @param sportId
+	 * @return
+	 */
+	public String getTabulatorForSport(int sportId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		User user = null;
+		StringBuilder sb = new StringBuilder("<tabulator>");
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.sport_id.name() + "=? AND " + Column.type.name() + "=?");
+			pstmt.setInt(1, sportId);
+			pstmt.setInt(2, User.TABULATOR);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				sb.append("<id>" + rs.getInt(Column.id.name()) + "</id>");
+				sb.append("<first_name>" + rs.getString(Column.first_name.name()) + "</first_name>");
+				sb.append("<last_name>" + rs.getString(Column.last_name.name()) + "</last_name>");
+				sb.append("<email>" + rs.getString(Column.email.name()) + "</email>");
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.getTabulatorForSport(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		sb.append("</tabulator>");
+		return sb.toString();
 	}
 }
