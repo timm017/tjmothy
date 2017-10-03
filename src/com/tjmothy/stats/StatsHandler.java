@@ -131,7 +131,7 @@ public class StatsHandler extends HttpServlet
 					subcmd = "stats-view";
 				}
 				innerSB.append(game.toXML());
-				innerSB.append(statsBean.getTabulatorForSport(game.getSport()));
+				innerSB.append(statsBean.getTabulatorForSport(team.getSportId()));
 				// If game is already submitted, show them the recap
 				if (statsBean.isGameSubmitted(user.getTeamId(), game.getScheduleId()))
 				{

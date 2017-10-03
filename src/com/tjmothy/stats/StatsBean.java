@@ -93,7 +93,6 @@ public class StatsBean
 	 * phone_number VARCHAR(10) NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, team_id INT(10) NOT NULL,
 	 * 
 	 * @param phoneNumber
-	 * @param password
 	 * @return
 	 */
 	public User userInfo(String phoneNumber)
@@ -238,7 +237,8 @@ public class StatsBean
 				String schoolName = rs.getString(Column.school_name.name());
 				String teamName = rs.getString(Column.team_name.name());
 				int leagueId = rs.getInt(Column.league_id.name());
-				team = new Team(teamId, schoolName, teamName, leagueId, isHomeTeam(teamId, getTodayDate()));
+				int sportId  = rs.getInt(Column.sport.name());
+				team = new Team(teamId, schoolName, teamName, leagueId, isHomeTeam(teamId, getTodayDate()), sportId);
 			}
 		}
 		catch (Exception e)
@@ -1793,6 +1793,7 @@ public class StatsBean
 			Class.forName(TProperties.DRIVERS);
 			conn = DriverManager.getConnection(tProps.getConnection());
 			pstmt = conn.prepareStatement("SELECT * FROM " + Table.users.name() + " WHERE " + Column.sport_id.name() + "=? AND " + Column.type.name() + "=?");
+			System.out.println("SELECT * FROM " + Table.users.name() + " WHERE " + Column.sport_id.name() + "=" + sportId + " AND " + Column.type.name() + "=" + User.TABULATOR);
 			pstmt.setInt(1, sportId);
 			pstmt.setInt(2, User.TABULATOR);
 			rs = pstmt.executeQuery();
