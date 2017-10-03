@@ -521,7 +521,7 @@
 
   <xsl:template name="noGameToday">
     <xsl:variable name="tabulatorEmail" select="//tabulator/email" />
-    <xsl:text>No game for today </xsl:text>
+    <xsl:text>No game today. If you added or missed a game</xsl:text>
     <xsl:text> - </xsl:text><a href="mailto:{$tabulatorEmail}">Email tabulator</a>
   </xsl:template>
 
