@@ -20,12 +20,12 @@ public class StatsBean
 
 	public enum Table
 	{
-		leagues, teams, players, users, player_points, schedule, team_stats
+		leagues, teams, players, users, player_points, schedule, team_stats, sports;
 	}
 
 	public enum Column
 	{
-		sport_id, scoreless, team_ties, sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number, league_game
+		description, sport_id, scoreless, team_ties, sport, season, team_wins, team_loses, rank, email, type, home_score, road_score, submitted, home_team, road_team, home_id, road_id, first_quarter, second_quarter, third_quarter, fourth_quarter, overtime, highlights, id, first_name, last_name, team_name, league_name, league_id, team_id, school_name, username, password, phone_number, schedule_id, game_day, player_id, one_points, one_points_attempted, two_points, three_points, rebounds, fouls, pitches, number, league_game
 	}
 
 	private TProperties tProps;
@@ -238,7 +238,8 @@ public class StatsBean
 				String teamName = rs.getString(Column.team_name.name());
 				int leagueId = rs.getInt(Column.league_id.name());
 				int sportId  = rs.getInt(Column.sport.name());
-				team = new Team(teamId, schoolName, teamName, leagueId, isHomeTeam(teamId, getTodayDate()), sportId);
+				String sportDesc = getSportDesc(sportId);
+				team = new Team(teamId, schoolName, teamName, leagueId, isHomeTeam(teamId, getTodayDate()), sportId, sportDesc);
 			}
 		}
 		catch (Exception e)
@@ -262,6 +263,48 @@ public class StatsBean
 			}
 		}
 		return team;
+	}
+
+	private String getSportDesc(int sportId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sportDesc = "";
+
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			pstmt = conn.prepareStatement("SELECT " + Column.description.name() + " FROM " + Table.sports.name() + " WHERE " + Column.id.name() + "=?");
+			pstmt.setInt(1, sportId);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				sportDesc = rs.getString(Column.description.name());
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("StatsBean.teamInfo(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return sportDesc;
 	}
 
 	/**

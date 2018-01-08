@@ -304,6 +304,7 @@ public class StatsHandler extends HttpServlet
 		}
 		else if (subcmd.equals("final-submit"))
 		{
+			user = statsBean.userInfo(phoneNumber);
 			String teamId = request.getParameter("teamId");
 			String enemyTeamId = request.getParameter("enemyTeamId");
 			String scheduleId = request.getParameter("scheduleId");
@@ -384,7 +385,7 @@ public class StatsHandler extends HttpServlet
 			innerSB.append(statsBean.getCurrentTeamScores(realTeamId, realScheduleId));
 			innerSB.append(submitMyTeam.toXML());
 			innerSB.append(submitEnemyTeam.toXML());
-			final String subjectLine = submitMyTeam.getSchoolName() + " stats";
+			final String subjectLine = submitMyTeam.getSportDesc() + " stats";
 			final String emailXml = "<outertag><subcmd>" + subcmd + "</subcmd>" + innerSB.toString() + "</outertag>";
 			// Thread to loop through all teams and update their rankings
 			statsBean.updateAllRanksForAllTeams(game.getSport(), 1);
