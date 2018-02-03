@@ -125,4 +125,54 @@ public class ReminderBean
 		}
 		return user;
 	}
+
+	/**
+	 * Gets the Athletic Director's email for the specific sport
+	 *
+	 * @param sportId
+	 * @return - Athletic Director's email
+	 */
+	public String getADEmail(int sportId)
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String adEmail = "";
+		try
+		{
+			Class.forName(TProperties.DRIVERS);
+			conn = DriverManager.getConnection(tProps.getConnection());
+			pstmt = conn.prepareStatement("SELECT distinct user_email FROM wordpress.wp_users join teams " +
+					"on teams.wp_ADID = wp_users.id where teams.wp_ADID IN " +
+					"(SELECT wp_ADID FROM teams join schedule on (home_id = teams.id or road_id = teams.id) " +
+					"where game_day < now() and (home_score = 0 and road_score = 0) and (schedule.sport = ?);");
+			pstmt.setInt(1, sportId);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				adEmail = rs.getString("user_email");
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("ReminderBean.getADEmail(): " + e.getMessage());
+		}
+		finally
+		{
+			try
+			{
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (rs != null)
+					rs.close();
+			}
+			catch (Exception e)
+			{
+				;
+			}
+		}
+		return adEmail;
+	}
 }

@@ -1,14 +1,12 @@
 package com.tjmothy.crons;
 
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-
-import javax.mail.MessagingException;
-
 import com.tjmothy.email.Email;
 import com.tjmothy.email.Emailer;
 import com.tjmothy.email.ReminderBean;
 import com.tjmothy.stats.Game;
+
+import javax.mail.MessagingException;
+import java.util.ArrayList;
 
 /**
  * 
