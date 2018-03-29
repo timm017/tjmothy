@@ -5,7 +5,10 @@ import com.tjmothy.email.Emailer;
 import com.tjmothy.email.ReminderBean;
 
 import javax.mail.MessagingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Athletic Director reminder email. This class will gather all emails that this particular sport is missing game.
@@ -37,7 +40,9 @@ public class ADEmails
             {
                 System.out.println("ADEmail.main() - " + nfe.getMessage());
             }
-            System.out.println("Gathering AD emails for sportId (0 = all): " + sportId);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            System.out.println(dateFormat.format(date) + " Gathering AD emails for sportId (0 = all): " + sportId);
             ReminderBean rb = new ReminderBean();
             ArrayList<String> adEmails = rb.getADEmails(sportId);
 //            adEmails.forEach((email) -> System.out.print("  Emailing Athletic Directory [" + email + "]"));
