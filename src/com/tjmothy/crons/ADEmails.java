@@ -8,12 +8,16 @@ import javax.mail.MessagingException;
 import java.util.ArrayList;
 
 /**
+ * Athletic Director reminder email. This class will gather all emails that this particular sport is missing game.
+ * Sends AD reminder email telling them to remind their coaches to report their missing games.
+ *
  * @author tmckeown
  */
 public class ADEmails
 {
-    final static String REMINDER_SUBJECT = "Distict Scores: Reminder";
-    final static String REMINDER_BODY = "Hope you are having a great day. Friendly reminder that one or more of your coaches haven't submitted their scores for today's game.";
+    final static String REMINDER_SUBJECT = "District Scores: Reminder";
+    // TODO: Add "sport_name" after "had a" in body
+    final static String REMINDER_BODY = "Your school had a game last night that was not reported to districtscores.com. Please log in and enter the score to keep the rankings up to date.<br/><br/>Thank you,<br>DistrictScores.com";
 
     public static void main(String[] args)
     {
@@ -33,12 +37,14 @@ public class ADEmails
             {
                 System.out.println("ADEmail.main() - " + nfe.getMessage());
             }
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+            System.out.println("Gathering AD emails for sportId (0 = all): " + sportId);
             ReminderBean rb = new ReminderBean();
-            ArrayList<String> adEmails = rb.getADEmail(sportId);
-            System.out.println("Gathering AD emails for sportId: " + sportId);
-            adEmails.forEach((email) -> System.out.print("  Emailing Athletic Directory [" + email + "]"));
-//            sendEmail(REMINDER_BODY, REMINDER_SUBJECT, adEmail);
+            ArrayList<String> adEmails = rb.getADEmails(sportId);
+//            adEmails.forEach((email) -> System.out.print("  Emailing Athletic Directory [" + email + "]"));
+            for (String adEmail : adEmails)
+            {
+                sendEmail(REMINDER_BODY, REMINDER_SUBJECT, adEmail);
+            }
         }
     }
 

@@ -129,7 +129,7 @@ public class ReminderBean
      * @param sportId
      * @return - Athletic Director's email
      */
-    public ArrayList<String> getADEmail(int sportId)
+    public ArrayList<String> getADEmails(int sportId)
     {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -137,13 +137,16 @@ public class ReminderBean
         ArrayList<String> emails = new ArrayList<>();
         try
         {
+            // If the sportId is 0 then check AD emails for all sports
+            String appendCondition = (sportId == 0) ? "" : "AND schedule.sport = ?";
             Class.forName(TProperties.DRIVERS);
             conn = DriverManager.getConnection(tProps.getConnection());
             pstmt = conn.prepareStatement("SELECT DISTINCT user_email FROM wordpress.wp_users " +
                     "JOIN teams ON teams.wp_ADID = wp_users.id WHERE teams.wp_ADID IN " +
                     "(SELECT wp_ADID FROM teams JOIN schedule ON (home_id = teams.id or road_id = teams.id) " +
-                    "WHERE game_day < NOW() AND (home_score = 0 AND road_score = 0) AND schedule.sport = ?);");
-            pstmt.setInt(1, sportId);
+                    "WHERE game_day = CURDATE() AND (home_score = 0 AND road_score = 0) " + appendCondition + ")");
+            if(sportId > 0)
+              pstmt.setInt(1, sportId);
             rs = pstmt.executeQuery();
             while (rs.next())
             {

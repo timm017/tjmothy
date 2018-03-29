@@ -117,6 +117,7 @@ public class StatsHandler extends HttpServlet
 			{
 				user = statsBean.userInfo(phoneNumber);
 				game = statsBean.gameInfo(user.getTeamId(), StatsBean.getTodayDate());
+				// TODO: If teamId is 0 then coach probably didn't add their teamId - display that as error message
 				team = statsBean.teamInfo(user.getTeamId());
 				System.out.println("isHome:" + team.getIsHomeTeam());
 				System.out.println("isAway: " + game.getAwayTeamId());
