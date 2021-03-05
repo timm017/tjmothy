@@ -14,7 +14,7 @@ public class Sport
     public final static int GIRLS_SOCCER = 7;
     public final static int BOYS_SOCCER = 8;
     public final static int TENNIS = 9;
-    public final static int VOLLEYBALL = 10;
+    public final static int GIRLS_VOLLEYBALL = 10;
     public final static int SWIMMING_DIVING = 11;
     public final static int WRESTLING = 12;
     public final static int BASEBALL = 13;
@@ -60,7 +60,7 @@ public class Sport
                 return "boysSoccer_rating()";
             case TENNIS:
                 return "tennis_rating()";
-            case VOLLEYBALL:
+            case GIRLS_VOLLEYBALL:
                 return "girlsVolleyball_rating()";
             case SWIMMING_DIVING:
                 return "swimmingDiving_rating()";

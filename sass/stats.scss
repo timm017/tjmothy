@@ -1,0 +1,271 @@
+body {
+	width: 80%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.wrapper-stats {
+	margin: 0 auto;
+	text-align: center;
+	margin: 0 auto;
+}
+
+div.baseball-my-team-container {
+	background: #98FB98;
+	padding:10px;
+	margin-bottom: 20px;
+}
+
+div.baseball-enemy-team-container {
+	background: #FF9999;
+	padding:10px;
+	margin-bottom: 20px;
+}
+
+/* SERVICES */
+#stats {
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	-moz-box-shadow: 0 0 3px 1px #CCC;
+	-webkit-box-shadow: 0 0 3px 1px;
+	box-shadow: 0 0 3px 1px #CCC;
+	font-family: FreeSans;
+	overflow: scroll;
+	padding: 15px 15px 15px 15px;
+	background-color: #FFF;
+}
+
+input.button-final-submit {
+	margin: 10px;
+	height: 50px;
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+	color: #fff;
+	font-size: 30px;
+}
+
+table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table td {
+	text-align: center;
+}
+
+table tr {
+	text-align: center;
+}
+
+table caption {
+	text-size: 1.5em;
+	white-space: nowrap;
+}
+
+table#team-container {
+	margin-top: 20px;
+}
+
+table#team-container tr {
+	margin: 20px;
+}
+
+table#team-container td {
+	margin: 20px;
+}
+
+#stats ul {
+	color: #645d5d;
+	list-style-type: none;
+}
+
+#stats li {
+	color: #645d5d;
+	list-style-type: none;
+}
+
+#stats h3 {
+	font-family: FreeSans;
+	font-size: 25px;
+	margin: 0px 0px 0px 3px;
+}
+
+#stats span {
+	margin-bottom: 205px;
+	vertical-align: middle;
+}
+
+#stats p {
+	margin-bottom: 45px;
+}
+
+#point-buttons-positive {
+	
+}
+
+#point-buttons-negative {
+	
+}
+
+#current-points span {
+	text-align: center;
+	margin: 0 auto;
+}
+
+#player-container {
+	background-color: #EEEEEE;
+	padding: 5px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+caption {
+	background: #D3D3D3;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+input.button-box-score {
+	height: 25px;
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+	color: #fff;
+	font-size: 13px;
+}
+
+input.button-total-score, input.button-total-pitches{
+	height: 25px;
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+	color: #fff;
+	font-size: 13px;
+}
+
+input.button-highlights {
+	height: 25px;
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+	color: #fff;
+	font-size: 13px;
+}
+
+input.button-positive {
+	margin: 10px;
+	height: 50px;
+	width: 100px;
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #4cae4c;
+	color: #fff;
+	font-size: 30px;
+}
+
+input.button-negative {
+	margin: 10px;
+	height: 50px;
+	width: 100px;
+	color: #fff;
+	background-color: #d9534f;
+	border-color: #d43f3a;
+	font-size: 30px;
+}
+
+h2 {
+	font-family: Raleway, "Helvetica Neue", sans-serif;
+}
+
+#stats span.player-total {
+	font-family: Raleway, "Helvetica Neue", sans-serif;
+	color: green;
+}
+
+span#my-team-players-toggle {
+	align: left;
+	font-size: 30px;
+	color: blue;
+	cursor: s-resize;
+}
+
+span#enemy-team-players-toggle {
+	align: left;
+	font-size: 30px;
+	color: blue;
+	cursor: s-resize;
+}
+
+/*********************************************
+****************** login ********************* 
+********************************************/
+.login-block {
+    background-color: rgba(0, 0, 0, 0.7);
+    background-repeat: no-repeat;
+    background-position: center 10px;
+    border-radius: 0.5em;
+    display: block;
+    font-family: helvetica;
+    font-size: 0.875em;
+    left: 0;
+    top: 0;
+    margin: 0 auto 10px auto;
+    min-height: 200px;
+    min-width: 250px;
+    padding: 50px 2% 1.0em 2%;
+    text-align: center;
+    text-decoration: none;
+    width: 30%;
+    z-index: 5000;
+    position: static;
+}
+
+.login-block input{
+	border: 1px solid #666;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    color: #666;
+    display: block;
+    font-size: 16px;
+    height: 30px;
+    line-height: 22px;
+    margin: 10px 0 5px 0;
+    padding: 3px;
+    width: 40%;
+	margin: 10px auto;
+    min-width: 220px;
+    width: 90%;
+}
+
+.button-gray {
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    border: 1px solid #abb1bb;
+    background: #f0f2f8;
+    background: -moz-linear-gradient(top, #f0f2f8 0%, #d0d3d8 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0f2f8), color-stop(100%, #d0d3d8));
+    background: -webkit-linear-gradient(top, #f0f2f8 0%, #d0d3d8 100%);
+    margin: 10px auto;
+    min-width: 220px;
+    width: 90%;
+}
+
+.button {
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    cursor: pointer;
+    display: block;
+    font-family: helvetica;
+    font-size: 12px;
+    height: 30px;
+    letter-spacing: .05em;
+    font-weight: normal;
+    text-decoration: none;
+    line-height: 30px;
+    padding: 0 20px;
+    text-align: center;
+    text-decoration: none;
+}

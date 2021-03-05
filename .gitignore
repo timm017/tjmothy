@@ -10,3 +10,5 @@ tjmdb.properties
 /WebContent/
 baseball-export.txt
 tjmothy.iml
+/css/
+.sass-cache/

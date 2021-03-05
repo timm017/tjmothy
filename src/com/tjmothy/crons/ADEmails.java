@@ -3,8 +3,15 @@ package com.tjmothy.crons;
 import com.tjmothy.email.Email;
 import com.tjmothy.email.Emailer;
 import com.tjmothy.email.ReminderBean;
+import com.tjmothy.utils.PathHelper;
 
 import javax.mail.MessagingException;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,13 +51,31 @@ public class ADEmails
             Date date = new Date();
             System.out.println(dateFormat.format(date) + " Gathering AD emails for sportId (0 = all): " + sportId);
             ReminderBean rb = new ReminderBean();
-            ArrayList<String> adEmails = rb.getADEmails(sportId);
+            ArrayList<String> adEmails = rb.getADEmails();
 //            adEmails.forEach((email) -> System.out.print("  Emailing Athletic Directory [" + email + "]"));
-            for (String adEmail : adEmails)
-            {
-                sendEmail(REMINDER_BODY, REMINDER_SUBJECT, adEmail);
-            }
+//            for (String adEmail : adEmails)
+//            {
+//                sendEmail(REMINDER_BODY, REMINDER_SUBJECT, adEmail);
+//            }
         }
+    }
+
+    private String transformBody(String xmlIn)
+    {
+        StringWriter out = new StringWriter();
+        try
+        {
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            Source xslDoc = new StreamSource("/Users/tmckeown/workspace-tjmothy/tjmothy/xsl/ad-reminder-email.xsl");
+            Source xmlDoc = new StreamSource(xmlIn);
+            Transformer transformer = tFactory.newTransformer(xslDoc);
+            transformer.transform(xmlDoc, new StreamResult(out));
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error transforming AD reminder email-> " + e.getMessage());
+        }
+        return out.toString();
     }
 
     /**

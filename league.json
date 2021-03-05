@@ -1,0 +1,380 @@
+[
+ {
+  "player_id": 96,
+  "player_name": "Phil",
+  "player_total_gross": 795518243,
+  "movies": 
+  [
+   {
+    "movie_id": 275,
+    "movie_title": "Overboard",
+    "movie_release_date": "05/04/2018",
+    "movie_gross": 50316123,
+    "percentage_owned": 100,
+    "winning_bid": 16,
+    "value": 3144757,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=overboard2018.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/overboard_2018"
+   },
+   {
+    "movie_id": 282,
+    "movie_title": "Ocean's 8",
+    "movie_release_date": "06/08/2018",
+    "movie_gross": 139377762,
+    "percentage_owned": 100,
+    "winning_bid": 23,
+    "value": 6059902,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=wbeventfilm2018c.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/oceans_8"
+   },
+   {
+    "movie_id": 283,
+    "movie_title": "The Incredibles 2",
+    "movie_release_date": "06/15/2018",
+    "movie_gross": 605824358,
+    "percentage_owned": 100,
+    "winning_bid": 51,
+    "value": 11878908,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=theincredibles2.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/incredibles_2"
+   }
+  ]
+ },
+ {
+  "player_id": 97,
+  "player_name": "Tim",
+  "player_total_gross": 1045493647,
+  "movies": 
+  [
+   {
+    "movie_id": 266,
+    "movie_title": "Pacific Rim: Uprising",
+    "movie_release_date": "03/23/2018",
+    "movie_gross": 59185715,
+    "percentage_owned": 100,
+    "winning_bid": 10,
+    "value": 5918571,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=pacificrim2.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/pacific_rim_uprising"
+   },
+   {
+    "movie_id": 270,
+    "movie_title": "Truth or Dare",
+    "movie_release_date": "04/13/2018",
+    "movie_gross": 40717020,
+    "percentage_owned": 100,
+    "winning_bid": 2,
+    "value": 20358510,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=truthordare2017.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/blumhouses_truth_or_dare"
+   },
+   {
+    "movie_id": 273,
+    "movie_title": "Super Troopers 2",
+    "movie_release_date": "04/20/2018",
+    "movie_gross": 30609330,
+    "percentage_owned": 100,
+    "winning_bid": 17,
+    "value": 1800548,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=supertroopers2.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/super_troopers_2"
+   },
+   {
+    "movie_id": 278,
+    "movie_title": "Book Club",
+    "movie_release_date": "05/18/2018",
+    "movie_gross": 68566296,
+    "percentage_owned": 100,
+    "winning_bid": 2,
+    "value": 34283148,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=bookclub.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/book_club"
+   },
+   {
+    "movie_id": 279,
+    "movie_title": "Deadpool 2",
+    "movie_release_date": "05/18/2018",
+    "movie_gross": 318482400,
+    "percentage_owned": 100,
+    "winning_bid": 31,
+    "value": 10273625,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=foxmarvel18.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/deadpool_2"
+   },
+   {
+    "movie_id": 284,
+    "movie_title": "Jurassic World: Fallen Kingdom",
+    "movie_release_date": "06/22/2018",
+    "movie_gross": 416376615,
+    "percentage_owned": 100,
+    "winning_bid": 30,
+    "value": 13879220,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=jurassicworldsequel.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/jurassic_world_fallen_kingdom"
+   },
+   {
+    "movie_id": 286,
+    "movie_title": "Uncle Drew",
+    "movie_release_date": "06/29/2018",
+    "movie_gross": 42469946,
+    "percentage_owned": 100,
+    "winning_bid": 4,
+    "value": 10617486,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=uncledrew.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/uncle_drew"
+   },
+   {
+    "movie_id": 288,
+    "movie_title": "The First Purge",
+    "movie_release_date": "07/04/2018",
+    "movie_gross": 69086325,
+    "percentage_owned": 100,
+    "winning_bid": 4,
+    "value": 17271581,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=purge4.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/the_first_purge"
+   }
+  ]
+ },
+ {
+  "player_id": 98,
+  "player_name": "Kelsea",
+  "player_total_gross": 733664918,
+  "movies": 
+  [
+   {
+    "movie_id": 271,
+    "movie_title": "Rampage",
+    "movie_release_date": "04/13/2018",
+    "movie_gross": 99345950,
+    "percentage_owned": 100,
+    "winning_bid": 18,
+    "value": 5519219,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=newlinetentpole2018.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/rampage_2018"
+   },
+   {
+    "movie_id": 272,
+    "movie_title": "I Feel Pretty",
+    "movie_release_date": "04/20/2018",
+    "movie_gross": 48795601,
+    "percentage_owned": 100,
+    "winning_bid": 5,
+    "value": 9759120,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=ifeelpretty.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/i_feel_pretty_2018"
+   },
+   {
+    "movie_id": 277,
+    "movie_title": "Life of the Party",
+    "movie_release_date": "05/11/2018",
+    "movie_gross": 52856061,
+    "percentage_owned": 100,
+    "winning_bid": 6,
+    "value": 8809343,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=lifeoftheparty.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/life_of_the_party_2018"
+   },
+   {
+    "movie_id": 289,
+    "movie_title": "Hotel Transylvania 3: Summer Vacation",
+    "movie_release_date": "07/13/2018",
+    "movie_gross": 165476985,
+    "percentage_owned": 100,
+    "winning_bid": 20,
+    "value": 8273849,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=hoteltransylvania3.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/hotel_transylvania_3_summer_vacation"
+   },
+   {
+    "movie_id": 291,
+    "movie_title": "Mamma Mia: Here We Go Again!",
+    "movie_release_date": "07/20/2018",
+    "movie_gross": 119926835,
+    "percentage_owned": 100,
+    "winning_bid": 16,
+    "value": 7495427,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=mammamia2.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/mamma_mia_here_we_go_again"
+   },
+   {
+    "movie_id": 292,
+    "movie_title": "Mission: Impossible - Fallout",
+    "movie_release_date": "07/27/2018",
+    "movie_gross": 216974667,
+    "percentage_owned": 100,
+    "winning_bid": 20,
+    "value": 10848733,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=missionimpossible6.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/mission_impossible_fallout"
+   },
+   {
+    "movie_id": 294,
+    "movie_title": "Slender Man",
+    "movie_release_date": "08/10/2018",
+    "movie_gross": 30288819,
+    "percentage_owned": 100,
+    "winning_bid": 7,
+    "value": 4326974,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=slenderman.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/slender_man"
+   }
+  ]
+ },
+ {
+  "player_id": 99,
+  "player_name": "Chelsea",
+  "player_total_gross": 859903393,
+  "movies": 
+  [
+   {
+    "movie_id": 267,
+    "movie_title": "Ready Player One",
+    "movie_release_date": "03/29/2018",
+    "movie_gross": 137018455,
+    "percentage_owned": 100,
+    "winning_bid": 51,
+    "value": 2686636,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=readyplayerone.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/ready_player_one"
+   },
+   {
+    "movie_id": 274,
+    "movie_title": "Avengers: Infinity War",
+    "movie_release_date": "04/27/2018",
+    "movie_gross": 678815482,
+    "percentage_owned": 100,
+    "winning_bid": 27,
+    "value": 25141314,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=marvel0518.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/avengers_infinity_war"
+   },
+   {
+    "movie_id": 281,
+    "movie_title": "Hereditary",
+    "movie_release_date": "06/08/2018",
+    "movie_gross": 44069456,
+    "percentage_owned": 100,
+    "winning_bid": 22,
+    "value": 2003157,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=a24horrora.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/hereditary"
+   }
+  ]
+ },
+ {
+  "player_id": 100,
+  "player_name": "Dakota",
+  "player_total_gross": 425763624,
+  "movies": 
+  [
+   {
+    "movie_id": 268,
+    "movie_title": "Blockers",
+    "movie_release_date": "04/06/2018",
+    "movie_gross": 59839515,
+    "percentage_owned": 100,
+    "winning_bid": 5,
+    "value": 11967903,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=unirratedcomedy.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/blockers"
+   },
+   {
+    "movie_id": 280,
+    "movie_title": "Solo: A Star Wars Story",
+    "movie_release_date": "05/25/2018",
+    "movie_gross": 213767512,
+    "percentage_owned": 100,
+    "winning_bid": 67,
+    "value": 3190559,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=untitledhansolostarwarsanthologyfilm.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/solo_a_star_wars_story"
+   },
+   {
+    "movie_id": 285,
+    "movie_title": "Sicario 2: Soldado",
+    "movie_release_date": "06/29/2018",
+    "movie_gross": 50072235,
+    "percentage_owned": 100,
+    "winning_bid": 7,
+    "value": 7153176,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=sicario2.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/sicario_2_soldado"
+   },
+   {
+    "movie_id": 296,
+    "movie_title": "The Equalizer 2",
+    "movie_release_date": "07/20/2018",
+    "movie_gross": 102084362,
+    "percentage_owned": 100,
+    "winning_bid": 6,
+    "value": 17014060,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=theequalizer2.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/equalizer_2"
+   }
+  ]
+ },
+ {
+  "player_id": 101,
+  "player_name": "Hillary",
+  "player_total_gross": 613493064,
+  "movies": 
+  [
+   {
+    "movie_id": 269,
+    "movie_title": "A Quiet Place",
+    "movie_release_date": "04/06/2018",
+    "movie_gross": 188024361,
+    "percentage_owned": 100,
+    "winning_bid": 8,
+    "value": 23503045,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=aquietplace.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/a_quiet_place_2018"
+   },
+   {
+    "movie_id": 276,
+    "movie_title": "Breaking In",
+    "movie_release_date": "05/11/2018",
+    "movie_gross": 46383120,
+    "percentage_owned": 100,
+    "winning_bid": 6,
+    "value": 7730520,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=breakingin2018.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/breaking_in_2018"
+   },
+   {
+    "movie_id": 287,
+    "movie_title": "Ant-Man and the Wasp",
+    "movie_release_date": "07/06/2018",
+    "movie_gross": 215538206,
+    "percentage_owned": 100,
+    "winning_bid": 50,
+    "value": 4310764,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=ant-manandthewasp.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/ant_man_and_the_wasp"
+   },
+   {
+    "movie_id": 290,
+    "movie_title": "Skyscraper",
+    "movie_release_date": "07/13/2018",
+    "movie_gross": 67711580,
+    "percentage_owned": 100,
+    "winning_bid": 15,
+    "value": 4514105,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=skyscraper.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/skyscraper_2018"
+   },
+   {
+    "movie_id": 293,
+    "movie_title": "Christopher Robin",
+    "movie_release_date": "08/03/2018",
+    "movie_gross": 95835797,
+    "percentage_owned": 100,
+    "winning_bid": 5,
+    "value": 19167159,
+    "bom_link": "https://www.boxofficemojo.com/movies/?id=disneyfairytale2017.htm",
+    "rt_link": "https://www.rottentomatoes.com/m/christopher_robin"
+   }
+  ]
+ }
+]

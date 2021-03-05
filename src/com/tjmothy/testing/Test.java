@@ -16,9 +16,11 @@ public class Test
 		String[] passwords = { "baseball"};
 		List<String> players = Arrays.asList(passwords);
 
-		ReminderBean rb = new ReminderBean();		
-		rb.getEmailsForReminder(Game.BASEBALL_ID).forEach((teamId) -> System.out.print(teamId + "\n "));
-		
+		ReminderBean rb = new ReminderBean();
+//		rb.getEmailsForReminder(Game.BASEBALL_ID).forEach((teamId) -> System.out.print(teamId + "\n "));
+		players.forEach((teamId) -> System.out.print(teamId + "\n "));
+
+
 		// Old looping
 //		for (String password : passwords)
 //		{

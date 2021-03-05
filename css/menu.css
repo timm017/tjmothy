@@ -1,58 +1,53 @@
 ul#menu {
-	margin-top: -55px;
-	padding: 0;
-	list-style-type: none;
-	display: block;
-	height: 30px;
-	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-}
+  margin-top: -55px;
+  padding: 0;
+  list-style-type: none;
+  display: block;
+  height: 30px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px; }
 
 ul#menu li {
-	height: 100%;
-	display: block;
-	float: right;
-	margin: 10px 0px 0px 0px;
-	padding: 0;
-	text-align: center;
-	vertical-align: bottom;
-}
+  height: 100%;
+  display: block;
+  float: right;
+  margin: 10px 0px 0px 0px;
+  padding: 0;
+  text-align: center;
+  vertical-align: bottom; }
 
 ul#menu li a img {
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 5px;
-}
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5px; }
 
 ul#menu li a {
-/* 	font-family: "Verdana"; */
-	text-transform: uppercase;
-	display: block;
-	float: left;
-	color: #000000;
-	text-decoration: none;
-	padding: 0px 20px 0 20px;
-	border-right: 1px solid #ccc;
-	display: block;
-	margin: 0px 0px 10px 0px;
-}
+  /* 	font-family: "Verdana"; */
+  text-transform: uppercase;
+  display: block;
+  float: left;
+  color: #000000;
+  text-decoration: none;
+  padding: 0px 20px 0 20px;
+  border-right: 1px solid #ccc;
+  display: block;
+  margin: 0px 0px 10px 0px; }
 
 div#menu li a:last-child {
-	border-right: 0px;
-}
+  border-right: 0px; }
 
 ul#menu li a:hover {
-	color: #198ed8;
-	height: 22px;
-	border-right: 1px solid #ccc;
-}
+  color: #198ed8;
+  height: 22px;
+  border-right: 1px solid #ccc; }
 
 ul#menu li a.current {
-	display: inline;
-	height: 22px;
-	background: transparent url('../images/nav_bg.png') 0px -30px no-repeat;
-	float: left;
-	margin: 0;
-	border-right: 1px solid #ccc;
-}
+  display: inline;
+  height: 22px;
+  background: transparent url("../images/nav_bg.png") 0px -30px no-repeat;
+  float: left;
+  margin: 0;
+  border-right: 1px solid #ccc; }
+
+/*# sourceMappingURL=menu.css.map */

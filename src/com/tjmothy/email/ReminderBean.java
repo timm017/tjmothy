@@ -126,32 +126,41 @@ public class ReminderBean
     /**
      * Gets the Athletic Director's email for the specific sport
      *
-     * @param sportId
      * @return - Athletic Director's email
      */
-    public ArrayList<String> getADEmails(int sportId)
+    public ArrayList<String> getADEmails()
     {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         ArrayList<String> emails = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
         try
         {
             // If the sportId is 0 then check AD emails for all sports
-            String appendCondition = (sportId == 0) ? "" : "AND schedule.sport = ?";
             Class.forName(TProperties.DRIVERS);
             conn = DriverManager.getConnection(tProps.getConnection());
-            pstmt = conn.prepareStatement("SELECT DISTINCT user_email FROM wordpress.wp_users " +
-                    "JOIN teams ON teams.wp_ADID = wp_users.id WHERE teams.wp_ADID IN " +
-                    "(SELECT wp_ADID FROM teams JOIN schedule ON (home_id = teams.id or road_id = teams.id) " +
-                    "WHERE game_day = CURDATE() AND (home_score = 0 AND road_score = 0) " + appendCondition + ")");
-            if(sportId > 0)
-              pstmt.setInt(1, sportId);
+            pstmt = conn.prepareStatement("SELECT user_email, wp_ADID, description " +
+                    "FROM wordpress.wp_users wpu, teams t, schedule sch, sports s " +
+                    "WHERE (home_id = t.id OR road_id = t.id) " +
+                    "AND t.sport = s.id AND wpu.id = t.wp_ADID " +
+                    "AND game_day = CURDATE() " +
+                    "AND (home_score = 0 AND road_score = 0)");
             rs = pstmt.executeQuery();
+            int prevADID = 0;
+            String sports = "";
             while (rs.next())
             {
-                System.out.println("email: " + rs.getString("user_email"));
-                emails.add(rs.getString("user_email"));
+                if(prevADID == rs.getInt("wp_ADID"))
+                {
+                    sports += rs.getString("description") + " ";
+                }
+                else
+                {
+                    System.out.println("email: " + rs.getString("user_email"));
+                    System.out.println(" - " + sports);
+                    prevADID = rs.getInt("wp_ADID");
+                }
             }
         }
         catch (Exception e)
